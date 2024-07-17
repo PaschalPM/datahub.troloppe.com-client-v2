@@ -1,0 +1,1 @@
+type ColorSchemeType = 'auto' | 'light' | 'dark';

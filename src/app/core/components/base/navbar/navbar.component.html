@@ -1,0 +1,20 @@
+<div class="bg-base-100">
+    <app-container clx="navbar">
+            <div class="navbar-start">
+                <app-brand-logo></app-brand-logo>
+            </div>
+            <div class="navbar-center hidden lg:flex">
+                <ul class="menu menu-horizontal px-1 mixin/active:text-secondary mixin/active:font-bold">
+                    <li><a routerLink="/" routerLinkActive="mixin/active"
+                            [routerLinkActiveOptions]="{exact:true}">Home</a>
+                    </li>
+                    <li><a routerLink="/about" routerLinkActive="mixin/active">About</a></li>
+                </ul>
+            </div>
+            <div class="navbar-end">
+                <app-color-scheme></app-color-scheme>
+                <user-action-btn></user-action-btn>
+            </div>
+
+    </app-container>
+</div>
