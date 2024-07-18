@@ -21,15 +21,15 @@ export class UtilsService {
     const cb = (m: string) => m.toUpperCase();
     return str.toLowerCase().replace(pattern, cb);
   }
-  
-  getColorSchemeMatIconName(scheme: string) {
+
+  getColorSchemeDetails(scheme: string | null) {
     switch (scheme) {
       case 'light':
-        return 'light_mode';
+        return { toolTip: 'Light', matName: 'light_mode' };
       case 'dark':
-        return 'dark_mode';
+        return { toolTip: 'Dark', matName: 'dark_mode' };
       default:
-        return 'contrast';
+        return { toolTip: 'Auto', matName: 'contrast' };
     }
   }
 }

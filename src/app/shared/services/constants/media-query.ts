@@ -1,0 +1,1 @@
+export const PREFERS_COLOR_DARK_SCHEME_QUERY = '(prefers-color-scheme:dark)'

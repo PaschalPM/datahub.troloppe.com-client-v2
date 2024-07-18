@@ -1,39 +1,73 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { UtilsService } from '@shared/services/utils.service';
 import { MyMatIconComponent } from '../my-mat-icon/my-mat-icon.component';
+import { ClickOutsideDirective } from '@shared/directives/click-outside.directive';
+import { ColorSchemeService } from '@shared/services/color-scheme.service';
+import { Observable, Subscription } from 'rxjs';
+import { AsyncPipe, NgIf } from '@angular/common';
+import { ColorSchemeIconComponent } from '../color-scheme-icon/color-scheme-icon.component';
+import { fadeInOut } from '@shared/animations';
 
 @Component({
   selector: 'app-color-scheme',
   standalone: true,
-  imports: [MyMatIconComponent],
-  template: `<ul class="menu rounded-box w-fit">
-    <li>
-      <details close #details>
-        <summary>C</summary>
-        <ul class="absolute bg-base-200 p-2 mt-1 right-0 top-10">
-          @for(color of schemes; track color){
-          <li (click)="onSelectScheme()" class="my-2">
-            <a>
-              <my-mat-icon
-                >{{ utils.getColorSchemeMatIconName(color) }}
-              </my-mat-icon>
-              {{ utils.capitalize(color) }}</a
+  imports: [
+    MyMatIconComponent,
+    ClickOutsideDirective,
+    AsyncPipe,
+    ColorSchemeIconComponent,
+    NgIf,
+  ],
+  template: `
+    <ul [class]="utils.cn('menu rounded-box w-fit', clx)">
+      <li>
+        <div>
+          <button class="pt-1" (click)="isMenuOpen = true">
+            <color-scheme-icon
+              [colorScheme]="colorSchemeService.getColorScheme() | async"
+            ></color-scheme-icon>
+          </button>
+          <ul
+            *ngIf="isMenuOpen"
+            appClickOutside
+            (clickOutside)="isMenuOpen = false"
+            class="absolute bg-base-200 p-2 mt-1 right-0 top-12"
+            @fadeInOut
+          >
+            @for(color of colorSchemeService.schemes; track color){
+            <li
+              (click)="onSelectScheme($event)"
+              [attr.data-scheme]="color"
+              [class]="
+                utils.cn('my-2 rounded-lg', {
+                  'bg-base-content/20': color === (colorSchemeService.getColorScheme() | async)
+                })
+              "
             >
-          </li>
-          }
-        </ul>
-      </details>
-    </li>
-  </ul>`,
+              <a>
+                <color-scheme-icon [colorScheme]="color"></color-scheme-icon>
+                {{ utils.capitalize(color) }}
+              </a>
+            </li>
+            }
+          </ul>
+        </div>
+      </li>
+    </ul>
+  `,
+  animations: [fadeInOut()],
 })
 export class ColorSchemeComponent {
-  @ViewChild('details') details!: ElementRef;
-  selectedScheme!: ColorSchemeType;
-  schemes = ['auto', 'light', 'dark'];
+  @Input() clx = '';
+  isMenuOpen = false;
 
-  constructor(public utils: UtilsService) {}
+  constructor(
+    public utils: UtilsService,
+    public colorSchemeService: ColorSchemeService
+  ) {}
 
-  onSelectScheme() {
-    (this.details.nativeElement as HTMLElement).removeAttribute('open');
+
+  onSelectScheme(event: Event) {
+    this.colorSchemeService.selectSchemeCallback(event);
   }
 }

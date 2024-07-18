@@ -1,0 +1,12 @@
+<aside tabindex="0" @menuSlideInOut *ngIf="menuService.isOpen() | async"
+    class="menu fixed inset-0 bg-base-300 z-[10] w-80 p-2 shadow text-base">
+    <ul class="flex flex-col h-screen font-medium text-sm">
+        <app-brand-logo clx="m-4 mt-2 mb-8 block"></app-brand-logo>
+        <ng-content></ng-content>
+        <div class="divider "></div>
+        <app-color-scheme-side-menu></app-color-scheme-side-menu>
+        
+        <div class="divider mt-auto"></div>
+        <li><a><github-icon></github-icon> GitHub</a></li>
+    </ul>
+</aside>

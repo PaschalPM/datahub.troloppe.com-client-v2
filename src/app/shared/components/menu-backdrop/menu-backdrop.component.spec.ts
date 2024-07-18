@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AboutComponent } from './about.component';
+import { MenuBackdropComponent } from './menu-backdrop.component';
 
-describe('AboutComponent', () => {
-  let component: AboutComponent;
-  let fixture: ComponentFixture<AboutComponent>;
+describe('MenuBackdropComponent', () => {
+  let component: MenuBackdropComponent;
+  let fixture: ComponentFixture<MenuBackdropComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AboutComponent]
+      imports: [MenuBackdropComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(AboutComponent);
+    fixture = TestBed.createComponent(MenuBackdropComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,20 +1,34 @@
-<div class="bg-base-100">
-    <app-container clx="navbar">
-            <div class="navbar-start">
-                <app-brand-logo></app-brand-logo>
-            </div>
-            <div class="navbar-center hidden lg:flex">
-                <ul class="menu menu-horizontal px-1 mixin/active:text-secondary mixin/active:font-bold">
-                    <li><a routerLink="/" routerLinkActive="mixin/active"
-                            [routerLinkActiveOptions]="{exact:true}">Home</a>
+<div class="bg-base-200">
+    <app-container clx="navbar md:px-6">
+        <div class="navbar-start">
+            <div class="dropdown">
+                <div tabindex="0" role="button" class="btn btn-ghost lg:hidden" (click)="menuService.toggleState()">
+                    <menu-toggler-icon></menu-toggler-icon>
+                </div>
+                <app-side-menu>
+                    <li>
+                        <a>Pages</a>
+                        <ul>
+                            <li><a routerLink="/" routerLinkActive="bg-base-content/20"
+                                    [routerLinkActiveOptions]="{exact:true}"> Home</a></li>
+                            <li><a routerLink="/features" routerLinkActive="bg-base-content/20"> Features </a></li>
+                        </ul>
                     </li>
-                    <li><a routerLink="/about" routerLinkActive="mixin/active">About</a></li>
-                </ul>
+                </app-side-menu>
             </div>
-            <div class="navbar-end">
-                <app-color-scheme></app-color-scheme>
-                <user-action-btn></user-action-btn>
-            </div>
+            <app-brand-logo clx="relative left-4 lg:static"></app-brand-logo>
+        </div>
+        <div class="navbar-center hidden lg:flex">
+            <ul class="menu menu-horizontal px-1 mixin/active:text-secondary mixin/active:font-bold">
+                <li><a routerLink="/" routerLinkActive="mixin/active" [routerLinkActiveOptions]="{exact:true}">Home</a>
+                </li>
+                <li><a routerLink="/features" routerLinkActive="mixin/active">Features</a></li>
+            </ul>
+        </div>
+        <div class="navbar-end">
+            <app-color-scheme clx="hidden lg:block"></app-color-scheme>
+            <user-action-btn></user-action-btn>
+        </div>
 
     </app-container>
 </div>
