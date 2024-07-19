@@ -11,7 +11,9 @@ import { UtilsService } from '@shared/services/utils.service';
     </div>
   `,
   styles: `
-    
+    :host {
+      display: contents
+    }
   `,
 })
 export class ContainerComponent {

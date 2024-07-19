@@ -1,13 +1,25 @@
 import { Component } from '@angular/core';
 import { UserActionBtnComponent } from '@core/components/base/user-action-btn/user-action-btn.component';
+import { FacebookIconComponent } from '@shared/components/svgs/facebook-icon.component';
+import { InstagramIconComponent } from '@shared/components/svgs/instagram-icon.component';
+import { LinkedinIconComponent } from '@shared/components/svgs/linkedin-icon.component';
+import { SocialLinksFooterComponent } from '@shared/components/social-links-footer/social-links-footer.component';
 
 @Component({
   selector: 'base-home-page',
   standalone: true,
-  imports: [UserActionBtnComponent],
+  imports: [
+    UserActionBtnComponent,
+    FacebookIconComponent,
+    InstagramIconComponent,
+    LinkedinIconComponent,
+    SocialLinksFooterComponent,
+  ],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.scss'
+  styles: `
+    :host {
+      display: contents
+    }
+  `,
 })
-export class HomeComponent {
-
-}
+export class HomeComponent {}

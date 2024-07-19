@@ -17,7 +17,7 @@ import { GithubIconComponent } from '../svgs/github-icon.component';
     MyMatIconComponent,
     ColorSchemeSideMenuComponent,
     GithubIconComponent,
-  ],
+],
   templateUrl: './side-menu.component.html',
   animations: [menuSlideInOut()],
 })

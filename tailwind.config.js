@@ -5,7 +5,8 @@ module.exports = {
     themes: [{
       light: {
         ...require("daisyui/src/theming/themes")["light"],
-        secondary: "#ba6b12",
+        secondary: "#c37013",
+        
       }
     }, {
       sunset: {

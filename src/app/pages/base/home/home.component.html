@@ -1,19 +1,25 @@
-<main class="h-[calc(100vh-85px)] flex p-4 items-center w-full">
-
-    <div class="basis-[55%] ">
-        <div class="prose">
-            <h1 class="font-serif ">DataHUB for Troloppe Property Services</h1>
-            <p class="text-sm pb-16">
-                An exclusive solution for streamlined data collection and management designed specifically for our
-                team members at Troloppe Property Services. It enables efficient gathering and secure storage of
-                property information. Property
-                data collected from the field stays confidential and accessible only to authorized personnel.
-            </p>
+<div class=" h-full flex flex-col  justify-center">
+    <main class="flex flex-col gap-12 md:flex-row p-4 justify-center items-center w-full ">
+        <div class="md:basis-[55%]">
+            <div class="md:mb-12 space-y-4">
+                <h1 class="font-serif text-3xl/snug lg:text-5xl/snug text-base-content/85">DataHUB for Troloppe Property
+                    Services</h1>
+                <p class="text-xs/snug md:text-[13px] text-base-content/70">
+                    An exclusive solution for streamlined data collection and management designed specifically for our
+                    team members. It enables efficient gathering and secure storage of
+                    property information. Property
+                    data collected from the field stays confidential and accessible only to authorized personnel.
+                </p>
+            </div>
+            <user-action-btn region="body" clx="hidden md:block"></user-action-btn>
         </div>
-        <user-action-btn region="body"></user-action-btn>
-    </div>
-    <div class="grow h-full">
-        <img src="assets/hero_images/at_the_office_amico.svg" class="size-full object-contain"/>
-    </div>
-
-</main>
+        <div class="md:grow md:h-full flex items-center justify-center w-full md:w-auto">
+            <img src="assets/hero_images/at_the_office_amico.svg"
+                class="w-full h-44 md:h-auto md:w-[85%] object-cover md:object-contain " />
+        </div>
+        <div class="text-center mt-4 md:hidden">
+            <user-action-btn region="body"></user-action-btn>
+        </div>
+    </main>
+    <app-social-links-footer clx="h-10 px-4 hidden lg:flex gap-5 text-base-content/40 -mt-5"></app-social-links-footer>
+</div>

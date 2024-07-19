@@ -8,12 +8,12 @@ import { ContainerComponent } from '@shared/components/container/container.compo
   standalone: true,
   imports: [NavbarComponent, RouterModule, ContainerComponent],
   template: `
-    <base-navbar></base-navbar>
-    <app-container>
-      <router-outlet></router-outlet>
-    </app-container>
-  ` 
+    <div class="h-screen flex flex-col">
+      <base-navbar></base-navbar>
+      <app-container clx="grow">
+        <router-outlet></router-outlet>
+      </app-container>
+    </div>
+  `,
 })
-export class BaseLayoutComponent {
-
-}
+export class BaseLayoutComponent {}
