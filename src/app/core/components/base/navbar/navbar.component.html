@@ -8,22 +8,15 @@
                 <app-side-menu>
                     <li>
                         <a>Pages</a>
-                        <ul>
-                            <li><a routerLink="/" routerLinkActive="bg-base-content/20"
-                                    [routerLinkActiveOptions]="{exact:true}"> Home</a></li>
-                            <li><a routerLink="/features" routerLinkActive="bg-base-content/20"> Features </a></li>
-                        </ul>
+                        <app-route-list [routeList]="routeList" activeRouteClass="bg-base-content/20"> </app-route-list>
                     </li>
                 </app-side-menu>
             </div>
             <app-brand-logo clx="relative left-4 lg:static"></app-brand-logo>
         </div>
         <div class="navbar-center hidden lg:flex">
-            <ul class="menu menu-horizontal px-1 mixin/active:text-secondary mixin/active:font-bold">
-                <li><a routerLink="/" routerLinkActive="mixin/active" [routerLinkActiveOptions]="{exact:true}">Home</a>
-                </li>
-                <li><a routerLink="/features" routerLinkActive="mixin/active">Features</a></li>
-            </ul>
+            <app-route-list [routeList]="routeList" activeRouteClass="mixin/active"
+                clx="menu menu-horizontal px-1 mixin/active:text-secondary mixin/active:font-bold"> </app-route-list>
         </div>
         <div class="navbar-end">
             <app-color-scheme clx="hidden lg:block"></app-color-scheme>

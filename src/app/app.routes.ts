@@ -9,6 +9,10 @@ export const routes: Routes = [
         component: BaseLayoutComponent,
         children: [
             {
+                path: 'home',
+                redirectTo: ''
+            },
+            {
                 path: '',
                 component: HomeComponent,
                 title: 'Home'

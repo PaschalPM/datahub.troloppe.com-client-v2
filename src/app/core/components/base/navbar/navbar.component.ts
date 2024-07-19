@@ -8,6 +8,7 @@ import { SideMenuComponent } from '@shared/components/side-menu/side-menu.compon
 import { MenuService } from '@shared/services/menu.service';
 import { MenuTogglerIconComponent } from '@shared/components/svgs/menu-toggler-icon.component';
 import { MyMatIconComponent } from '@shared/components/my-mat-icon/my-mat-icon.component';
+import { RouteListComponent } from '../../../../shared/components/route-list/route-list.component';
 
 @Component({
   selector: 'base-navbar',
@@ -21,10 +22,19 @@ import { MyMatIconComponent } from '@shared/components/my-mat-icon/my-mat-icon.c
     ContainerComponent,
     SideMenuComponent,
     MenuTogglerIconComponent,
-    MyMatIconComponent
+    MyMatIconComponent,
+    RouteListComponent,
   ],
   templateUrl: './navbar.component.html',
 })
 export class NavbarComponent {
+  // Route List Component has withHomeRoute set to true
+  routeList: RouteType[] = [
+    {
+      title: 'Features',
+      routerLink: '/features',
+    },
+  ];
+  
   constructor(public menuService: MenuService) {}
 }
