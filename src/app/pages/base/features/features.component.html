@@ -1,1 +1,14 @@
-<p>features works!</p>
+<div class="h-full flex items-center justify-center">
+    <app-container>
+        <div class=" w-full mx-auto max-w-5xl py-4 space-y-12 lg:space-y-20">
+            <h2 class="text-2xl text-base-content/85 text-center md:text-left font-semibold">
+                Key Features
+            </h2>
+            <div class="grid  md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-4 justify-center">
+                @for(feature of keyFeatures; track feature.title){
+                <feature-card [featureDetails]="feature"></feature-card>
+                }
+            </div>
+        </div>
+    </app-container>
+</div>
