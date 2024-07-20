@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, HostBinding } from '@angular/core';
+import { routeFadeInOut } from '@shared/animations';
 import { ContainerComponent } from '@shared/components/container/container.component';
 import { FeatureCardComponent } from '@shared/components/feature-card/feature-card.component';
 
@@ -7,6 +8,10 @@ import { FeatureCardComponent } from '@shared/components/feature-card/feature-ca
   standalone: true,
   imports: [ContainerComponent, FeatureCardComponent],
   templateUrl: './features.component.html',
+  animations: [routeFadeInOut],
+  host: {
+    '[@routeFadeInOut]': 'true',
+  },
 })
 export class FeaturesComponent {
   keyFeatures: FeatureDetailsType[] = [

@@ -18,7 +18,7 @@ import { RouterLink } from '@angular/router';
       } } @else { @if (region === 'nav'){
       <a routerLink="/sign-in" class="btn">Sign In</a>
       } @else {
-      <a routerLink="/sign-in" class="btn btn-secondary"> Sign In </a>
+      <a routerLink="/sign-in" class="btn btn-secondary px-8"> Sign In </a>
       } }
     </span>
   `,
@@ -26,5 +26,5 @@ import { RouterLink } from '@angular/router';
 export class UserActionBtnComponent {
   @Input() region: 'nav' | 'body' = 'nav';
   @Input() clx = '';
-  currentUser = true;
+  currentUser = false;
 }

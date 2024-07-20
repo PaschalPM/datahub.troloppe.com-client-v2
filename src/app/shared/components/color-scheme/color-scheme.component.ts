@@ -55,7 +55,7 @@ import { fadeInOut } from '@shared/animations';
       </li>
     </ul>
   `,
-  animations: [fadeInOut()],
+  animations: [fadeInOut],
 })
 export class ColorSchemeComponent {
   @Input() clx = '';

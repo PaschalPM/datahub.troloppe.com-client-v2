@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { menuSlideInOut } from '@shared/animations';
+import { sideMenuTrigger } from '@shared/animations';
 import { MenuService } from '@shared/services/menu.service';
 import { UtilsService } from '@shared/services/utils.service';
 import { BrandLogoComponent } from '../brand-logo/brand-logo.component';
@@ -19,8 +19,14 @@ import { GithubIconComponent } from '../svgs/github-icon.component';
     GithubIconComponent,
 ],
   templateUrl: './side-menu.component.html',
-  animations: [menuSlideInOut()],
+  animations: [sideMenuTrigger],
 })
 export class SideMenuComponent {
   constructor(public menuService: MenuService, public utils: UtilsService) {}
+
+  closeMenu(event: Event) {
+    if (event.currentTarget === event.target) {
+      this.menuService.toggleState();
+    }
+  }
 }

@@ -4,6 +4,7 @@ import { FacebookIconComponent } from '@shared/components/svgs/facebook-icon.com
 import { InstagramIconComponent } from '@shared/components/svgs/instagram-icon.component';
 import { LinkedinIconComponent } from '@shared/components/svgs/linkedin-icon.component';
 import { SocialLinksFooterComponent } from '@shared/components/social-links-footer/social-links-footer.component';
+import { routeFadeInOut } from '@shared/animations';
 
 @Component({
   selector: 'base-home-page',
@@ -16,10 +17,10 @@ import { SocialLinksFooterComponent } from '@shared/components/social-links-foot
     SocialLinksFooterComponent,
   ],
   templateUrl: './home.component.html',
-  styles: `
-    :host {
-      display: contents
-    }
-  `,
+  animations: [routeFadeInOut],
+  host: {
+    '[@routeFadeInOut]': 'true',
+    '[style.display]': 'contents',
+  },
 })
 export class HomeComponent {}
