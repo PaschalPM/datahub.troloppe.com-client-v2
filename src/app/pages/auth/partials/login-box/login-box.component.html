@@ -1,0 +1,17 @@
+<div class="p-5 lg:p-10">
+    <div class="mb-6">
+        <app-brand-logo clx="mb-6 inline-block"></app-brand-logo>
+        <h1 class="mb-1 text-xl font-medium">Sign In</h1>
+        <p class="text-md">to access your dashboard</p>
+    </div>
+
+    <auth-verify-email-stage [loginFormGroup]="loginFormGroup"></auth-verify-email-stage>
+
+
+    <!-- @if (stage === "VERIFY_EMAIL") {
+    <auth-verify-email-stage [(stage)]="stage" [loginFormGroup]="loginFormGroup"></auth-verify-email-stage>
+  
+    } @else if (stage === "LOGIN_STAGE") {
+    <auth-login-stage [(stage)]="stage" [loginFormGroup]="loginFormGroup"></auth-login-stage>
+    } -->
+</div>

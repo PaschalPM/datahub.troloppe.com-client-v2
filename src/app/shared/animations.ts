@@ -49,3 +49,27 @@ export const routeFadeInOut = trigger('routeFadeInOut', [
   ]),
 ]);
 
+export const inputErrorTrigger = trigger('inputErrorTrigger', [
+  transition(':enter', [
+    style({
+      opacity: 0,
+      marginTop: '-10px',
+    }),
+    animate(
+      '150ms',
+      style({
+        opacity: 1,
+        marginTop: '0px',
+      })
+    ),
+  ]),
+  transition(':leave', [
+    animate(
+      '150ms',
+      style({
+        opacity: 0,
+        marginTop: '-10px',
+      })
+    ),
+  ]),
+]);

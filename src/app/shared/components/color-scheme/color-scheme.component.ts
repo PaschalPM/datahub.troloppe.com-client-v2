@@ -31,7 +31,7 @@ import { fadeInOut } from '@shared/animations';
             *ngIf="isMenuOpen"
             appClickOutside
             (clickOutside)="isMenuOpen = false"
-            class="absolute bg-base-200 p-2 mt-1 right-0 top-12"
+            class="absolute bg-base-200 p-2 mt-1 right-0 top-12 z-20"
             @fadeInOut
           >
             @for(color of colorSchemeService.schemes; track color){

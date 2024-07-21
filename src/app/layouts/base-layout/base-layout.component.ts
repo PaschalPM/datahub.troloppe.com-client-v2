@@ -8,7 +8,7 @@ import { ContainerComponent } from '@shared/components/container/container.compo
   standalone: true,
   imports: [NavbarComponent, RouterModule, ContainerComponent],
   template: `
-    <div class="h-screen flex flex-col">
+    <div class="app-layout">
       <base-navbar></base-navbar>
       <app-container clx="grow">
         <router-outlet></router-outlet>
