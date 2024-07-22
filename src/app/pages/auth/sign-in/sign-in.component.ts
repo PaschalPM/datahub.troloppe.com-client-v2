@@ -11,12 +11,12 @@ import { LoginBoxComponent } from '../partials/login-box/login-box.component';
       class="relative z-10 m-auto w-full flex  max-w-[500px] items-center bg-base-100 shadow-light-blue  lg:min-h-[430px] lg:max-w-[845px] lg:shadow-lg "
     >
       <div class="w-full flex items-center">
-        <div class="basis-[55%] grow ml-5">
+        <div class="basis-[55%] grow lg:ml-5">
           <auth-login-box></auth-login-box>
         </div>
         <div class="divider lg:divider-horizontal"></div>
         <div class="hidden basis-[45%] grow lg:flex">
-          <img src="assets/PasswordImage.png" alt="" class="mx-auto" />
+          <img src="assets/PasswordImage.png" alt="PasswordImage" class="mx-auto" />
         </div>
       </div>
     </div>

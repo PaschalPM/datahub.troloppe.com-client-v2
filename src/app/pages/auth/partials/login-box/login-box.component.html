@@ -5,13 +5,10 @@
         <p class="text-md">to access your dashboard</p>
     </div>
 
-    <auth-verify-email-stage [loginFormGroup]="loginFormGroup"></auth-verify-email-stage>
-
-
-    <!-- @if (stage === "VERIFY_EMAIL") {
+    @if (stage === "VERIFY_EMAIL") {
     <auth-verify-email-stage [(stage)]="stage" [loginFormGroup]="loginFormGroup"></auth-verify-email-stage>
-  
+
     } @else if (stage === "LOGIN_STAGE") {
     <auth-login-stage [(stage)]="stage" [loginFormGroup]="loginFormGroup"></auth-login-stage>
-    } -->
+    }
 </div>

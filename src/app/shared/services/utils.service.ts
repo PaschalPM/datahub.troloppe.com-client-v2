@@ -32,4 +32,8 @@ export class UtilsService {
         return { toolTip: 'Auto', matName: 'contrast' };
     }
   }
+
+  truncate(str: string, size: number) {
+    return str.slice(0, size) + '...';
+  }
 }

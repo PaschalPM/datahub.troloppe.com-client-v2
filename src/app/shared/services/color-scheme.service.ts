@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { ClientStorageService } from './client-storage.service';
 import { BehaviorSubject, map, of, Subscription, switchMap, tap } from 'rxjs';
-import { COLOR_SCHEME_KEY } from './constants/localstorage';
+import { COLOR_SCHEME_STORE_KEY } from './constants/localstorage';
 import { MediaQueryService } from './media-query.service';
 import { PREFERS_COLOR_DARK_SCHEME_QUERY } from './constants/media-query';
 import { DOCUMENT } from '@angular/common';
@@ -75,7 +75,7 @@ export class ColorSchemeService {
   }
 
   private setColorScheme(colorScheme: ColorSchemeType | null) {
-    this.css.local().set(COLOR_SCHEME_KEY, colorScheme);
+    this.css.local().set(COLOR_SCHEME_STORE_KEY, colorScheme);
     this.colorScheme$.next(colorScheme);
     return this.getActualColorScheme().pipe(
       tap((value) => {
@@ -85,7 +85,7 @@ export class ColorSchemeService {
   }
 
   private getColorSchemeFromLocalStore() {
-    return this.css.local().get<ColorSchemeType>(COLOR_SCHEME_KEY);
+    return this.css.local().get<ColorSchemeType>(COLOR_SCHEME_STORE_KEY);
   }
 
   private setThemeToDocument(colorScheme: Exclude<ColorSchemeType, 'auto'>) {

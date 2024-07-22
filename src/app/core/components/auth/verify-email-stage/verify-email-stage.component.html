@@ -1,5 +1,5 @@
 <form [formGroup]="loginFormGroup" (ngSubmit)="onEmailVerification()">
-    <app-input-field [formGroup]="loginFormGroup" name="email" type="email" placeholder="Email Address">
+    <app-input-field #emailInputField [formGroup]="loginFormGroup" name="email" type="email" placeholder="Email Address">
     </app-input-field>
     <app-form-submit-btn text="Next" [loading]="loading"></app-form-submit-btn>
 </form>

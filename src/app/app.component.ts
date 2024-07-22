@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { ClientStorageService } from '@shared/services/client-storage.service';
 import { ColorSchemeService } from '@shared/services/color-scheme.service';
 import { Subscription } from 'rxjs';
 
@@ -14,7 +15,7 @@ export class AppComponent {
   title = 'datahub_app_v2';
   colorSchemeSubscription!: Subscription;
 
-  constructor(private colorScheme: ColorSchemeService) {}
+  constructor(private colorScheme: ColorSchemeService, private css: ClientStorageService) {}
 
   ngOnInit(): void {
     this.colorSchemeSubscription = this.colorScheme.init().subscribe();

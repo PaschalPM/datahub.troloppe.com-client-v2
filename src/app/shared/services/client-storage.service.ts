@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 
 class StorageFactory {
-  
   private storage = localStorage;
   constructor(storage: Storage) {
     this.storage = storage;
@@ -38,10 +37,11 @@ class StorageFactory {
   providedIn: 'root',
 })
 export class ClientStorageService {
+
   local() {
     return new StorageFactory(localStorage);
   }
-  session() {
+  session() {    
     return new StorageFactory(sessionStorage);
   }
 }

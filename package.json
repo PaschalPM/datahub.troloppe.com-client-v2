@@ -20,6 +20,7 @@
     "@angular/platform-browser-dynamic": "^17.3.0",
     "@angular/router": "^17.3.0",
     "clsx": "^2.1.1",
+    "ngx-cookie-service": "^18.0.0",
     "rxjs": "~7.8.0",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-mixins": "^0.0.11",
