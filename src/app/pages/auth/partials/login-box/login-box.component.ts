@@ -4,6 +4,8 @@ import { BrandLogoComponent } from '@shared/components/brand-logo/brand-logo.com
 import { InputFieldComponent } from '@shared/components/input-field/input-field.component';
 import { VerifyEmailStageComponent } from '@core/components/auth/verify-email-stage/verify-email-stage.component';
 import { LoginStageComponent } from '@core/components/auth/login-stage/login-stage.component';
+import { ClientStorageService } from '@shared/services/client-storage.service';
+import { EMAIL_FOR_RESET_PASSWORD } from '@shared/services/constants/localstorage';
 
 @Component({
   selector: 'auth-login-box',

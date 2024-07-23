@@ -8,7 +8,7 @@ import { LoginBoxComponent } from '../partials/login-box/login-box.component';
   imports: [LoginBoxComponent],
   template: `
     <div
-      class="relative z-10 m-auto w-full flex  max-w-[500px] items-center bg-base-100 shadow-light-blue  lg:min-h-[430px] lg:max-w-[845px] lg:shadow-lg "
+      class="relative z-10 m-auto w-full flex max-w-[500px] items-center bg-base-100  lg:min-h-[430px] lg:max-w-[845px] lg:shadow-lg "
     >
       <div class="w-full flex items-center">
         <div class="basis-[55%] grow lg:ml-5">
@@ -21,7 +21,7 @@ import { LoginBoxComponent } from '../partials/login-box/login-box.component';
       </div>
     </div>
   `,
-  animations: [routeFadeInOut],
+  animations: [routeFadeInOut('100vh')],
   host: {
     '[@routeFadeInOut]': 'true',
     '[style.display]': 'contents',

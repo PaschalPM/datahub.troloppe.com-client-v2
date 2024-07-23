@@ -35,19 +35,24 @@ export const sideMenuTrigger = trigger('sideMenuTrigger', [
   ]),
 ]);
 
-export const routeFadeInOut = trigger('routeFadeInOut', [
-  transition(':enter', [
-    style({ opacity: 0 }),
-    animate('300ms ease-in', style({ opacity: 1 })),
-  ]),
-  transition(':leave', [
-    style({ opacity: 1, position: 'fixed', width: '100%', height: '86vh' }),
-    animate(
-      '150ms ease-out',
-      style({ opacity: 0, transform: 'translateX(-100%)' })
-    ),
-  ]),
-]);
+export const routeFadeInOut = (height = '86vh') => {
+  return trigger('routeFadeInOut', [
+    transition(':enter', [
+      style({ opacity: 0, transform: 'translateX(-100%)' }),
+      animate(
+        '300ms ease-in',
+        style({ opacity: 1, transform: 'translateX(0%)' })
+      ),
+    ]),
+    transition(':leave', [
+      style({ opacity: 1, position: 'fixed', width: '100%', height }),
+      animate(
+        '150ms ease-out',
+        style({ opacity: 0, transform: 'translateX(-100%)' })
+      ),
+    ]),
+  ]);
+};
 
 export const inputErrorTrigger = trigger('inputErrorTrigger', [
   transition(':enter', [
