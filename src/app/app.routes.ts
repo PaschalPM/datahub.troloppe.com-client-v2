@@ -6,6 +6,9 @@ import { SignInComponent } from '@pages/auth/sign-in/sign-in.component';
 import { ForgetPasswordComponent } from '@pages/auth/forget-password/forget-password.component';
 import { ResetPasswordComponent } from '@pages/auth/reset-password/reset-password.component';
 import { resetPasswordGuard } from '@core/guards/auth/reset-password.guard';
+import { HomeComponent as DashboardHomeComponent } from '@pages/dashboard/home/home.component';
+import { AuthLayoutComponent } from '@layouts/auth-layout/auth-layout.component';
+import { dashboardGuard } from '@core/guards/dashboard.guard';
 
 export const routes: Routes = [
   {
@@ -30,10 +33,7 @@ export const routes: Routes = [
   },
   {
     path: '',
-    loadComponent: () =>
-      import('./layouts/auth-layout/auth-layout.component').then(
-        (c) => c.AuthLayoutComponent
-      ),
+    component: AuthLayoutComponent,
     children: [
       {
         path: 'sign-in',
@@ -47,9 +47,29 @@ export const routes: Routes = [
       },
       {
         path: 'reset-password',
-        // canActivate: [resetPasswordGuard],
+        canActivate: [resetPasswordGuard],
         component: ResetPasswordComponent,
         title: 'Reset Password',
+      },
+    ],
+  },
+  {
+    path: 'dashboard',
+    canActivate: [dashboardGuard],
+    loadComponent: () =>
+      import('./layouts/dashboard-layout/dashboard-layout.component').then(
+        (c) => c.DashboardLayoutComponent
+      ),
+    children: [
+      {
+        path: 'home',
+        redirectTo: '',
+        pathMatch: 'full',
+      },
+      {
+        path: '',
+        component: DashboardHomeComponent,
+        title: 'Home',
       },
     ],
   },

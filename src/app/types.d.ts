@@ -7,6 +7,7 @@ type AuthType = {
   token: string;
 };
 
+type AlertSeverityType = 'success' | 'error'
 
 // Types for Components
 type RouteType = {

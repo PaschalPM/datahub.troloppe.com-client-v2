@@ -78,3 +78,27 @@ export const inputErrorTrigger = trigger('inputErrorTrigger', [
     ),
   ]),
 ]);
+export const alertTrigger = trigger('alertTrigger', [
+  transition(':enter', [
+    style({
+      opacity: 0,
+      transform: 'translateY(-100px)'
+    }),
+    animate(
+      '150ms',
+      style({
+        opacity: 1,
+        transform: 'translateY(0px)'
+      })
+    ),
+  ]),
+  transition(':leave', [
+    animate(
+      '150ms',
+      style({
+        opacity: 0,
+        transform: 'translateY(-100px)'
+      })
+    ),
+  ]),
+]);

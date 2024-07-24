@@ -6,14 +6,13 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { routeFadeInOut } from '@shared/animations';
 import { BrandLogoComponent } from '@shared/components/brand-logo/brand-logo.component';
 import { FormSubmitBtnComponent } from '@shared/components/form-submit-btn/form-submit-btn.component';
 import { InputFieldComponent } from '@shared/components/input-field/input-field.component';
+import { AlertService } from '@shared/services/alert.service';
 import { AuthService } from '@shared/services/auth.service';
-import { ClientStorageService } from '@shared/services/client-storage.service';
-import { EMAIL_FOR_RESET_PASSWORD } from '@shared/services/constants/localstorage';
 import { FormSubmissionService } from '@shared/services/form-submission.service';
 import { matchFields } from '@shared/validators/match-fields';
 import { Subscription } from 'rxjs';
@@ -21,7 +20,12 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-reset-password',
   standalone: true,
-  imports: [ReactiveFormsModule, FormSubmitBtnComponent, InputFieldComponent, BrandLogoComponent],
+  imports: [
+    ReactiveFormsModule,
+    FormSubmitBtnComponent,
+    InputFieldComponent,
+    BrandLogoComponent,
+  ],
   templateUrl: './reset-password.component.html',
   animations: [routeFadeInOut('100vh')],
   host: {
@@ -33,16 +37,14 @@ export class ResetPasswordComponent {
   resetPasswordFormGroup!: FormGroup;
   loading = false;
 
-  private queryParamsSubscription!: Subscription;
   private authResetPasswordSubscription!: Subscription;
 
   constructor(
     private fb: FormBuilder,
-    private css: ClientStorageService,
     private authService: AuthService,
     private router: Router,
-    private activeRoute: ActivatedRoute,
-    private formSubmit: FormSubmissionService
+    private formSubmit: FormSubmissionService,
+    private alertService: AlertService
   ) {
     this.resetPasswordFormGroup = this.fb.group(
       {
@@ -59,19 +61,13 @@ export class ResetPasswordComponent {
   }
 
   ngOnInit(): void {
-    this.queryParamsSubscription = this.activeRoute.queryParams.subscribe(
-      (params) => {
-        const email = this.css.local().get(EMAIL_FOR_RESET_PASSWORD);
-        const token = params['token'];
-        this.resetPasswordFormGroup.get('email')?.setValue(email);
-        this.resetPasswordFormGroup.get('token')?.setValue(token);
-      }
-    );
+    const urlParams = new URLSearchParams(window.location.search);
+    this.resetPasswordFormGroup.get('email')?.setValue(urlParams.get('email') ?? urlParams.get('amp;email'));
+    this.resetPasswordFormGroup.get('token')?.setValue(urlParams.get('token'));
   }
 
   onResetPassword() {
     this.formSubmit.onFormSubmission();
-    console.log(this.resetPasswordFormGroup.value);
 
     if (this.resetPasswordFormGroup.valid) {
       this.loading = true;
@@ -80,13 +76,13 @@ export class ResetPasswordComponent {
         .resetPassword(this.resetPasswordFormGroup.value)
         .subscribe({
           next: (value) => {
-            alert(value.message);
+            this.alertService.success(value.message);
           },
           error: (err: HttpErrorResponse) => {
             if (err.status === 422) {
-              alert('Error: Invalid or expired token');
+              this.alertService.error('Error: Invalid or expired token');
             } else {
-              alert(err.message);
+              this.alertService.error(err.message);
             }
             this.loading = false;
           },
@@ -99,7 +95,6 @@ export class ResetPasswordComponent {
   }
 
   ngOnDestroy(): void {
-    this.queryParamsSubscription.unsubscribe();
-    this.authResetPasswordSubscription.unsubscribe()
+    this.authResetPasswordSubscription.unsubscribe();
   }
 }

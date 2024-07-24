@@ -9,10 +9,9 @@ import { routeFadeInOut } from '@shared/animations';
 import { BrandLogoComponent } from '@shared/components/brand-logo/brand-logo.component';
 import { FormSubmitBtnComponent } from '@shared/components/form-submit-btn/form-submit-btn.component';
 import { InputFieldComponent } from '@shared/components/input-field/input-field.component';
+import { AlertService } from '@shared/services/alert.service';
 import { AuthService } from '@shared/services/auth.service';
 import { CacheService } from '@shared/services/cache.service';
-import { ClientStorageService } from '@shared/services/client-storage.service';
-import { EMAIL_FOR_RESET_PASSWORD } from '@shared/services/constants/localstorage';
 import { FormSubmissionService } from '@shared/services/form-submission.service';
 
 @Component({
@@ -41,7 +40,7 @@ export class ForgetPasswordComponent {
     private fb: FormBuilder,
     private formSubmit: FormSubmissionService,
     private authService: AuthService,
-    private css: ClientStorageService
+    private alertService: AlertService
   ) {
     console.log(this.cache.get('emailForReset'));
     this.forgotPasswordFormGroup = this.fb.group({
@@ -63,12 +62,10 @@ export class ForgetPasswordComponent {
         .forgotPassword(this.forgotPasswordFormGroup.value)
         .subscribe({
           next: (value) => {
-            alert(value.message);
+            this.alertService.success(value.message);
             this.loading = false;
-            this.css.local().set(EMAIL_FOR_RESET_PASSWORD, emailControl?.value)
           },
           error: (err) => {
-            console.error(err.error.message);
             emailControl?.setErrors({
               serverError: {
                 message: err.error.message,
