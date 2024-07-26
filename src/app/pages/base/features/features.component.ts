@@ -8,7 +8,7 @@ import { FeatureCardComponent } from '@shared/components/feature-card/feature-ca
   standalone: true,
   imports: [ContainerComponent, FeatureCardComponent],
   templateUrl: './features.component.html',
-  animations: [routeFadeInOut()],
+  animations: [routeFadeInOut],
   host: {
     '[@routeFadeInOut]': 'true',
   },

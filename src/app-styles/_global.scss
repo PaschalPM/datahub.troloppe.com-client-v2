@@ -1,5 +1,7 @@
+@import './dashboard';
+
 .app-backdrop {
-    @apply bg-neutral/60 fixed inset-0 z-[2] h-screen flex;
+    @apply bg-neutral/60 fixed inset-0 h-screen flex;
 }
 
 .app-layout {

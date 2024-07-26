@@ -16,12 +16,16 @@ import { LoginBoxComponent } from '../partials/login-box/login-box.component';
         </div>
         <div class="divider lg:divider-horizontal"></div>
         <div class="hidden basis-[45%] grow lg:flex">
-          <img src="assets/PasswordImage.png" alt="PasswordImage" class="mx-auto" />
+          <img
+            src="assets/PasswordImage.png"
+            alt="PasswordImage"
+            class="mx-auto"
+          />
         </div>
       </div>
     </div>
   `,
-  animations: [routeFadeInOut('100vh')],
+  animations: [routeFadeInOut],
   host: {
     '[@routeFadeInOut]': 'true',
     '[style.display]': 'contents',

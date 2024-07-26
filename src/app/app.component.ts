@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import {
   NavigationEnd,
   NavigationStart,
@@ -10,11 +10,12 @@ import { Subscription } from 'rxjs';
 import { AlertComponent } from './shared/components/providers/alert/alert.component';
 import { LoaderComponent } from '@shared/components/providers/loader/loader.component';
 import { LoaderService } from '@shared/services/loader.service';
+import { ModalComponent } from "@shared/components/modal/modal.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, AlertComponent, LoaderComponent],
+  imports: [RouterOutlet, AlertComponent, LoaderComponent, ModalComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
@@ -29,8 +30,13 @@ export class AppComponent {
   ) {}
 
   ngOnInit(): void {
-    this.colorSchemeSubscription = this.colorScheme.init().subscribe();
+    this.initColorScheme();
     this.onRouteChangeLoader();
+  }
+
+  @HostListener('window:focus', ['$event'])
+  onWindowFocus() {
+    this.initColorScheme();
   }
 
   ngOnDestroy(): void {
@@ -46,5 +52,9 @@ export class AppComponent {
         this.loader.stop();
       }
     });
+  }
+
+  private initColorScheme() {
+    this.colorSchemeSubscription = this.colorScheme.init().subscribe();
   }
 }

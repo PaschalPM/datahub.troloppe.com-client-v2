@@ -27,7 +27,7 @@ import { Subscription } from 'rxjs';
     BrandLogoComponent,
   ],
   templateUrl: './reset-password.component.html',
-  animations: [routeFadeInOut('100vh')],
+  animations: [routeFadeInOut],
   host: {
     '[@routeFadeInOut]': 'true',
     '[style.display]': 'contents',
@@ -62,7 +62,9 @@ export class ResetPasswordComponent {
 
   ngOnInit(): void {
     const urlParams = new URLSearchParams(window.location.search);
-    this.resetPasswordFormGroup.get('email')?.setValue(urlParams.get('email') ?? urlParams.get('amp;email'));
+    this.resetPasswordFormGroup
+      .get('email')
+      ?.setValue(urlParams.get('email') ?? urlParams.get('amp;email'));
     this.resetPasswordFormGroup.get('token')?.setValue(urlParams.get('token'));
   }
 

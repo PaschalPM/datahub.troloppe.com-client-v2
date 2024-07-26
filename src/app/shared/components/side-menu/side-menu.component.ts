@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { sideMenuTrigger } from '@shared/animations';
 import { MenuService } from '@shared/services/menu.service';
 import { UtilsService } from '@shared/services/utils.service';
@@ -20,8 +20,16 @@ import { GithubIconComponent } from '../svgs/github-icon.component';
 ],
   templateUrl: './side-menu.component.html',
   animations: [sideMenuTrigger],
+  styles: `
+    :host {
+      display: contents
+    }
+  `
 })
 export class SideMenuComponent {
+  @Input() forLargeDashboard = false
+  @Input() clx = ''
+
   constructor(public menuService: MenuService, public utils: UtilsService) {}
 
   closeMenu(event: Event) {

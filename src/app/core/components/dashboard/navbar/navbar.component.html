@@ -1,0 +1,42 @@
+<div [class]="utils.cn('bg-base-200', clx)">
+    <app-container clx="navbar pr-6">
+        <div class="navbar-start">
+            <div class="dropdown">
+                <div tabindex="0" role="button" class="btn btn-ghost" (click)="toggleMenu()">
+                    <menu-toggler-icon></menu-toggler-icon>
+                </div>
+                <app-side-menu clx="lg:hidden">
+                    <app-route-list [routeList]="primaryRouteList" activeRouteClass="bg-base-content/20"
+                        [withHomeRoute]="false"> </app-route-list>
+                    <div class="divider"></div>
+                    <app-route-list [routeList]="secondaryRouteList" activeRouteClass="bg-base-content/20"
+                        [withHomeRoute]="false"> </app-route-list>
+                </app-side-menu>
+            </div>
+            <h3 class="inline font-semibold">{{ title }}</h3>
+        </div>
+        <div class="navbar-end">
+            <button routerLink="/dashboard/notifications">
+                <div class="indicator">
+                    <span class="indicator-item badge badge-secondary">99+</span>
+                    <button class="btn">
+                        <my-mat-icon> notifications </my-mat-icon>
+                    </button>
+                </div>
+            </button>
+            <button id="profile-dropdown-toggler" class="btn inline-flex items-center"
+                (click)="toggleProfileDropdown()">
+                <span class="lg:hidden">
+                    <my-mat-icon> person </my-mat-icon>
+                </span>
+                <div class="hidden items-center lg:flex font-medium tracking-wider">
+                    <span> {{ (currentUser$ | async)?.name | titlecase}} </span>
+                    <my-mat-icon> keyboard_arrow_down </my-mat-icon>
+                </div>
+            </button>
+        </div>
+
+    </app-container>
+</div>
+<dashboard-profile-dropdown *ngIf="isProfileDropdownOpen" (isProfileDropdownOpenChange)="isProfileDropdownOpen = false">
+</dashboard-profile-dropdown>

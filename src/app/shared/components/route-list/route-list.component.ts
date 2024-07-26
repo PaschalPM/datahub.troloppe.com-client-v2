@@ -10,7 +10,7 @@ import { RouterModule } from '@angular/router';
       @if(withHomeRoute) {
       <li>
         <a
-          routerLink="/"
+          [routerLink]="forDashboard ? '/dashboard' : '/'"
           [routerLinkActive]="activeRouteClass"
           [routerLinkActiveOptions]="{ exact: true }"
         >
@@ -32,11 +32,12 @@ import { RouterModule } from '@angular/router';
     :host {
       display: contents
     }
-  `
+  `,
 })
 export class RouteListComponent {
   @Input({ required: true }) routeList!: RouteType[];
   @Input({ required: true }) activeRouteClass!: string;
   @Input() withHomeRoute = true;
+  @Input() forDashboard = false;
   @Input() clx = '';
 }

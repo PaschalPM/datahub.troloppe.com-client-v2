@@ -1,0 +1,17 @@
+<div @fadeInOut appClickOutside (clickOutside)="closeProfileDropdown()" #profileDropdown
+    class="fixed right-0 top-14 z-50 flex w-56 flex-col rounded-md bg-base-300 shadow-md ">
+    <div class="flex flex-col items-center justify-center space-y-0.5 p-4">
+        <img src="assets/OnIcon.png" alt="on-icon" width="25px" height="25px" />
+        <h2 class=" font-bold tracking-wider md:font-normal ">
+            {{ name | titlecase }}
+        </h2>
+        <small class="">({{ firstRole | titlecase }}) </small>
+        <button class="btn btn-sm btn-secondary btn-outline">My Profile</button>
+    </div>
+    <button (click)="signOut()" class="text-error p-2 py-4 px-4 text-left text-sm font-medium flex gap-2">
+        <my-mat-icon>logout</my-mat-icon>
+        <span>
+            Logout
+        </span>
+    </button>
+</div>

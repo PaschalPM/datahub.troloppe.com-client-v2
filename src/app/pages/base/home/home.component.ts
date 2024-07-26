@@ -17,7 +17,7 @@ import { routeFadeInOut } from '@shared/animations';
     SocialLinksFooterComponent,
   ],
   templateUrl: './home.component.html',
-  animations: [routeFadeInOut()],
+  animations: [routeFadeInOut],
   host: {
     '[@routeFadeInOut]': 'true',
     '[style.display]': 'contents',

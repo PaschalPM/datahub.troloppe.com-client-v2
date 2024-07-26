@@ -24,7 +24,7 @@ import { FormSubmissionService } from '@shared/services/form-submission.service'
     FormSubmitBtnComponent,
   ],
   templateUrl: './forget-password.component.html',
-  animations: [routeFadeInOut('100vh')],
+  animations: [routeFadeInOut],
   host: {
     '[@routeFadeInOut]': 'true',
     '[style.display]': 'contents',
@@ -42,7 +42,6 @@ export class ForgetPasswordComponent {
     private authService: AuthService,
     private alertService: AlertService
   ) {
-    console.log(this.cache.get('emailForReset'));
     this.forgotPasswordFormGroup = this.fb.group({
       email: [
         this.cache.get('emailForReset'),

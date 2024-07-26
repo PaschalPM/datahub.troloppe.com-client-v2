@@ -1,16 +1,28 @@
-<div *ngIf="menuService.isOpen() | async" @sideMenuTrigger class="app-backdrop" (click)="closeMenu($event)">
-    <aside id="menu-bar" tabindex="0" *ngIf="menuService.isOpen() | async"
-        class="menu fixed inset-0 bg-base-300 z-[10] w-80 p-2 shadow text-base">
+@if(!forLargeDashboard && (menuService.isOpen() | async)){
+<div @sideMenuTrigger [class]="utils.cn('app-backdrop', clx)" (click)="closeMenu($event)">
+    <ng-container *ngTemplateOutlet="sideMenu"></ng-container>
+</div>
+}
+@if(forLargeDashboard){
+<ng-container *ngTemplateOutlet="sideMenu"></ng-container>
+}
+
+<ng-template #sideMenu>
+    <aside id="menu-bar" tabindex="0"
+        [class]="utils.cn('menu  bg-base-300 z-10 p-2 shadow text-base', {'w-72 fixed inset-0': !forLargeDashboard, 'sidenav': forLargeDashboard})">
         <ul class="flex flex-col h-screen font-medium text-sm">
             <app-brand-logo clx="m-4 mt-2 mb-8 block"></app-brand-logo>
             <ng-content></ng-content>
-            <div class="divider "></div>
+            <div class="divider"></div>
             <app-color-scheme-side-menu></app-color-scheme-side-menu>
 
             <div class="divider mt-auto"></div>
-            <li><a href="https://github.com/PaschalPM/datahub.troloppe.com-client-v2"
-                    target="_blank"><github-icon></github-icon> GitHub</a>
+            <li>
+                <a href="https://github.com/PaschalPM/datahub.troloppe.com-client-v2"
+                    target="_blank"><github-icon></github-icon>
+                    GitHub
+                </a>
             </li>
         </ul>
     </aside>
-</div>
+</ng-template>
