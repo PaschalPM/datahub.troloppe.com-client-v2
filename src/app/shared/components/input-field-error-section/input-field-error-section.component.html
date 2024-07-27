@@ -1,0 +1,17 @@
+<div class="text-error text-sm mt-1" *ngIf="formIsSubmitting && control.errors" @inputErrorTrigger>
+    <div *ngIf="control.hasError('required')">
+        {{ name | capitalize }} field is required.
+    </div>
+    <div *ngIf="control.hasError('email')">
+        Please enter a valid email address.
+    </div>
+    <div *ngIf="control.hasError('minlength')">
+        {{ name | capitalize }} must be at least 8 characters long.
+    </div>
+    <div *ngIf="control.hasError('serverError')">
+        {{ control.getError('serverError').message }}
+    </div>
+    <div *ngIf="control.hasError('mismatch')">
+        {{ control.getError('mismatch').message }}
+    </div>
+</div>

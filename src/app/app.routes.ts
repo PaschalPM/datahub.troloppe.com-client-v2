@@ -9,7 +9,7 @@ import { resetPasswordGuard } from '@core/guards/auth/reset-password.guard';
 import { HomeComponent as DashboardHomeComponent } from '@pages/dashboard/home/home.component';
 import { AuthLayoutComponent } from '@layouts/auth-layout/auth-layout.component';
 import { dashboardGuard } from '@core/guards/dashboard.guard';
-import { IndexComponent as StreetDataIndexComponent} from '@pages/dashboard/street-data/index/index.component';
+import { IndexComponent as StreetDataIndexComponent } from '@pages/dashboard/street-data/index/index.component';
 import { NotificationsComponent } from '@pages/dashboard/notifications/notifications.component';
 
 export const routes: Routes = [
@@ -57,7 +57,7 @@ export const routes: Routes = [
   },
   {
     path: 'dashboard',
-    // canActivate: [dashboardGuard],
+    canActivate: [dashboardGuard],
     loadComponent: () =>
       import('./layouts/dashboard-layout/dashboard-layout.component').then(
         (c) => c.DashboardLayoutComponent

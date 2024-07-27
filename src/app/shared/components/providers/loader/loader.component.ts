@@ -8,12 +8,11 @@ import { Subscription } from 'rxjs';
   standalone: true,
   imports: [LoaderC],
   template: `
-    <div class="app-provider">
-      @if(isOpen) {
-
+    @if(isOpen) {
+    <div class="z-50">
       <app-loader [text]="text"></app-loader>
-      }
     </div>
+    }
   `,
 })
 export class LoaderComponent {

@@ -1,10 +1,10 @@
-import { Component, ComponentRef, Input, ViewChild } from '@angular/core';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { InputFieldComponent } from '@shared/components/input-field/input-field.component';
+import { Component, ViewChild } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { InputFieldComponent } from '../input-field/input-field.component';
 import { FormSubmissionService } from '@shared/services/form-submission.service';
 import { FormSubmitBtnComponent } from '../../../../shared/components/form-submit-btn/form-submit-btn.component';
 import { AuthService } from '@shared/services/auth.service';
-import { EmailVerificationAndLoginHelper } from '@core/classes/email-verification-and-login-helper';
+import { EmailVerificationAndLoginHelper } from '@core/helper-components/email-verification-and-login-helper';
 
 @Component({
   selector: 'auth-verify-email-stage',

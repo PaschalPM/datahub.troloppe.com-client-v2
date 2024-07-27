@@ -6,7 +6,7 @@
             {{ name | titlecase }}
         </h2>
         <small class="">({{ firstRole | titlecase }}) </small>
-        <button class="btn btn-sm btn-secondary btn-outline">My Profile</button>
+        <button class="btn btn-sm btn-secondary btn-outline" (click)="openProfileModal()">My Profile</button>
     </div>
     <button (click)="signOut()" class="text-error p-2 py-4 px-4 text-left text-sm font-medium flex gap-2">
         <my-mat-icon>logout</my-mat-icon>

@@ -32,8 +32,9 @@ export class DashboardLayoutComponent {
   primaryRouteList: RouteType[] = dashboardRouteLists.primary;
   secondaryRouteList: RouteType[] = dashboardRouteLists.secondary;
 
-
   private routerSubscription!: Subscription;
+  private menuIsOpenSubscription!: Subscription;
+
   constructor(
     public utils: UtilsService,
     private pageTitle: Title,
@@ -43,7 +44,7 @@ export class DashboardLayoutComponent {
 
   ngOnInit(): void {
     this.setDashboardTitle();
-    this.menuService.isOpen().subscribe((value) => {
+    this.menuIsOpenSubscription = this.menuService.isOpen().subscribe((value) => {
       this.isMenuOpen = value;
     });
   }
@@ -63,5 +64,6 @@ export class DashboardLayoutComponent {
 
   ngOnDestroy(): void {
     this.routerSubscription.unsubscribe();
+    this.menuIsOpenSubscription.unsubscribe();
   }
 }

@@ -8,7 +8,7 @@ export class BaseModalService {
   protected modalTemplate!: Type<any> | null;
   protected imageModalTemplate!: Type<any> | null;
   protected modalInputs!: InputsType;
-  
+   
   private modalEventEmitter = new EventEmitter();
   private imageModalEventEmitter = new EventEmitter();
 

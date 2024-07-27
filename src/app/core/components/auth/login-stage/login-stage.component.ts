@@ -1,8 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { EmailVerificationAndLoginHelper } from '@core/classes/email-verification-and-login-helper';
 import { LoginEmailChangerComponent } from '../login-email-changer/login-email-changer.component';
-import { InputFieldComponent } from '@shared/components/input-field/input-field.component';
+import { EmailVerificationAndLoginHelper } from '@core/helper-components/email-verification-and-login-helper';
+import { InputFieldComponent } from '../input-field/input-field.component';
 import { FormSubmitBtnComponent } from '@shared/components/form-submit-btn/form-submit-btn.component';
 import { FormSubmissionService } from '@shared/services/form-submission.service';
 import { AuthService } from '@shared/services/auth.service';

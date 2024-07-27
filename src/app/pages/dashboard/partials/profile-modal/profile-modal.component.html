@@ -1,1 +1,17 @@
-<p>profile-modal works!</p>
+<div class="flex items-center justify-between dark:text-white">
+  <h1 class="mb-4 text-xl font-medium text-base-content">
+    My Profile
+  </h1>
+</div>
+<div>
+  <form [formGroup]="profileFormGroup" (ngSubmit)="onSubmit()">
+    <app-input-field label="Your name" name="name" [formGroup]="profileFormGroup"></app-input-field>
+    <app-input-field label="Your email" name="email" type="email" [formGroup]="profileFormGroup"></app-input-field>
+    <app-input-field label="Your role" name="role" [formGroup]="profileFormGroup"></app-input-field>
+    <app-input-field label="New Password" name="newPassword" type="password"
+      [formGroup]="profileFormGroup"></app-input-field>
+    <div class="flex justify-end my-2">
+      <text-button text="update" type="submit"></text-button>
+    </div>
+  </form>
+</div>

@@ -1,9 +1,19 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Type } from '@angular/core';
+import { BaseModalService } from '@core/services/dashboard/base-modal.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ModalService {
+  constructor(private baseModalService: BaseModalService) {}
 
-  constructor() { }
+  open(template: Type<any>, inputs: InputsType = undefined) {
+    this.baseModalService.openModal(template, inputs);
+  }
+  close() {
+    this.baseModalService.closeModal();
+  }
+  listen(cb: (template: Type<any>, inputs: InputsType) => void) {
+    this.baseModalService.listenToModal(cb);
+  }
 }

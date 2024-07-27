@@ -1,54 +1,30 @@
 <div [class]="clx">
-    <!------------------------------------ INPUT FIELDS ----------------------------->
-    @if(type === 'password')
-    {
-    <div class="relative">
-        <input #passwordInputElement [formControl]="control" [type]="displayPassword ? 'text': 'password'"
-            (input)="formIsSubmitting=false" [name]="name" [placeholder]="placeholder" [class]="inputClx" />
-        <span (click)="toggleVisibility()" [class]="pwVisibilityClx">
-            <pw-visibility-icon [show]="displayPassword"></pw-visibility-icon>
-        </span>
-    </div>
-    }
-    @else {
-
-    <input #nonPasswordInputElement [formControl]="control" [type]="type" (input)="formIsSubmitting=false" [name]="name"
-        [placeholder]="placeholder" [class]="inputClx" />
-    }
-    <!------------------------------------ END OF INPUT FIELDS ----------------------------->
-
-
+    <label class="form-control w-full">
+        <div class="label">
+            <span class="label-text"> {{ label }} </span>
+        </div>
+        <!------------------------------------ INPUT FIELDS ----------------------------->
+        @if(type === 'password')
+        {
+        <div class="relative">
+            <input #passwordInputElement [formControl]="control" [type]="displayPassword ? 'text': 'password'"
+                (input)="formIsSubmitting=false" [name]="name" [placeholder]="placeholder" [class]="inputClx" />
+            <span (click)="toggleVisibility()" [class]="pwVisibilityClx">
+                <pw-visibility-icon [show]="displayPassword"></pw-visibility-icon>
+            </span>
+        </div>
+        }
+        @else {
+        <input #nonPasswordInputElement [formControl]="control" [type]="type" [placeholder]="placeholder"
+            [class]="inputClx" (input)="formIsSubmitting=false" />
+        }
+        <!------------------------------------ END OF INPUT FIELDS ----------------------------->
+    </label>
 
 
     <!------------------------------------ ERROR SECTION ---------------------------------------->
-    <div class="text-error text-sm mt-1" *ngIf="formIsSubmitting && control.errors" @inputErrorTrigger>
-        <div *ngIf="control.hasError('required')">
-            {{ name | capitalize }} field is required.
-        </div>
-        <div *ngIf="control.hasError('email')">
-            Please enter a valid email address.
-        </div>
-        <div *ngIf="control.hasError('minlength')">
-            {{ name | capitalize }} must be at least 8 characters long.
-        </div>
-        <div *ngIf="control.hasError('serverError')">
-            {{ control.getError('serverError').message }}
-        </div>
-        <div *ngIf="control.hasError('mismatch')">
-            {{ control.getError('mismatch').message }}
-        </div>
-    </div>
+    <app-input-field-error-section [control]="control" [name]="name"
+        [formIsSubmitting]="formIsSubmitting"></app-input-field-error-section>
     <!------------------------------------ END OF ERROR SECTION ---------------------------------------->
-
-
-    <!-------------------------------------- FORGOT PASSWORD LINK --------------------------------------->
-    <div *ngIf="type === 'password' && forgetPassword" class="text-right">
-        <button type="button" (click)="routeToForgotPassword()"
-            class="cursor-pointer inline-block text-sm font-medium text-info">Forgot
-            Password?
-        </button>
-    </div>
-    <!-------------------------------------- END OF FORGOT PASSWORD LINK --------------------------------------->
-
 
 </div>

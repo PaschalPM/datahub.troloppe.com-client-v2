@@ -1,13 +1,10 @@
-@import './dashboard';
+@import "./dashboard";
 
 .app-backdrop {
-    @apply bg-neutral/60 fixed inset-0 h-screen flex;
+  @apply bg-neutral/60 fixed inset-0 h-screen flex;
 }
 
 .app-layout {
-    @apply h-screen flex flex-col;
+  @apply h-screen flex flex-col;
 }
 
-.app-provider {
-    @apply fixed w-full top-0 z-20;
-}

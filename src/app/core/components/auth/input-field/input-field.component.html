@@ -1,0 +1,36 @@
+<div [class]="clx">
+    <!------------------------------------ INPUT FIELDS ----------------------------->
+    @if(type === 'password')
+    {
+    <div class="relative">
+        <input #passwordInputElement [formControl]="control" [type]="displayPassword ? 'text': 'password'"
+            (input)="formIsSubmitting=false" [name]="name" [placeholder]="placeholder" [class]="inputClx" />
+        <span (click)="toggleVisibility()" [class]="pwVisibilityClx">
+            <pw-visibility-icon [show]="displayPassword"></pw-visibility-icon>
+        </span>
+    </div>
+    }
+    @else {
+
+    <input #nonPasswordInputElement [formControl]="control" [type]="type" (input)="formIsSubmitting=false" [name]="name"
+        [placeholder]="placeholder" [class]="inputClx" />
+    }
+    <!------------------------------------ END OF INPUT FIELDS ----------------------------->
+
+
+    <!------------------------------------ ERROR SECTION ---------------------------------------->
+    <app-input-field-error-section [control]="control" [name]="name" [formIsSubmitting]="formIsSubmitting"></app-input-field-error-section>
+    <!------------------------------------ END OF ERROR SECTION ---------------------------------------->
+
+
+    <!-------------------------------------- FORGOT PASSWORD LINK --------------------------------------->
+    <div *ngIf="type === 'password' && forgetPassword" class="text-right">
+        <button type="button" (click)="routeToForgotPassword()"
+            class="cursor-pointer inline-block text-sm font-medium text-info">Forgot
+            Password?
+        </button>
+    </div>
+    <!-------------------------------------- END OF FORGOT PASSWORD LINK --------------------------------------->
+
+
+</div>

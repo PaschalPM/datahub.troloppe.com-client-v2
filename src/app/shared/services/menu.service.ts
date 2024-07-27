@@ -16,17 +16,21 @@ export class MenuService {
   constructor(private router: Router, private mediaQuery: MediaQueryService) {
     this.mediaQuery.observe(LARGE_SCREEN_SIZE).subscribe((value) => {
       this.isLargeScreen = value;
-      if (location.pathname.startsWith('/dashboard')) {
-        if (this.isLargeScreen) {
+      if (!this.isLargeScreen) {
+        this.isOpenState$.next(false);
+      }
+    });
+
+    this.routerSubscription = this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        if (this.isLargeScreen && location.pathname.startsWith('/dashboard')) {
           this.isOpenState$.next(true);
         } else {
           this.isOpenState$.next(false);
         }
-      }
-    });
-    this.routerSubscription = this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd && !this.isLargeScreen) {
-        this.isOpenState$.next(false);
+        if (!this.isLargeScreen) {
+          this.isOpenState$.next(false);
+        }
       }
     });
   }

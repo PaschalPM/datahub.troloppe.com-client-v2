@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 import { routeFadeInOut } from '@shared/animations';
 import { BrandLogoComponent } from '@shared/components/brand-logo/brand-logo.component';
 import { FormSubmitBtnComponent } from '@shared/components/form-submit-btn/form-submit-btn.component';
-import { InputFieldComponent } from '@shared/components/input-field/input-field.component';
+import { InputFieldComponent } from '@core/components/auth/input-field/input-field.component';
 import { AlertService } from '@shared/services/alert.service';
 import { AuthService } from '@shared/services/auth.service';
 import { FormSubmissionService } from '@shared/services/form-submission.service';

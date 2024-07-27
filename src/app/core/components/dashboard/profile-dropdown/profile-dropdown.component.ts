@@ -7,6 +7,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Router } from '@angular/router';
+import { ProfileModalComponent } from '@pages/dashboard/partials/profile-modal/profile-modal.component';
 import { fadeInOut } from '@shared/animations';
 import { MyMatIconComponent } from '@shared/components/my-mat-icon/my-mat-icon.component';
 import { ClickOutsideDirective } from '@shared/directives/click-outside.directive';
@@ -14,6 +15,7 @@ import { AlertService } from '@shared/services/alert.service';
 import { AuthService } from '@shared/services/auth.service';
 import { ColorSchemeService } from '@shared/services/color-scheme.service';
 import { LoaderService } from '@shared/services/loader.service';
+import { ModalService } from '@shared/services/modal.service';
 import { UtilsService } from '@shared/services/utils.service';
 import { Subscription } from 'rxjs';
 
@@ -38,13 +40,15 @@ export class ProfileDropdownComponent {
     private router: Router,
     private alertService: AlertService,
     private loader: LoaderService,
-    public utils: UtilsService
+    public utils: UtilsService,
+    private modalService: ModalService
   ) {}
-  // openColorSchemeModal() {
-  //   const template = ColorSchemeModalComponent;
-  //   this.modalService.open(template);
-  //   this.closeProfileDropdown();
-  // }
+
+  openProfileModal() {
+    const template = ProfileModalComponent;
+    this.modalService.open(template);
+    this.isProfileDropdownOpenChange.emit(false)
+  }
 
   ngOnInit(): void {
     this.currentUserSubscription = this.authService

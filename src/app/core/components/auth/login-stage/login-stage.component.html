@@ -1,8 +1,8 @@
 <form [formGroup]="loginFormGroup" (ngSubmit)="onLogin()">
     <auth-login-email-changer [control]="emailControl"
         (changeBtnClick)="switchToVerifyEmailStage()"></auth-login-email-changer>
-    <app-input-field #passwordInputField [formGroup]="loginFormGroup" name="password" type="password" clx="my-2" placeholder="Password"
+    <auth-input-field #passwordInputField [formGroup]="loginFormGroup" name="password" type="password" clx="my-2" placeholder="Password"
         [forgetPassword]="true" [emailToResetControl]="emailControl">
-    </app-input-field>
+    </auth-input-field>
     <app-form-submit-btn text="Sign In" [loading]="loading"></app-form-submit-btn>
 </form>

@@ -1,12 +1,15 @@
-<div class="app-backdrop flex items-center justify-center z-50">
-    <div class="mx-2 bg-base-300 max-h-[calc(100vh-40px)] w-[90%] max-w-[600px] overflow-auto rounded-xl  shadow-xl ">
-        <div class="flex !justify-end p-2 shadow z-50">
-            <button class="btn btn-circle btn-ghost hover:bg-base-100">
+@if (template) {
+<div @modalTrigger appKeyupEscape (keyupEscape)="modalService.close()" appClickSelf (clickSelf)="modalService.close()"
+    class="app-backdrop flex items-center justify-center z-50">
+    <div id="modal-container"
+        class="relative mx-2 bg-base-300 max-h-[calc(100vh-40px)] w-[90%] max-w-[600px] overflow-auto rounded-xl  shadow-xl ">
+            <button class="btn btn-circle btn-ghost hover:bg-base-200 absolute top-2 right-2" (click)="modalService.close()">
                 <my-mat-icon> close </my-mat-icon>
             </button>
-        </div>
-        <div class="px-6 py-4 md:px-12 md:py-8">
+       
+        <div class="px-6 py-4 md:px-12 mt-8">
             <ng-container *ngComponentOutlet="template; inputs: inputs"></ng-container>
         </div>
     </div>
 </div>
+}

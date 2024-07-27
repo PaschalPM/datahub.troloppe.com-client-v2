@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BrandLogoComponent } from '@shared/components/brand-logo/brand-logo.component';
-import { InputFieldComponent } from '@shared/components/input-field/input-field.component';
 import { VerifyEmailStageComponent } from '@core/components/auth/verify-email-stage/verify-email-stage.component';
 import { LoginStageComponent } from '@core/components/auth/login-stage/login-stage.component';
 import { CacheService } from '@shared/services/cache.service';
@@ -11,7 +10,6 @@ import { CacheService } from '@shared/services/cache.service';
   standalone: true,
   imports: [
     BrandLogoComponent,
-    InputFieldComponent,
     VerifyEmailStageComponent,
     LoginStageComponent,
   ],

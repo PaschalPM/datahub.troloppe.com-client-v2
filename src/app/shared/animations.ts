@@ -69,6 +69,7 @@ export const inputErrorTrigger = trigger('inputErrorTrigger', [
     ),
   ]),
 ]);
+
 export const alertTrigger = trigger('alertTrigger', [
   transition(':enter', [
     style({
@@ -91,5 +92,22 @@ export const alertTrigger = trigger('alertTrigger', [
         transform: 'translateY(-100px)',
       })
     ),
+  ]),
+]);
+
+export const modalTrigger = trigger('modalTrigger', [
+  transition(':enter', [
+    query('#modal-container', [style({ transform: 'scale(0%)' })]),
+    group([
+      style({ opacity: 0 }),
+      animate('300ms', style({ opacity: 1 })),
+      query('#modal-container', [animate('350ms 100ms')]),
+    ]),
+  ]),
+  transition(':leave', [
+    query('#modal-container', [
+      animate('150ms', style({ transform: 'scale(0%)' })),
+    ]),
+    animate('150ms', style({ opacity: 0 })),
   ]),
 ]);
