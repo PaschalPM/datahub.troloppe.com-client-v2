@@ -1,5 +1,5 @@
 @if(!forLargeDashboard && (menuService.isOpen() | async)){
-<div @sideMenuTrigger [class]="utils.cn('app-backdrop', clx)" (click)="closeMenu($event)">
+<div @sideMenuTrigger [class]="utils.cn('app-backdrop z-10', clx)" (click)="closeMenu($event)">
     <ng-container *ngTemplateOutlet="sideMenu"></ng-container>
 </div>
 }

@@ -1,1 +1,38 @@
-<p>notifications works!</p>
+<div @routeFadeInOut class="divider-y relative container mx-auto max-w-[800px] px-2 py-4 bg-base-300">
+    <button *ngIf="ns.count$ | async" (click)="deleteAll()" class="text-error absolute top-9 right-9"
+        title="Delete all notifications">
+        <my-mat-icon>delete</my-mat-icon>
+    </button>
+    <pane-navigator-panel [(activePane)]="activePane" [tabs]="tabs"> </pane-navigator-panel>
+
+    <div class="divide-y divide-base-100" [@notificationTrigger]="activePane">
+        @if(activeNotifications){
+        @if(activeNotifications.length){
+        @for (item of activeNotifications; track item.id) {
+        <div>
+            <dashboard-notification-item [notification]="item"
+                (markAsReadChange)="markAsRead($event)"></dashboard-notification-item>
+        </div>
+        }
+        }
+        @else {
+        <div class="empty-state"> {{ noNotificationText }}</div>
+        }
+        }
+        @else {
+        @if(error){
+
+        <div class="empty-state">
+            {{ error }}
+        </div>
+        }
+        @else {
+
+        <div class="empty-state">
+            <span class="loading loading-spinner text-base-content"></span>
+        </div>
+        }
+        }
+
+    </div>
+</div>

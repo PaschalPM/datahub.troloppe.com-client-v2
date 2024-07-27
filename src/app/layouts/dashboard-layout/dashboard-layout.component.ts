@@ -9,6 +9,7 @@ import { Subscription } from 'rxjs';
 import { RouteListComponent } from '../../shared/components/route-list/route-list.component';
 import { MenuService } from '@shared/services/menu.service';
 import { dashboardRouteLists } from '@shared/services/constants/route-lists';
+import { NotificationsService } from '@core/services/dashboard/notifications.service';
 
 @Component({
   selector: 'app-dashboard-layout',
@@ -25,7 +26,7 @@ import { dashboardRouteLists } from '@shared/services/constants/route-lists';
 export class DashboardLayoutComponent {
   @HostBinding('class.dashboard-menu-open')
   isMenuOpen = false;
-
+  notificationCount = 0
   title = 'Home';
 
   // Route List Component has withHomeRoute set to false
@@ -34,18 +35,30 @@ export class DashboardLayoutComponent {
 
   private routerSubscription!: Subscription;
   private menuIsOpenSubscription!: Subscription;
+  private getNotificationsSubscription!: Subscription;
+  private unreadCountSubscription!: Subscription;
 
   constructor(
     public utils: UtilsService,
     private pageTitle: Title,
     private router: Router,
-    private menuService: MenuService
-  ) {}
+    private menuService: MenuService,
+    private ns: NotificationsService
+  ) {
+  }
 
   ngOnInit(): void {
     this.setDashboardTitle();
     this.menuIsOpenSubscription = this.menuService.isOpen().subscribe((value) => {
       this.isMenuOpen = value;
+    });
+    this.getNotificationsSubscription = this.ns.getNotifications().subscribe()
+    this.unreadCountSubscription = this.ns.unreadCount$.subscribe((value) => {
+      if (value > 0) {
+        this.secondaryRouteList[0].title = `Notifications (${value})`;
+      } else {
+        this.secondaryRouteList[0].title = `Notifications`;
+      }
     });
   }
 
@@ -65,5 +78,7 @@ export class DashboardLayoutComponent {
   ngOnDestroy(): void {
     this.routerSubscription.unsubscribe();
     this.menuIsOpenSubscription.unsubscribe();
+    this.getNotificationsSubscription.unsubscribe()
+    this.unreadCountSubscription.unsubscribe()
   }
 }

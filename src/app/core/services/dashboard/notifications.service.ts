@@ -1,16 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  BehaviorSubject,
-  catchError,
-  interval,
-  map,
-  Observable,
-  of,
-  startWith,
-  switchMap,
-  tap,
-  throwError,
-} from 'rxjs';
+import { BehaviorSubject, catchError, map, of, tap, throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { apiUrlFactory } from 'app/configs/global';
 import { LoaderService } from '@shared/services/loader.service';
@@ -29,12 +18,24 @@ export class NotificationsService {
     return this.notificationsObservable.asObservable();
   }
 
-  get unreadCount$() {
+  get unreadNotifications$() {
     return this.notificationsObservable
       .asObservable()
       .pipe(
         map((notifications) =>
-          this.getUnreadCount(notifications as NotificationType[])
+          notifications
+            ? this.getUnreadNotifications(notifications as NotificationType[])
+            : undefined
+        )
+      );
+  }
+
+  get unreadCount$() {
+    return this.notificationsObservable
+      .asObservable()
+      .pipe(
+        map((notifications) => notifications ? 
+          this.getUnreadCount(notifications as NotificationType[]) : 0
         )
       );
   }
@@ -42,7 +43,7 @@ export class NotificationsService {
   get count$() {
     return this.notificationsObservable
       .asObservable()
-      .pipe(map((notifications) => notifications?.length));
+      .pipe(map((notifications) => notifications ? notifications?.length : 0));
   }
 
   getNotifications() {
@@ -51,23 +52,17 @@ export class NotificationsService {
       .pipe(
         catchError((err: HttpErrorResponse) => {
           if (err.status === 401) {
-            return of([])
+            return of([]);
           }
-          return throwError(() => err)
+          return throwError(() => err);
         }),
         tap({
           next: (value) => {
+            console.log(value)
             this.notificationsObservable.next(value);
-          }
+          },
         })
       );
-  }
-
-  pollNotifications(): Observable<NotificationType[]> {
-    return interval(1000 * 60 * 10).pipe(
-      startWith(0),
-      switchMap(() => this.getNotifications())
-    );
   }
 
   updateNotification(notification: NotificationType) {
@@ -112,7 +107,11 @@ export class NotificationsService {
       );
   }
 
+  private getUnreadNotifications(notifications: NotificationType[]) {
+    return notifications?.filter((value) => !value.is_read);
+  }
+
   private getUnreadCount(notifications: NotificationType[]) {
-    return notifications?.filter((value) => !value.is_read).length;
+    return this.getUnreadNotifications(notifications).length;
   }
 }

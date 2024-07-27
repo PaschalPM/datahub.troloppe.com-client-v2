@@ -18,7 +18,9 @@
         <div class="navbar-end">
             <button routerLink="/dashboard/notifications">
                 <div class="indicator">
-                    <span class="indicator-item badge badge-secondary">99+</span>
+                    @if(ns.unreadCount$ | async){
+                        <span class="indicator-item badge badge-secondary"> {{ ns.unreadCount$ | async }}</span>
+                    }
                     <button class="btn">
                         <my-mat-icon> notifications </my-mat-icon>
                     </button>

@@ -2,6 +2,7 @@ import {
   animate,
   group,
   query,
+  state,
   style,
   transition,
   trigger,
@@ -109,5 +110,28 @@ export const modalTrigger = trigger('modalTrigger', [
       animate('150ms', style({ transform: 'scale(0%)' })),
     ]),
     animate('150ms', style({ opacity: 0 })),
+  ]),
+]);
+
+export const notificationTrigger = trigger('notificationTrigger', [
+  state(
+    'all',
+    style({
+      opacity: 1,
+    })
+  ),
+  state(
+    'unread',
+    style({
+      opacity: 1,
+    })
+  ),
+  transition('all => unread', [
+    style({ opacity: 0 }),
+    animate('500ms ease-in', style({ opacity: 1 })),
+  ]),
+  transition('unread => all', [
+    style({ opacity: 0 }),
+    animate('500ms ease-in', style({ opacity: 1 })),
   ]),
 ]);
