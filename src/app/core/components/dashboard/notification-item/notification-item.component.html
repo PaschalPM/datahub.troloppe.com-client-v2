@@ -20,7 +20,7 @@
         <text-button (clickEvent)="markAsRead(notification)" text="Mark as read" [small]="true"
             class="hidden md:inline"></text-button>
         <dashboard-mini-drawer [(showMiniDrawer)]="showMiniDrawer">
-            <button (click)="markAsRead(notification)">Mark as read</button>
+            <button class="btn btn-ghost btn-sm" (click)="markAsRead(notification)">Mark as read</button>
         </dashboard-mini-drawer>
     </div>
 </div>

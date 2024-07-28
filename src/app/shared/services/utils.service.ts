@@ -36,4 +36,12 @@ export class UtilsService {
   truncate(str: string, size: number) {
     return str.slice(0, size) + '...';
   }
+
+  getInitialOfUser(username: string) {
+    if (username.includes('.')) {
+      username = username.replace(' ', '').match(/(?<=\.)\w*/g)?.[0] as string;
+    }
+
+    return username.match(/^./g)?.[0].toUpperCase();
+  }
 }

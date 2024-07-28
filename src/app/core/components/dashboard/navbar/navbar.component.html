@@ -7,7 +7,7 @@
                 </div>
                 <app-side-menu clx="lg:hidden">
                     <app-route-list [routeList]="primaryRouteList" activeRouteClass="bg-base-content/20"
-                        [withHomeRoute]="false"> </app-route-list>
+                        [withHomeRoute]="true" [forDashboard]="true"> </app-route-list>
                     <div class="divider"></div>
                     <app-route-list [routeList]="secondaryRouteList" activeRouteClass="bg-base-content/20"
                         [withHomeRoute]="false"> </app-route-list>
@@ -19,7 +19,7 @@
             <button routerLink="/dashboard/notifications">
                 <div class="indicator">
                     @if(ns.unreadCount$ | async){
-                        <span class="indicator-item badge badge-secondary"> {{ ns.unreadCount$ | async }}</span>
+                    <span class="indicator-item badge badge-secondary"> {{ ns.unreadCount$ | async }}</span>
                     }
                     <button class="btn">
                         <my-mat-icon> notifications </my-mat-icon>

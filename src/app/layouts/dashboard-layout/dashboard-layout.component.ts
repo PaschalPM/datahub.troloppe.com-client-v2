@@ -1,4 +1,4 @@
-import { Component, HostBinding } from '@angular/core';
+import { Component, HostBinding, HostListener } from '@angular/core';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { SideMenuComponent } from '@shared/components/side-menu/side-menu.component';
 import { ContainerComponent } from '@shared/components/container/container.component';
@@ -10,6 +10,9 @@ import { RouteListComponent } from '../../shared/components/route-list/route-lis
 import { MenuService } from '@shared/services/menu.service';
 import { dashboardRouteLists } from '@shared/services/constants/route-lists';
 import { NotificationsService } from '@core/services/dashboard/notifications.service';
+import { MediaQueryService } from '@shared/services/media-query.service';
+import { LARGE_SCREEN_SIZE } from '@shared/services/constants/media-query';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-dashboard-layout',
@@ -20,18 +23,26 @@ import { NotificationsService } from '@core/services/dashboard/notifications.ser
     ContainerComponent,
     NavbarComponent,
     RouteListComponent,
+    AsyncPipe
   ],
   templateUrl: './dashboard-layout.component.html',
 })
 export class DashboardLayoutComponent {
   @HostBinding('class.dashboard-menu-open')
   isMenuOpen = false;
-  notificationCount = 0
+  notificationCount = 0;
   title = 'Home';
+
+  LARGE_SCREEN_SIZE = LARGE_SCREEN_SIZE
 
   // Route List Component has withHomeRoute set to false
   primaryRouteList: RouteType[] = dashboardRouteLists.primary;
   secondaryRouteList: RouteType[] = dashboardRouteLists.secondary;
+
+  @HostListener('window:focus', ['$event'])
+  onWindowFocus() {
+    this.getNotificationsSubscription = this.ns.getNotifications().subscribe();
+  }
 
   private routerSubscription!: Subscription;
   private menuIsOpenSubscription!: Subscription;
@@ -43,16 +54,18 @@ export class DashboardLayoutComponent {
     private pageTitle: Title,
     private router: Router,
     private menuService: MenuService,
-    private ns: NotificationsService
-  ) {
-  }
+    private ns: NotificationsService, 
+    public mediaQuery: MediaQueryService
+  ) {}
 
   ngOnInit(): void {
     this.setDashboardTitle();
-    this.menuIsOpenSubscription = this.menuService.isOpen().subscribe((value) => {
-      this.isMenuOpen = value;
-    });
-    this.getNotificationsSubscription = this.ns.getNotifications().subscribe()
+    this.menuIsOpenSubscription = this.menuService
+      .isOpen()
+      .subscribe((value) => {
+        this.isMenuOpen = value;
+      });
+    this.getNotificationsSubscription = this.ns.getNotifications().subscribe();
     this.unreadCountSubscription = this.ns.unreadCount$.subscribe((value) => {
       if (value > 0) {
         this.secondaryRouteList[0].title = `Notifications (${value})`;
@@ -78,7 +91,7 @@ export class DashboardLayoutComponent {
   ngOnDestroy(): void {
     this.routerSubscription.unsubscribe();
     this.menuIsOpenSubscription.unsubscribe();
-    this.getNotificationsSubscription.unsubscribe()
-    this.unreadCountSubscription.unsubscribe()
+    this.getNotificationsSubscription.unsubscribe();
+    this.unreadCountSubscription.unsubscribe();
   }
 }

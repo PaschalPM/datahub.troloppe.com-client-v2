@@ -1,29 +1,34 @@
 <!-- MOBILE VIEW -->
-<div class="lg:hidden">
-    <div class="app-layout">
-        <dashboard-navbar title="Home"></dashboard-navbar>
-        <app-container clx="grow p-2 lg:hidden">
-            <router-outlet></router-outlet>
-        </app-container>
-
-    </div>
-</div>
-
+@if(mediaQuery.observe(LARGE_SCREEN_SIZE) | async )
+{
 <!-- DESKTOP VIEW -->
 <div class="hidden lg:block">
     <div class="dashboard">
-        <app-side-menu [forLargeDashboard]="true" >
-            <app-route-list [routeList]="primaryRouteList" activeRouteClass="bg-base-content/20"
-                [withHomeRoute]="true" [forDashboard]="true"> </app-route-list>
+        <app-side-menu [forLargeDashboard]="true">
+            <app-route-list [routeList]="primaryRouteList" activeRouteClass="bg-base-content/20" [withHomeRoute]="true"
+                [forDashboard]="true"> </app-route-list>
             <div class="divider"></div>
             <app-route-list [routeList]="secondaryRouteList" activeRouteClass="bg-base-content/20"
                 [withHomeRoute]="false"> </app-route-list>
         </app-side-menu>
         <div class="content">
-            <dashboard-navbar title="Home"></dashboard-navbar>
+            <dashboard-navbar [title]="title"></dashboard-navbar>
             <main class="grow overflow-auto max-w-full p-4">
                 <router-outlet></router-outlet>
             </main>
         </div>
     </div>
 </div>
+}
+@else
+{
+<div class="lg:hidden">
+    <div class="app-layout">
+        <dashboard-navbar [title]="title"></dashboard-navbar>
+        <app-container clx="grow p-2 lg:hidden">
+            <router-outlet></router-outlet>
+        </app-container>
+
+    </div>
+</div>
+}

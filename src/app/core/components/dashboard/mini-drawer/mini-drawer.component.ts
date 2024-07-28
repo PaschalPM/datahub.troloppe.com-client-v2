@@ -8,6 +8,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
+import { fadeInOut } from '@shared/animations';
 
 @Component({
   selector: 'dashboard-mini-drawer',
@@ -23,15 +24,17 @@ import {
         ...
       </button>
       <div
+        @fadeInOut
         #drawerContent
         *ngIf="showMiniDrawer"
-        class="absolute right-2 top-6 min-h-10 min-w-32 bg-white p-4 text-left text-sm shadow-lg dark:bg-gray-800 md:hidden"
+        class="absolute right-2 top-6 min-h-10 min-w-36 bg-base-100  p-4 text-left text-sm shadow-lg  md:hidden"
       >
         <ng-content></ng-content>
       </div>
     </div>
   `,
-  styles: ``,
+  animations: [fadeInOut],
+ 
 })
 export class MiniDrawerComponent {
   @Input({ required: true }) showMiniDrawer = false;
@@ -42,10 +45,10 @@ export class MiniDrawerComponent {
   @HostListener('document:click', ['$event'])
   closeMiniDrawer(event: Event) {
     const clickedToggleBtn = this.toggleBtnRef?.nativeElement.contains(
-      event.target,
+      event.target
     );
     const clickedDrawerContent = this.drawerContentRef?.nativeElement.contains(
-      event.target,
+      event.target
     );
 
     if (!(clickedToggleBtn || clickedDrawerContent)) {

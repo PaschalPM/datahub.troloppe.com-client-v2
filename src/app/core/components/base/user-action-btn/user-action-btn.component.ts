@@ -1,5 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { AuthService } from '@shared/services/auth.service';
+import { User } from '@shared/services/types';
+import { UtilsService } from '@shared/services/utils.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'user-action-btn',
@@ -11,7 +15,8 @@ import { RouterLink } from '@angular/router';
       <a
         routerLink="/dashboard"
         class="btn btn-circle uppercase bg-base-100 font-bold border border-base-300"
-        >P</a
+      >
+        {{ utils.getInitialOfUser(currentUser.name) }}</a
       >
       } @else {
       <a routerLink="/dashboard" class="btn btn-secondary"> Go To Dashboard </a>
@@ -26,5 +31,21 @@ import { RouterLink } from '@angular/router';
 export class UserActionBtnComponent {
   @Input() region: 'nav' | 'body' = 'nav';
   @Input() clx = '';
-  currentUser = false;
+  currentUser!: User | null;
+
+  private authCurrentUserSubscription!: Subscription;
+
+  constructor(public utils: UtilsService, public authService: AuthService) {}
+
+  ngOnInit(): void {
+    this.authCurrentUserSubscription = this.authService
+      .onCurrentUser()
+      .subscribe((value) => {
+        this.currentUser = value;
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.authCurrentUserSubscription.unsubscribe();
+  }
 }
