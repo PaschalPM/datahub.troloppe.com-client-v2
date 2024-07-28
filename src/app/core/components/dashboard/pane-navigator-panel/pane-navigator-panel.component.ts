@@ -50,7 +50,7 @@ export class PaneNavigatorPanelComponent {
   get activeTabClass() {
     return this.type === 'tab'
       ? 'border-b-2 border-base-content p-2 px-4 font-medium '
-      : 'rounded-lg font-medium';
+      : 'rounded-lg font-medium bg-secondary/70 text-secondary-content';
   }
 
   constructor(public utils: UtilsService) {}

@@ -11,6 +11,7 @@ import { AuthLayoutComponent } from '@layouts/auth-layout/auth-layout.component'
 import { dashboardGuard } from '@core/guards/dashboard.guard';
 import { IndexComponent as StreetDataIndexComponent } from '@pages/dashboard/street-data/index/index.component';
 import { NotificationsComponent } from '@pages/dashboard/notifications/notifications.component';
+import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
 
 export const routes: Routes = [
   {
@@ -84,5 +85,10 @@ export const routes: Routes = [
         title: 'Notifications',
       },
     ],
+  },
+  {
+    title: 'Not Found',
+    path: '**',
+    component: NotFoundComponent,
   },
 ];
