@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import clsx, { ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import moment from 'moment';
+
 
 @Injectable({
   providedIn: 'root',
@@ -43,5 +45,11 @@ export class UtilsService {
     }
 
     return username.match(/^./g)?.[0].toUpperCase();
+  }
+
+  utcToFormattedDate(utcDate: string) {
+    const momentUtcDate = moment.utc(utcDate);
+    const formattedDate = momentUtcDate.format('Do MMM, YYYY');
+    return formattedDate;
   }
 }

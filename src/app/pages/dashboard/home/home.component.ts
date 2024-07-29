@@ -1,23 +1,23 @@
 import { Component } from '@angular/core';
-// import { AuthNoticeComponent } from '../../../shared/components/dashboard/home/auth-notice/auth-notice.component';
-// import { PaneNavigatorPanelComponent } from '../../../shared/components/pane-navigator-panel/pane-navigator-panel.component';
-// import { StreetDataOverviewComponent } from '../../../shared/partials/dashboard/street-data-overview/street-data-overview.component';
-// import { ChartComponent } from '../../../shared/components/dashboard/chart/chart.component';
-// import { ChartContainerComponent } from '../../../shared/components/chart-container/chart-container.component';
-
+import { StreetDataOverviewComponent } from '@core/components/dashboard/home/street-data-overview/street-data-overview.component';
+import { AuthNoticeComponent } from '@core/components/dashboard/home/auth-notice/auth-notice.component';
 import { PaneNavigatorPanelComponent } from '@core/components/dashboard/pane-navigator-panel/pane-navigator-panel.component';
+import { routeFadeInOut, visibleTrigger } from '@shared/animations';
 
 @Component({
   selector: 'dashboard-home',
   standalone: true,
   imports: [
-    // AuthNoticeComponent,
+    AuthNoticeComponent,
     PaneNavigatorPanelComponent,
-    // StreetDataOverviewComponent,
-    // ChartComponent,
-    // ChartContainerComponent
+    StreetDataOverviewComponent,
   ],
   templateUrl: './home.component.html',
+  animations: [visibleTrigger, routeFadeInOut],
+  host: {
+    '[@routeFadeInOut]': 'true',
+    '[style.display]': 'contents',
+  },
 })
 export class HomeComponent {
   activePane: 'street-data' | 'investment-data' = 'street-data';

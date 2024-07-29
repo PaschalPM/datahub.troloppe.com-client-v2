@@ -36,6 +36,13 @@ type FeatureDetailsType = {
 
 type EmailVerificationAndLoginStageType = 'VERIFY_EMAIL' | 'LOGIN_STAGE'
 
+type OverviewWidgetItem = {
+  id: number;
+  totalSum: number;
+  overviewTitle: string;
+  myMatIcon: string;
+};
+
 
 // MODAL TYPES
 type InputsType = Record<string, unknown> | undefined;
@@ -50,3 +57,25 @@ type ConfirmModalPropsType = {
   severity?: 'error' | 'warning';
   ok: () => void;
 };
+
+// New Street Data Form Types
+type IdAndNameType = { id: number; name: string };
+type NameAndValueType = { name: string; value: number };
+type SectionType = IdAndNameType & { location_id: number };
+type LocationType = IdAndNameType & { is_active: boolean };
+
+// Street Data Table
+
+type StreetDataColType = Pick<
+  StreetData,
+  | 'id'
+  | 'unique_code'
+  | 'street_address'
+  | 'sector'
+  | 'section'
+  | 'location'
+  | 'is_verified'
+  | 'image_path'
+  | 'created_at'
+  | 'creator'
+>;

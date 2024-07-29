@@ -1,3 +1,5 @@
+@import 'ag-grid-community/styles/ag-grid.css';
+@import 'ag-grid-community/styles/ag-theme-quartz.css';
 @import "./dashboard";
 
 .app-backdrop {
@@ -8,3 +10,24 @@
   @apply h-screen flex flex-col;
 }
 
+// AG GRID
+
+.ag-cell[col-id="image_path"],
+.ag-cell[col-id="is_verified"] {
+  @apply justify-center;
+}
+
+.ag-header-cell:nth-child(7) .ag-header-cell-label,
+.ag-header-cell:nth-child(8) .ag-header-cell-label {
+  justify-content: center;
+}
+
+.ag-theme-quartz-dark {
+  --ag-background-color: #091319;
+  --ag-foreground-color: #98b1c8;
+  --ag-secondary-foreground-color: #dbecfa;
+}
+
+.activeRoute {
+  @apply font-bold bg-base-content/20;
+}

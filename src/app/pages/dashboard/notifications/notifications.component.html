@@ -5,34 +5,13 @@
     </button>
     <pane-navigator-panel [(activePane)]="activePane" [tabs]="tabs"> </pane-navigator-panel>
 
-    <div class="divide-y divide-base-100" [@notificationTrigger]="activePane">
-        @if(activeNotifications){
-        @if(activeNotifications.length){
-        @for (item of activeNotifications; track item.id) {
-        <div>
-            <dashboard-notification-item [notification]="item"
-                (markAsReadChange)="markAsRead($event)"></dashboard-notification-item>
-        </div>
+    <div class="divide-y divide-base-100">
+        @if(activePane === 'unread'){
+        <dashboard-notification-pane notificationType="unread" [notifications]="unreadNotifications" [error]="error">
+        </dashboard-notification-pane>
+        } @else {
+        <dashboard-notification-pane notificationType="all" [notifications]="allNotifications" [error]="error">
+        </dashboard-notification-pane>
         }
-        }
-        @else {
-        <div class="empty-state"> {{ noNotificationText }}</div>
-        }
-        }
-        @else {
-        @if(error){
-
-        <div class="empty-state">
-            {{ error }}
-        </div>
-        }
-        @else {
-
-        <div class="empty-state">
-            <span class="loading loading-spinner text-base-content"></span>
-        </div>
-        }
-        }
-
     </div>
 </div>

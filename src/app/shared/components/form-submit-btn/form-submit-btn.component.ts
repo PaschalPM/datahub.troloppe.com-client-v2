@@ -1,10 +1,11 @@
 import { NgIf } from '@angular/common';
 import { Component, Input } from '@angular/core';
+import { SpinnerComponent } from '../spinner/spinner.component';
 
 @Component({
   selector: 'app-form-submit-btn',
   standalone: true,
-  imports: [NgIf],
+  imports: [NgIf, SpinnerComponent],
   template: `
     <div class="text-center">
       <button
@@ -18,7 +19,7 @@ import { Component, Input } from '@angular/core';
         class="btn btn-info btn-circle mt-3"
         type="button"
       >
-        <span class="loading loading-spinner text-base-100"></span>
+      <app-spinner clx='text-base-100'></app-spinner>
       </button>
     </div>
   `,

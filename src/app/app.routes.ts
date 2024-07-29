@@ -12,6 +12,7 @@ import { dashboardGuard } from '@core/guards/dashboard.guard';
 import { IndexComponent as StreetDataIndexComponent } from '@pages/dashboard/street-data/index/index.component';
 import { NotificationsComponent } from '@pages/dashboard/notifications/notifications.component';
 import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
+import { authGuard } from '@core/guards/auth.guard';
 
 export const routes: Routes = [
   {
@@ -37,6 +38,7 @@ export const routes: Routes = [
   {
     path: '',
     component: AuthLayoutComponent,
+    canActivate: [authGuard],
     children: [
       {
         path: 'sign-in',

@@ -6,7 +6,7 @@ import { alertTrigger } from '@shared/animations';
   selector: 'app-alert-provider',
   standalone: true,
   imports: [Alert],
-  template: `<div class="fixed z-50 top-0 left-1/2 -translate-x-1/2">
+  template: `<div class="fixed z-50 top-0 left-1/2 w-full max-w-2xl -translate-x-1/2">
     @if(text) {
     <div @alertTrigger>
       <app-alert [text]="text" [severity]="severity"></app-alert>

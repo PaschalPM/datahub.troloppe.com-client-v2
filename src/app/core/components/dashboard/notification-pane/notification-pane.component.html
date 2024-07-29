@@ -1,0 +1,29 @@
+<div @fadeInOut>
+    @if(notifications){
+    @if(notifications.length){
+    @for (item of notifications; track item.id) {
+    <div>
+        <dashboard-notification-item [notification]="item"
+            (markAsReadChange)="markAsRead($event)"></dashboard-notification-item>
+    </div>
+    }
+    }
+    @else {
+    <div class="empty-state"> {{ noNotificationText }}</div>
+    }
+    }
+    @else {
+    @if(error){
+
+    <div class="empty-state">
+        {{ error }}
+    </div>
+    }
+    @else {
+
+    <div class="empty-state">
+        <app-spinner></app-spinner>
+    </div>
+    }
+    }
+</div>

@@ -6,8 +6,8 @@ import { PaneNavigatorPanelComponent } from '@core/components/dashboard/pane-nav
 import { ModalService } from '@shared/services/modal.service';
 import { UtilsService } from '@shared/services/utils.service';
 import { ConfirmModalComponent } from '@core/components/dashboard/modals/confirm-modal/confirm-modal.component';
-import { NotificationItemComponent } from '@core/components/dashboard/notification-item/notification-item.component';
-import { notificationTrigger, routeFadeInOut } from '@shared/animations';
+import { routeFadeInOut } from '@shared/animations';
+import { NotificationPaneComponent } from '@core/components/dashboard/notification-pane/notification-pane.component';
 
 @Component({
   selector: 'app-notifications',
@@ -17,15 +17,10 @@ import { notificationTrigger, routeFadeInOut } from '@shared/animations';
     AsyncPipe,
     MyMatIconComponent,
     PaneNavigatorPanelComponent,
-    NotificationItemComponent,
+    NotificationPaneComponent
   ],
   templateUrl: './notifications.component.html',
-  styles: `
-  .empty-state {
-    @apply mt-16 p-2 py-4 flex justify-center font-medium pb-12;
-  }
-`,
-  animations: [notificationTrigger, routeFadeInOut],
+  animations: [routeFadeInOut],
   host: {
     '[@routeFadeInOut]': 'true',
     '[style.display]': 'contents',
@@ -54,11 +49,7 @@ export class NotificationsComponent {
       : this.allNotifications;
   }
 
-  get noNotificationText() {
-    return this.activePane === 'unread'
-      ? 'No Unread Notifications...'
-      : 'No Notifications...';
-  }
+
 
   get tabs() {
     return [
@@ -87,7 +78,7 @@ export class NotificationsComponent {
     public utils: UtilsService,
     public ns: NotificationsService,
     private modalService: ModalService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.ns.notifications$.subscribe({
@@ -102,9 +93,6 @@ export class NotificationsComponent {
     });
   }
 
-  markAsRead(notification: NotificationType) {
-    this.ns.updateNotification(notification).subscribe();
-  }
 
   deleteAll() {
     this.modalService.open(

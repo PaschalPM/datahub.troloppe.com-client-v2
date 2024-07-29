@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { InputFieldComponent } from '../input-field/input-field.component';
 import { FormSubmissionService } from '@shared/services/form-submission.service';
-import { FormSubmitBtnComponent } from '../../../../shared/components/form-submit-btn/form-submit-btn.component';
+import { FormSubmitBtnComponent } from '@shared/components/form-submit-btn/form-submit-btn.component';
 import { AuthService } from '@shared/services/auth.service';
 import { EmailVerificationAndLoginHelper } from '@core/helper-components/email-verification-and-login-helper';
 

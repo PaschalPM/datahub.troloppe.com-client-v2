@@ -1,9 +1,15 @@
 <h2 class="mb-4 text-lg font-semibold">Overview</h2>
 <pane-navigator-panel [(activePane)]="activePane" [tabs]="tabs" type="pill" class="mb-4"></pane-navigator-panel>
 
-<!-- <dashboard-home-auth-notice /> -->
-
+<dashboard-home-auth-notice />
 
 @if (activePane === 'street-data'){
-<!-- <dashboard-street-data-overview /> -->
+<div [@visibleTrigger]="activePane === 'street-data' && 'visible'">
+    <dashboard-street-data-overview />
+</div>
+}
+@if (activePane === 'investment-data'){
+<div [@visibleTrigger]="activePane === 'investment-data' && 'visible'" class="p-4 text-2xl">
+    Coming Soon!!!
+</div>
 }

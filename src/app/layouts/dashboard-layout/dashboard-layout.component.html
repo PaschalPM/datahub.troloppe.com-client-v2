@@ -5,10 +5,10 @@
 <div class="hidden lg:block">
     <div class="dashboard">
         <app-side-menu [forLargeDashboard]="true">
-            <app-route-list [routeList]="primaryRouteList" activeRouteClass="bg-base-content/20" [withHomeRoute]="true"
+            <app-route-list [routeList]="primaryRouteList" activeRouteClass="activeRoute" [withHomeRoute]="true"
                 [forDashboard]="true"> </app-route-list>
             <div class="divider"></div>
-            <app-route-list [routeList]="secondaryRouteList" activeRouteClass="bg-base-content/20"
+            <app-route-list [routeList]="secondaryRouteList" activeRouteClass="activeRoute"
                 [withHomeRoute]="false"> </app-route-list>
         </app-side-menu>
         <div class="content">

@@ -54,9 +54,9 @@ export class DashboardLayoutComponent {
     private pageTitle: Title,
     private router: Router,
     private menuService: MenuService,
-    private ns: NotificationsService, 
-    public mediaQuery: MediaQueryService
-  ) {}
+    private ns: NotificationsService,
+    public mediaQuery: MediaQueryService,
+  ) { }
 
   ngOnInit(): void {
     this.setDashboardTitle();
@@ -65,7 +65,6 @@ export class DashboardLayoutComponent {
       .subscribe((value) => {
         this.isMenuOpen = value;
       });
-    this.getNotificationsSubscription = this.ns.getNotifications().subscribe();
     this.unreadCountSubscription = this.ns.unreadCount$.subscribe((value) => {
       if (value > 0) {
         this.secondaryRouteList[0].title = `Notifications (${value})`;
@@ -73,6 +72,7 @@ export class DashboardLayoutComponent {
         this.secondaryRouteList[0].title = `Notifications`;
       }
     });
+    this.getNotificationsSubscription = this.ns.getNotifications().subscribe();
   }
 
   private setDashboardTitle() {

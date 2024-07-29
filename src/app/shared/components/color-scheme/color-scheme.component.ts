@@ -3,7 +3,6 @@ import { UtilsService } from '@shared/services/utils.service';
 import { MyMatIconComponent } from '../my-mat-icon/my-mat-icon.component';
 import { ClickOutsideDirective } from '@shared/directives/click-outside.directive';
 import { ColorSchemeService } from '@shared/services/color-scheme.service';
-import { Observable, Subscription } from 'rxjs';
 import { AsyncPipe, NgIf } from '@angular/common';
 import { ColorSchemeIconComponent } from '../color-scheme-icon/color-scheme-icon.component';
 import { fadeInOut } from '@shared/animations';
@@ -64,7 +63,7 @@ export class ColorSchemeComponent {
   constructor(
     public utils: UtilsService,
     public colorSchemeService: ColorSchemeService
-  ) {}
+  ) { }
 
 
   onSelectScheme(event: Event) {
