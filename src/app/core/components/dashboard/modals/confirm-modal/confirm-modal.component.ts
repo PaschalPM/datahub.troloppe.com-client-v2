@@ -9,14 +9,15 @@ import { UtilsService } from '@shared/services/utils.service';
   standalone: true,
   imports: [MyMatIconComponent, TextButtonComponent],
   template: ` <div
-    class="space-y-6 -mt-4 text-center mixin/error:text-red-500 dark:mixin/error:text-red-400 mixin/warning:text-orange-500 dark:mixin/warning:text-orange-400"
+    class="space-y-6 -mt-4 text-center"
   >
     <div class="text-center">
+  
       <my-mat-icon
-        [class]="
-          utils.cn('text-6xl text-red-500 dark:text-red-400', {
-            'mixin/error': severity === 'error',
-            'mixin/warning': severity === 'warning',
+        [clx]="
+          utils.cn('text-6xl', {
+            'text-error': severity === 'error',
+            'text-secondary': severity === 'warning',
           })
         "
       >
@@ -25,7 +26,7 @@ import { UtilsService } from '@shared/services/utils.service';
     </div>
     <h1
       [class]="
-        utils.cn('text-xl font-medium text-red-500 dark:text-red-400', {
+        utils.cn('text-xl font-medium text-error', {
           'mixin/error': severity === 'error',
           'mixin/warning': severity === 'warning',
         })

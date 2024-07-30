@@ -22,16 +22,16 @@ type NotificationsPaneType = 'unread' | 'all';
 
 // Types for Components
 type RouteType = {
-    routerLink: string
-    title: string
-} 
+  routerLink: string
+  title: string
+}
 
 type DynamicRouteType = RouteType | (() => RouteType)
 
 type FeatureDetailsType = {
-    title: string
-    body: string
-    circleBgClx: string
+  title: string
+  body: string
+  circleBgClx: string
 }
 
 type EmailVerificationAndLoginStageType = 'VERIFY_EMAIL' | 'LOGIN_STAGE'
@@ -46,7 +46,7 @@ type OverviewWidgetItem = {
 
 // MODAL TYPES
 type InputsType = Record<string, unknown> | undefined;
-type ModalValueType = { template: Type<any>; inputs: InputsType; modalIcon?: string};
+type ModalValueType = { template: Type<any>; inputs: InputsType; modalIcon?: string };
 type ImageModalValueType = { template: Type<any>; imageUrl: string };
 
 // Confirmation Modal
@@ -65,7 +65,7 @@ type SectionType = IdAndNameType & { location_id: number };
 type LocationType = IdAndNameType & { is_active: boolean };
 
 // Street Data Table
-
+type OptionType = { value: string; label: string };
 type StreetDataColType = Pick<
   StreetData,
   | 'id'
@@ -79,3 +79,18 @@ type StreetDataColType = Pick<
   | 'created_at'
   | 'creator'
 >;
+
+// Window Augmentation
+interface Window {
+  ipData: {
+    city: string
+    country: string
+    hostname: string
+    ip: string
+    loc: string
+    org: string
+    readme: string
+    region: string
+    timezone: string
+  }
+}

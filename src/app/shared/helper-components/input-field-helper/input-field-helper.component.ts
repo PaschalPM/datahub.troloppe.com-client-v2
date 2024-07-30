@@ -16,10 +16,12 @@ export class InputFieldHelperComponent {
   @Input({ required: true }) formGroup!: FormGroup;
   @Input({ required: true }) name!: string;
   @Input() formName = '';
-  @Input() type: 'text' | 'email' | 'password' = 'text';
+  @Input() type: 'text' | 'email' | 'password' | 'number' | 'textarea' | 'number-list' | 'checkbox' = 'text';
   @Input() placeholder = '';
   @Input() clx = '';
   @Input() forgetPassword = false;
+  @Input() maxLength = 250;
+
 
   @ViewChild('passwordInputElement', { static: false })
   passwordInputElement!: ElementRef<HTMLInputElement>;
@@ -30,6 +32,7 @@ export class InputFieldHelperComponent {
   control!: FormControl;
   formIsSubmitting = false;
   displayPassword = false;
+
 
   private formSubmitSubscription!: Subscription;
 
@@ -42,22 +45,10 @@ export class InputFieldHelperComponent {
     );
   }
 
-  getInputClx(variant: 'shared-input' | 'auth-input') {
-    return this.utils.cn(
-      'input input-bordered w-full rounded-md transition-all',
-      {
-        'input-secondary': variant === 'shared-input',
-        'input-info': variant === 'auth-input',
-        'input-error': this.formIsSubmitting && this.control.errors,
-        'pr-10': this.type === 'password',
-      }
-    );
-  }
-
   constructor(
     public utils: UtilsService,
     protected formSubmit: FormSubmissionService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.control = this.formGroup.get(this.name) as FormControl;
@@ -72,6 +63,22 @@ export class InputFieldHelperComponent {
         }
       }
     );
+  }
+
+  private baseInputClx = 'input input-bordered w-full rounded-md transition-all'
+  protected getBaseInputClx(variant: 'shared-input' | 'auth-input') {
+    return this.utils.cn(
+      this.baseInputClx,
+      {
+        'focus:outline-secondary': variant === 'shared-input',
+        'input-info': variant === 'auth-input',
+        'pr-10': this.type === 'password',
+      }
+    );
+  }
+
+  get errorClx() {
+    return this.formIsSubmitting && this.control.errors ? 'input-error' : ''
   }
 
   inputFocus() {

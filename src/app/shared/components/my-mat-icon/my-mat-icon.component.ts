@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { UtilsService } from '@shared/services/utils.service';
 
 @Component({
   selector: 'my-mat-icon',
@@ -9,7 +10,7 @@ import { CommonModule } from '@angular/common';
     <ng-template #projected>
       <ng-content />
     </ng-template>
-    <i class="material-icons">
+    <i [class]="utils.cn('material-icons', clx)">
       <ng-container *ngTemplateOutlet="projected" />
     </i>
   `,
@@ -19,4 +20,7 @@ import { CommonModule } from '@angular/common';
     }
   `,
 })
-export class MyMatIconComponent {}
+export class MyMatIconComponent {
+  @Input() clx = ''
+  constructor(protected utils: UtilsService){}
+}

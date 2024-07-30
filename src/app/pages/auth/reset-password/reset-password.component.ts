@@ -78,13 +78,13 @@ export class ResetPasswordComponent {
         .resetPassword(this.resetPasswordFormGroup.value)
         .subscribe({
           next: (value) => {
-            this.alertService.success(value.message);
+            this.alertService.success('Success', value.message);
           },
           error: (err: HttpErrorResponse) => {
             if (err.status === 422) {
-              this.alertService.error('Error: Invalid or expired token');
+              this.alertService.error('Error', 'Invalid or expired token');
             } else {
-              this.alertService.error(err.message);
+              this.alertService.error('Error', err.message);
             }
             this.loading = false;
           },

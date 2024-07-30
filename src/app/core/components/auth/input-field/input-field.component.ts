@@ -27,7 +27,7 @@ import { InputFieldHelperComponent } from '@shared/helper-components/input-field
 })
 export class InputFieldComponent extends InputFieldHelperComponent {
   @Input() emailToResetControl!: FormControl;
-  inputClx = this.getInputClx('auth-input')
+  inputClx = this.getBaseInputClx('auth-input')
 
   constructor(
     utils: UtilsService,

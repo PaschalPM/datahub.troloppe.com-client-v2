@@ -29,5 +29,5 @@
 }
 
 .activeRoute {
-  @apply font-bold bg-base-content/20;
+  @apply font-bold bg-base-content/20 text-secondary active:text-secondary focus:text-secondary;
 }

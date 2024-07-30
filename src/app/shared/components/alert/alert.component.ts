@@ -8,6 +8,7 @@ import { UtilsService } from '@shared/services/utils.service';
   templateUrl: './alert.component.html',
 })
 export class AlertComponent {
+  @Input({ required: true }) title!: string;
   @Input({ required: true }) text!: string;
   @Input() severity: AlertSeverityType = 'success';
 

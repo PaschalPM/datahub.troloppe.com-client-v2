@@ -61,7 +61,7 @@ export class ForgetPasswordComponent {
         .forgotPassword(this.forgotPasswordFormGroup.value)
         .subscribe({
           next: (value) => {
-            this.alertService.success(value.message);
+            this.alertService.success('Success', value.message);
             this.loading = false;
           },
           error: (err) => {

@@ -63,7 +63,7 @@ export class ProfileModalComponent {
         password: this.profileFormGroup.value.newPassword,
       };
       this.auth.changePassword(body).subscribe((value) => {
-        this.alertService.success('Success: ' + value.message);
+        this.alertService.success('Success', value.message);
         this.loader.stop();
         this.modal.close();
       });

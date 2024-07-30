@@ -48,7 +48,7 @@ export class LoginStageComponent extends EmailVerificationAndLoginHelper {
       this.loading = true;
       this.authService.signIn(this.loginFormGroup.value).subscribe({
         next: () => {
-          this.alertService.success('Success: Successfully logged in.');
+          this.alertService.success('Success', 'Successfully logged in.');
           this.activatedRoute.queryParams.subscribe((params) => {
             if (params['returnUrl']) {
               this.router.navigateByUrl(params['returnUrl']);

@@ -13,6 +13,8 @@ import { IndexComponent as StreetDataIndexComponent } from '@pages/dashboard/str
 import { NotificationsComponent } from '@pages/dashboard/notifications/notifications.component';
 import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
 import { authGuard } from '@core/guards/auth.guard';
+import { ViewComponent as StreetDataViewComponent } from '@pages/dashboard/street-data/view/view.component';
+import { EditComponent as StreetDataEditComponent } from '@pages/dashboard/street-data/edit/edit.component';
 
 export const routes: Routes = [
   {
@@ -80,6 +82,16 @@ export const routes: Routes = [
         path: 'street-data',
         component: StreetDataIndexComponent,
         title: 'Street Data',
+      },
+      {
+        path: 'street-data/:id',
+        component: StreetDataViewComponent,
+        title: 'View Street Data',
+      },
+      {
+        path: 'street-data/edit/:id',
+        component: StreetDataEditComponent,
+        title: 'Edit Street Data',
       },
       {
         path: 'notifications',

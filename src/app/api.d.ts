@@ -17,6 +17,7 @@ interface StreetDataFormFieldDataInterface {
       id?: number;
       unique_code: string; // *
       street_address: string; // *
+      development_name: string; // *
       description: string;
       sector: string; // enum // *
       sector_id: number

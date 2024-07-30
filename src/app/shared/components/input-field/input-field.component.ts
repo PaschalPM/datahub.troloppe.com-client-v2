@@ -1,13 +1,14 @@
-import { Component, Input } from '@angular/core';
+import { Component, input, Input } from '@angular/core';
 import { InputFieldErrorSectionComponent } from '../input-field-error-section/input-field-error-section.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputFieldHelperComponent } from '@shared/helper-components/input-field-helper/input-field-helper.component';
 import { PwVisibilityIconComponent } from '../svgs/pw-visibility-icon/pw-visibility-icon.component';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-input-field',
   standalone: true,
-  imports: [InputFieldErrorSectionComponent, ReactiveFormsModule, PwVisibilityIconComponent],
+  imports: [InputFieldErrorSectionComponent, ReactiveFormsModule, PwVisibilityIconComponent, NgIf],
   templateUrl: './input-field.component.html',
   styles: `
     :host {
@@ -16,6 +17,30 @@ import { PwVisibilityIconComponent } from '../svgs/pw-visibility-icon/pw-visibil
   `
 })
 export class InputFieldComponent extends InputFieldHelperComponent {
-  @Input({ required: true }) label!: string;  
-  inputClx = this.getInputClx('shared-input')
+  @Input({ required: true }) label!: string;
+  @Input() dataList: string[] = [];
+  @Input() withCounter = false
+
+  inputClx = ''
+  isRequired = false
+  currentLength = 0;
+
+  override ngOnInit(): void {
+    this.control = this.formGroup.controls?.[this.name] as FormControl;
+    this.isRequired = this.control.hasValidator(Validators.required);
+    this.setFormIsSubmitting();
+    this.inputClx = this.getBaseInputClx('shared-input')
+    if (this.control.value) {
+      this.currentLength = this.control.value.length
+    }
+  }
+
+  setCurrentLength(event: Event) {
+    const target = event.target as HTMLInputElement;
+    this.currentLength = target.value.length
+
+    if (this.currentLength >= this.maxLength) {
+      this.control.setValue(target.value.slice(0, -1));
+    }
+  }
 }

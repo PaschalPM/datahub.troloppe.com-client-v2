@@ -107,7 +107,7 @@ export class ActiveLocationFormModalComponent {
           if (!value) {
             msg = 'No active location available';
           }
-          this.alert.success('Success: ' + msg);
+          this.alert.success('Success', msg);
           this.loader.stop();
           this.modalService.close();
         });

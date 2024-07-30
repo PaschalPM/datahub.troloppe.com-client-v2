@@ -15,7 +15,7 @@ export const dashboardGuard: CanActivateFn = (route, state) => {
   return authService.getLoggedInUser().pipe(
     catchError((err: HttpErrorResponse) => {
       if (err.status === 401) {
-        alert.error('Error: Session Logged Out.',);
+        alert.error('Error', 'Session Logged Out.',);
         router.navigate(['/sign-in'], {
           queryParams: {
             returnUrl: state.url,

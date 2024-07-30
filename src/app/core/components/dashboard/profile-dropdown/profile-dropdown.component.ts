@@ -65,7 +65,7 @@ export class ProfileDropdownComponent {
   signOut() {
     this.loader.start();
     this.authService.signOut().subscribe(() => {
-      this.alertService.success('Successfully logged out.');
+      this.alertService.success('Success', 'Successfully logged out.');
       this.loader.stop();
       this.router.navigateByUrl('/');
     });

@@ -6,7 +6,7 @@ import { NavbarComponent } from '@core/components/dashboard/navbar/navbar.compon
 import { UtilsService } from '@shared/services/utils.service';
 import { Title } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
-import { RouteListComponent } from '../../shared/components/route-list/route-list.component';
+import { RouteListComponent } from '@shared/components/route-list/route-list.component';
 import { MenuService } from '@shared/services/menu.service';
 import { dashboardRouteLists } from '@shared/services/constants/route-lists';
 import { NotificationsService } from '@core/services/dashboard/notifications.service';
@@ -23,8 +23,8 @@ import { AsyncPipe } from '@angular/common';
     ContainerComponent,
     NavbarComponent,
     RouteListComponent,
-    AsyncPipe
-  ],
+    AsyncPipe,
+],
   templateUrl: './dashboard-layout.component.html',
 })
 export class DashboardLayoutComponent {
@@ -60,11 +60,13 @@ export class DashboardLayoutComponent {
 
   ngOnInit(): void {
     this.setDashboardTitle();
+
     this.menuIsOpenSubscription = this.menuService
       .isOpen()
       .subscribe((value) => {
         this.isMenuOpen = value;
       });
+
     this.unreadCountSubscription = this.ns.unreadCount$.subscribe((value) => {
       if (value > 0) {
         this.secondaryRouteList[0].title = `Notifications (${value})`;
@@ -72,6 +74,7 @@ export class DashboardLayoutComponent {
         this.secondaryRouteList[0].title = `Notifications`;
       }
     });
+
     this.getNotificationsSubscription = this.ns.getNotifications().subscribe();
   }
 

@@ -12,7 +12,12 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon_io/favicon-16x16.png">
   <link rel="manifest" href="/assets/favicon_io/site.webmanifest">
 
-
+  <script>
+    function recordData (data) {
+      window.ipData = data
+    }
+  </script>
+  <script src="https://ipinfo.io/json?callback=recordData"></script>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>

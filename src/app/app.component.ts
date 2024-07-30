@@ -11,11 +11,12 @@ import { AlertComponent } from './shared/components/providers/alert/alert.compon
 import { LoaderComponent } from '@shared/components/providers/loader/loader.component';
 import { LoaderService } from '@shared/services/loader.service';
 import { ModalComponent } from "@shared/components/modal/modal.component";
+import { ImageViewerModalComponent } from "./core/components/dashboard/image-viewer-modal/image-viewer-modal.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, AlertComponent, LoaderComponent, ModalComponent],
+  imports: [RouterOutlet, AlertComponent, LoaderComponent, ModalComponent, ImageViewerModalComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })

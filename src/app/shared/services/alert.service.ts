@@ -5,21 +5,22 @@ import { EventEmitter, Injectable } from '@angular/core';
 })
 export class AlertService {
   alertEvent = new EventEmitter<{
+    title: string,
     text: string;
     severity: AlertSeverityType;
   }>();
 
   constructor() {}
 
-  success(text: string) {
-    this.open(text, 'success');
+  success(title: string, text: string) {
+    this.open(title, text, 'success');
   }
 
-  error(text: string) {
-    this.open(text, 'error');
+  error(title: string, text: string) {
+    this.open(title, text, 'error');
   }
 
-  private open(text: string, severity: AlertSeverityType = 'success') {
-    this.alertEvent.emit({ text, severity });
+  private open(title: string, text: string, severity: AlertSeverityType = 'success') {
+    this.alertEvent.emit({ title, text, severity });
   }
 }

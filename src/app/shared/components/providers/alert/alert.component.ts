@@ -9,20 +9,22 @@ import { alertTrigger } from '@shared/animations';
   template: `<div class="fixed z-50 top-0 left-1/2 w-full max-w-2xl -translate-x-1/2">
     @if(text) {
     <div @alertTrigger>
-      <app-alert [text]="text" [severity]="severity"></app-alert>
+      <app-alert [title]="title" [text]="text" [severity]="severity"></app-alert>
     </div>
     }
   </div>`,
   animations: [alertTrigger],
 })
 export class AlertComponent {
+  protected title!: string;
   protected text!: string;
   protected severity!: AlertSeverityType;
 
   constructor(private alertService: AlertService) {}
 
   ngOnInit(): void {
-    this.alertService.alertEvent.subscribe(({ text, severity }) => {
+    this.alertService.alertEvent.subscribe(({ title, text, severity }) => {
+      this.title = title;
       this.text = text;
       this.severity = severity;
       setTimeout(() => {

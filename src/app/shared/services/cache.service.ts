@@ -11,7 +11,7 @@ export class CacheService {
     this.minutes = durationInMinutes;
   }
 
-  get(key: string) {
+  get<T>(key: string): T | null {
     if (this.hasExpired(key)) {
       if (this.store[key]) {
         this.remove(key);
@@ -21,7 +21,7 @@ export class CacheService {
     return this.store[key]?.value;
   }
 
-  set(key: string, value: any) {
+  set<T>(key: string, value: T) {
     this.store[key] = {
       value,
       exp: this.getExpirationTime(),

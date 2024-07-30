@@ -4,7 +4,7 @@
     {
     <div class="relative">
         <input #passwordInputElement [formControl]="control" [type]="displayPassword ? 'text': 'password'"
-            (input)="formIsSubmitting=false" [name]="name" [placeholder]="placeholder" [class]="inputClx" />
+            (input)="formIsSubmitting=false" [name]="name" [placeholder]="placeholder" [class]="utils.cn(inputClx, errorClx)" />
         <span (click)="toggleVisibility()" [class]="pwVisibilityClx">
             <pw-visibility-icon [show]="displayPassword"></pw-visibility-icon>
         </span>
@@ -13,7 +13,7 @@
     @else {
 
     <input #nonPasswordInputElement [formControl]="control" [type]="type" (input)="formIsSubmitting=false" [name]="name"
-        [placeholder]="placeholder" [class]="inputClx" />
+        [placeholder]="placeholder" [class]="utils.cn(inputClx, errorClx)" />
     }
     <!------------------------------------ END OF INPUT FIELDS ----------------------------->
 
