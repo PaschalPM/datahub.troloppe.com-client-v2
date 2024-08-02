@@ -13,7 +13,7 @@ import { UtilsService } from '@shared/services/utils.service';
       @if(email.length > 30) {
       <div class="tooltip" [attr.data-tip]="control.value">
         <span class="text-sm lg:text-base cursor-default">
-          {{ utils.truncate(email, 27) }}
+          {{ utils.truncate(email, 30) }}
         </span>
       </div>
       } @else {

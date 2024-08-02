@@ -23,13 +23,13 @@ export class AlertComponent {
   constructor(private alertService: AlertService) {}
 
   ngOnInit(): void {
-    this.alertService.alertEvent.subscribe(({ title, text, severity }) => {
+    this.alertService.alertEvent.subscribe(({ title, text, severity, duration }) => {
       this.title = title;
       this.text = text;
       this.severity = severity;
       setTimeout(() => {
         this.text = '';
-      }, 3000);
+      }, duration);
     });
   }
 }

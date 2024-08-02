@@ -9,8 +9,8 @@ import { InputFieldComponent } from '@shared/components/input-field/input-field.
 import { ImageUploaderComponent } from '@core/components/dashboard/image-uploader/image-uploader.component';
 import { StreetDataDetails } from '@core/classes/street-data-details';
 import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
-import { visibleTrigger } from '@shared/animations';
-
+import { routeFadeInOut, visibleTrigger } from '@shared/animations';
+import { StreetDataFormComponent } from '@core/components/dashboard/street-data-form/street-data-form.component';
 
 @Component({
   selector: 'app-view-street-data',
@@ -24,9 +24,14 @@ import { visibleTrigger } from '@shared/animations';
     MyMatIconComponent,
     NotFoundComponent,
     BackBtnComponent,
+    StreetDataFormComponent
   ],
   templateUrl: './view.component.html',
-  animations: [visibleTrigger]
+  animations: [visibleTrigger, routeFadeInOut],
+  host: {
+    '[@routeFadeInOut]': 'true',
+    '[style.display]': 'contents',
+  },
 })
 export class ViewComponent extends StreetDataDetails {
   constructor(private fb: FormBuilder, private router: Router) {

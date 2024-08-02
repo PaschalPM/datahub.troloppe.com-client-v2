@@ -94,3 +94,12 @@ interface Window {
     timezone: string
   }
 }
+
+// Street Data Search 
+type SearchedStreetDataType = {
+  id: number
+  streetAddresss: string
+  developmentName: string
+  uniqueCode: string
+  imageUrl: string
+}

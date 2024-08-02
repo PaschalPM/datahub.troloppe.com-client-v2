@@ -12,8 +12,7 @@ import { Observable, Subscription, tap } from 'rxjs';
 import { ActionsComponent } from '@shared/components/ag-grid/street-data/actions/actions.component';
 import { ImagePreviewComponent } from '@shared/components/ag-grid/street-data/image-preview/image-preview.component';
 import { AsyncPipe } from '@angular/common';
-import { StreetDataService } from '@core/services/street-data.service';
-
+import { StreetDataService } from '@core/services/dashboard/street-data.service';
 
 @Component({
   selector: 'app-index',

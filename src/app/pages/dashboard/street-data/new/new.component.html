@@ -1,0 +1,21 @@
+<pane-navigator-panel
+  [(activePane)]="activePane"
+  [tabs]="paneTabs"
+></pane-navigator-panel>
+
+@if(activePane === 'new-entry') {
+<ng-container *ngTemplateOutlet="formTemplate"></ng-container>
+
+} @else {
+    <new-street-data-search-section (selectedStreetDataEvent)="fetchStreetData($event)"></new-street-data-search-section>
+}
+
+<ng-template #formTemplate>
+  <div class="w-full p-2 md:p-4 lg:w-3/4 mx-auto -mt-5">
+    <form
+      [formGroup]="streetDataFormGroup"
+      (ngSubmit)="onCreate()"
+      class="rounded-lg bg-white p-4 md:p-8 text-sm shadow-md backdrop-blur-md my-6 dark:border-white/50 dark:bg-white/5 dark:shadow-sm dark:shadow-white/35"
+    ></form>
+  </div>
+</ng-template>

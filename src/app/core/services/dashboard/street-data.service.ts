@@ -1,13 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { apiUrlFactory, apiHttpOptions } from '../../configs/global';
+import { apiUrlFactory, apiHttpOptions } from '@configs/global';
 import { BehaviorSubject, map, of, Subscription, switchMap, tap } from 'rxjs';
 import { AuthService } from '@shared/services/auth.service';
 import { PermissionService } from '@shared/services/permission.service';
 import { Router } from '@angular/router';
 import { LoaderService } from '@shared/services/loader.service';
 import { CacheService } from '@shared/services/cache.service';
-
 
 @Injectable({
   providedIn: 'root',

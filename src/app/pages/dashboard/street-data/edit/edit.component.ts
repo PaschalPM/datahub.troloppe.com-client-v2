@@ -17,6 +17,7 @@ import { FormFieldDataService } from '@core/services/dashboard/form-field-data.s
 import { SelectDropdownComponent } from '@shared/components/select-dropdown/select-dropdown.component';
 import { visibleTrigger } from '@shared/animations';
 import { FormSubmissionService } from '@shared/services/form-submission.service';
+import { StreetDataFormComponent } from '@core/components/dashboard/street-data-form/street-data-form.component';
 
 @Component({
   selector: 'app-edit-street-data',
@@ -31,7 +32,8 @@ import { FormSubmissionService } from '@shared/services/form-submission.service'
     FormSubmitBtnComponent,
     MyMatIconComponent,
     BackBtnComponent,
-    SelectDropdownComponent
+    SelectDropdownComponent,
+    StreetDataFormComponent
   ],
   templateUrl: './edit.component.html',
   animations: [visibleTrigger]
@@ -143,10 +145,10 @@ export class EditComponent extends StreetDataDetails {
   ngOnInit(): void {
     this.setStreetDataId();
     this.setFormDataAndSomeProperties(true);
-    this.setPermission();
     this.getUniqueCodeDataList();
     this.checkDataIsLoaded();
     this.getFormFieldDataAndSetsOptionsValueFromAPI();
+    this.setPermission()
   }
 
 
@@ -189,6 +191,7 @@ export class EditComponent extends StreetDataDetails {
   }
 
   onEditStreetData() {
+    console.log(' WORK')
     this.formSubmit.onFormSubmission()
     if (this.streetDataFormGroup.valid) {
       this.modalService.open(

@@ -8,7 +8,7 @@ import moment from 'moment';
   providedIn: 'root',
 })
 export class UtilsService {
-  constructor() {}
+  constructor() { }
 
   cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
@@ -36,7 +36,7 @@ export class UtilsService {
   }
 
   truncate(str: string, size: number) {
-    return str.slice(0, size) + '...';
+    return str.length > size ? str.slice(0, size - 3) + '...' : str;
   }
 
   getInitialOfUser(username: string) {
@@ -52,4 +52,9 @@ export class UtilsService {
     const formattedDate = momentUtcDate.format('Do MMM, YYYY');
     return formattedDate;
   }
+
+  isVPNActive() {
+    return window.ipData ? window.ipData.timezone !== "Africa/Lagos" : undefined
+  }
+
 }

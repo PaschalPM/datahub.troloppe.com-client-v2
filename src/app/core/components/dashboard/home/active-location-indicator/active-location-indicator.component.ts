@@ -34,7 +34,7 @@ import { SpinnerComponent } from "@shared/components/spinner/spinner.component";
         (click)="isPermitted && !nonEditable && onOpenFormModal()"
       >
         <div
-          class="mixin/base text-green-700 dark:text-green-300 animate-pulse"
+          class="mixin/base text-success animate-pulse"
         >
           <my-mat-icon *ngIf="isPermitted && !nonEditable"> edit_location_alt </my-mat-icon>
           <my-mat-icon *ngIf="!isPermitted || nonEditable"> location_on </my-mat-icon>
@@ -47,7 +47,7 @@ import { SpinnerComponent } from "@shared/components/spinner/spinner.component";
         <button
         *ngIf="isPermitted"
         title="Set Location"
-        class="mixin/base bg-red-500 text-white p-2 rounded-md hover:opacity-75"
+        class="mixin/base bg-error text-error-content p-2 rounded-md hover:opacity-75"
         (click)="onOpenFormModal()"
       >
         <my-mat-icon> edit_location_alt </my-mat-icon>

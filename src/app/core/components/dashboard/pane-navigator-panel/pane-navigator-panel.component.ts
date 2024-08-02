@@ -49,7 +49,7 @@ export class PaneNavigatorPanelComponent {
   tabClass = 'p-2 px-4  transition-all text-sm ';
   get activeTabClass() {
     return this.type === 'tab'
-      ? 'border-b-2 border-base-content p-2 px-4 font-medium '
+      ? 'border-b-2 border-base-content p-2 px-4 font-bold'
       : 'rounded-lg font-medium bg-secondary/70 text-secondary-content';
   }
 

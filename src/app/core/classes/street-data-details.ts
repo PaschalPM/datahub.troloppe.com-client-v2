@@ -1,6 +1,6 @@
 import { FormGroup } from '@angular/forms';
 import { UserRoles } from '@shared/enums/user-roles';
-import { StreetDataService } from '@core/services/street-data.service';
+import { StreetDataService } from '@core/services/dashboard/street-data.service';
 import { ActivatedRoute } from '@angular/router';
 import { PermissionService } from '@shared/services/permission.service';
 import { EventEmitter, inject } from '@angular/core';

@@ -5,7 +5,7 @@ import { FeaturesComponent } from '@pages/base/features/features.component';
 import { SignInComponent } from '@pages/auth/sign-in/sign-in.component';
 import { ForgetPasswordComponent } from '@pages/auth/forget-password/forget-password.component';
 import { ResetPasswordComponent } from '@pages/auth/reset-password/reset-password.component';
-import { resetPasswordGuard } from '@core/guards/auth/reset-password.guard';
+import { resetPasswordGuard } from '@core/guards/reset-password.guard';
 import { HomeComponent as DashboardHomeComponent } from '@pages/dashboard/home/home.component';
 import { AuthLayoutComponent } from '@layouts/auth-layout/auth-layout.component';
 import { dashboardGuard } from '@core/guards/dashboard.guard';
@@ -15,6 +15,8 @@ import { NotFoundComponent } from '@shared/components/not-found/not-found.compon
 import { authGuard } from '@core/guards/auth.guard';
 import { ViewComponent as StreetDataViewComponent } from '@pages/dashboard/street-data/view/view.component';
 import { EditComponent as StreetDataEditComponent } from '@pages/dashboard/street-data/edit/edit.component';
+import { NewComponent as StreetDataNewComponent } from '@pages/dashboard/street-data/new/new.component';
+import { newStreetDataFormGuard } from '@core/guards/new-street-data-form.guard';
 
 export const routes: Routes = [
   {
@@ -82,6 +84,12 @@ export const routes: Routes = [
         path: 'street-data',
         component: StreetDataIndexComponent,
         title: 'Street Data',
+      },
+      {
+        path: 'street-data/new',
+        // canActivate: [newStreetDataFormGuard],
+        component: StreetDataNewComponent,
+        title: 'Create Street Data',
       },
       {
         path: 'street-data/:id',
