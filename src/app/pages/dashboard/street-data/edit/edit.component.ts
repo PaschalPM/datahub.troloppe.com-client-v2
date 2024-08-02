@@ -1,20 +1,14 @@
-import { Location, NgIf } from '@angular/common';
+import { Location } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { TextButtonComponent } from '@core/components/dashboard/text-btn/text-btn.component';
-import { InputFieldComponent } from '@shared/components/input-field/input-field.component';
-import { ImageUploaderComponent } from '@core/components/dashboard/image-uploader/image-uploader.component';
 import { ConfirmModalComponent } from '@core/components/dashboard/modals/confirm-modal/confirm-modal.component';
 import { ModalService } from '@shared/services/modal.service';
 import { StreetDataDetails } from '@core/classes/street-data-details';
 import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
 import { constructionStatusOptions } from 'app/fixtures/street-data';
-import { FormSubmitBtnComponent } from '@shared/components/form-submit-btn/form-submit-btn.component';
-import { MyMatIconComponent } from '@shared/components/my-mat-icon/my-mat-icon.component';
 import { AlertService } from '@shared/services/alert.service';
 import { BackBtnComponent } from '@shared/components/back-btn/back-btn.component';
-import { FormFieldDataService } from '@core/services/dashboard/form-field-data.service';
-import { SelectDropdownComponent } from '@shared/components/select-dropdown/select-dropdown.component';
 import { visibleTrigger } from '@shared/animations';
 import { FormSubmissionService } from '@shared/services/form-submission.service';
 import { StreetDataFormComponent } from '@core/components/dashboard/street-data-form/street-data-form.component';
@@ -25,14 +19,7 @@ import { StreetDataFormComponent } from '@core/components/dashboard/street-data-
   imports: [
     TextButtonComponent,
     NotFoundComponent,
-    ReactiveFormsModule,
-    NgIf,
-    ImageUploaderComponent,
-    InputFieldComponent,
-    FormSubmitBtnComponent,
-    MyMatIconComponent,
     BackBtnComponent,
-    SelectDropdownComponent,
     StreetDataFormComponent
   ],
   templateUrl: './edit.component.html',
@@ -93,13 +80,9 @@ export class EditComponent extends StreetDataDetails {
   subSectorPending = false
   subSectorLabel = ''
 
-  private formFieldData!: StreetDataFormFieldDataInterface;
-  private fixedLocationId!: number;
-
   constructor(
     private modalService: ModalService,
     private fb: FormBuilder,
-    private streetDataFormFieldService: FormFieldDataService,
     private alert: AlertService,
     private location: Location,
     private formSubmit: FormSubmissionService
@@ -144,31 +127,9 @@ export class EditComponent extends StreetDataDetails {
 
   ngOnInit(): void {
     this.setStreetDataId();
-    this.setFormDataAndSomeProperties(true);
-    this.getUniqueCodeDataList();
+    this.initFormDataAndSomeProperties(true);
     this.checkDataIsLoaded();
-    this.getFormFieldDataAndSetsOptionsValueFromAPI();
     this.setPermission()
-  }
-
-
-  onSectorChange(sectorId: number) {
-    this.subSectorPending = true
-    this.streetDataFormGroup.get('sector')?.setValue(sectorId);
-    this.streetDataFormGroup.get('sector_id')?.setValue(sectorId);
-    this.streetDataFormGroup.get('sub_sector')?.setValue(null);
-    this.setSubSectorOptions(sectorId);
-  }
-
-  onSubSectorChange(subSectorId: number) {
-    this.streetDataFormGroup.get('sub_sector')?.setValue(subSectorId);
-    this.streetDataFormGroup.get('sub_sector_id')?.setValue(subSectorId);
-  }
-
-  onSectionChange(sectionId: number) {
-    this.streetDataFormGroup.controls['section_id']?.setValue(sectionId);
-    this.streetDataFormGroup.controls['section']?.setValue(sectionId);
-
   }
 
   onDeleteStreetData() {
@@ -176,18 +137,6 @@ export class EditComponent extends StreetDataDetails {
       ConfirmModalComponent,
       this.confirmDeleteModalPropsData
     );
-  }
-
-  getUniqueCodeDataList() {
-    this.streetDataFormFieldService
-      .getFormFieldData()
-      .subscribe((formFieldData) => {
-        if (formFieldData) {
-          this.uniqueCodeDataList = formFieldData.unique_codes.map(
-            (uniqueCode) => uniqueCode.value
-          );
-        }
-      });
   }
 
   onEditStreetData() {
@@ -203,57 +152,5 @@ export class EditComponent extends StreetDataDetails {
         'Form Error','Check that all fields are correctly filled.'
       );
     }
-  }
-
-  private setSectionOptions() {
-    const fixedLocation = this.formFieldData.locations.find(
-      (location) => location.id === this.fixedLocationId
-    );
-    if (fixedLocation) {
-      this.sectionOptions = fixedLocation.sections;
-    }
-  }
-
-  private setSectorOptions() {
-    this.sectorOptions = this.formFieldData.sectors.map((sector) => ({
-      ...sector,
-      name: this.utils.capitalize(sector.name),
-    }));
-  }
-
-  private setSubSectorOptions(sectorId: number) {
-    const selectedSector = this.formFieldData.sectors.find(
-      (sector) => sector.id === +sectorId
-    );
-    if (selectedSector) {
-      this.subSectorOptions = selectedSector.sub_sectors;
-      console.log(this.subSectorOptions)
-      this.subSectorLabel = this.utils.capitalize(selectedSector.name) + ' Sub Sector'
-      setTimeout(() => {
-        this.subSectorPending = false
-      }, 1000);
-    }
-  }
-
-  private getFormFieldDataAndSetsOptionsValueFromAPI() {
-    this.streetDataFormFieldService
-      .getFormFieldData()
-      .subscribe((formFieldData) => {
-        if (formFieldData) {
-          this.formFieldData = formFieldData;
-          // Set fixed location ID
-          this.fixedLocationId =
-            this.streetDataFormGroup.get('location_id')?.value;
-
-          this.setSectionOptions();
-          this.setSectorOptions();
-
-          // Set selected sector ID
-          const selectedSectorId =
-            this.streetDataFormGroup.get('sector_id')?.value;
-
-          this.setSubSectorOptions(selectedSectorId);
-        }
-      });
   }
 }

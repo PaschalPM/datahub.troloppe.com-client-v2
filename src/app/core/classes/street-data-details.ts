@@ -38,7 +38,7 @@ export class StreetDataDetails {
     }
   }
 
-  protected setFormDataAndSomeProperties(forEditForm: boolean = false) {
+  protected initFormDataAndSomeProperties(forEditForm: boolean = false) {
     this.streetDataService.getStreetDataDetails(this.streetDataId).subscribe({
       next: (value) => {
         setTimeout(() => {

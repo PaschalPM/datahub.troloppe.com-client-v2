@@ -1,12 +1,8 @@
-import { NgIf } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BackBtnComponent } from '@shared/components/back-btn/back-btn.component';
-import { MyMatIconComponent } from '@shared/components/my-mat-icon/my-mat-icon.component';
 import { TextButtonComponent } from '@core/components/dashboard/text-btn/text-btn.component';
-import { InputFieldComponent } from '@shared/components/input-field/input-field.component';
-import { ImageUploaderComponent } from '@core/components/dashboard/image-uploader/image-uploader.component';
 import { StreetDataDetails } from '@core/classes/street-data-details';
 import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
 import { routeFadeInOut, visibleTrigger } from '@shared/animations';
@@ -16,12 +12,7 @@ import { StreetDataFormComponent } from '@core/components/dashboard/street-data-
   selector: 'app-view-street-data',
   standalone: true,
   imports: [
-    ReactiveFormsModule,
-    ImageUploaderComponent,
-    InputFieldComponent,
     TextButtonComponent,
-    NgIf,
-    MyMatIconComponent,
     NotFoundComponent,
     BackBtnComponent,
     StreetDataFormComponent
@@ -103,7 +94,7 @@ export class ViewComponent extends StreetDataDetails {
 
   ngOnInit(): void {
     this.setStreetDataId();
-    this.setFormDataAndSomeProperties();
+    this.initFormDataAndSomeProperties();
     this.setPermission();
     this.checkDataIsLoaded();
   }
