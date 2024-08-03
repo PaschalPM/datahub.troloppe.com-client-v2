@@ -3,7 +3,7 @@ import { GeolocationAlertModalComponent } from '@core/components/dashboard/modal
 import {
   GeolocationService,
   PERMISSION_DENIED,
-} from '@core/dashboard/geolocation.service';
+} from '@core/services/dashboard/geolocation.service';
 import { routeFadeInOut } from '@shared/animations';
 import { ModalService } from '@shared/services/modal.service';
 import { UtilsService } from '@shared/services/utils.service';

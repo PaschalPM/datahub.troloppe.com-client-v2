@@ -98,8 +98,8 @@ interface Window {
 // Street Data Search 
 type SearchedStreetDataType = {
   id: number
-  streetAddresss: string
+  streetAddress: string
   developmentName: string
   uniqueCode: string
-  imageUrl: string
+  imagePath: string
 }

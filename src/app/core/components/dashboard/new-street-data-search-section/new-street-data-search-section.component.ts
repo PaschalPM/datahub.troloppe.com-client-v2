@@ -3,6 +3,9 @@ import { SearchInputComponent } from '../search-input/search-input.component';
 import { SearchDisplayPaneComponent } from '../search-display-pane/search-display-pane.component';
 import { StreetDataSearchedItemComponent } from '../street-data-searched-item/street-data-searched-item.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
+import { StreetDataSearchService } from '@core/services/dashboard/street-data-search.service';
+import { delay, map, Observable, of, startWith, tap } from 'rxjs';
+import { DebouncedSearchService } from '@shared/services/debounced-search.service';
 
 @Component({
   selector: 'new-street-data-search-section',
@@ -15,26 +18,32 @@ import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
   ],
   template: `
     <div class="static flex flex-col">
-      <div class="m-auto w-full max-w-xl">
+      <div class="m-auto w-[95%] max-w-xl">
         <dashboard-search-input
-          [(search)]="search"
-          (debouncedSearchChange)="debouncedSearch = $event"
-          [debounceTime]="500"
+          [search]="searchedTerm"
+          (focusEvent)="onFocusFetchData($event)"
+          (blurEvent)="isSearchDisplayPaneOpen = false"
+          (searchChange)="onSearchTermChange($event)"
           placeholder="Search For Verified Street Data"
         ></dashboard-search-input>
-        @if(search) {
-        <dashboard-search-display-pane clx="max-w-xl mt-2">
-          @if (debouncedSearch) { @for (item of searchedStreetDataItems; track
-          $index) {
+        @if(isSearchDisplayPaneOpen || searchedTerm) {
+        <dashboard-search-display-pane clx="max-w-xl w-[90%] mt-2">
+          @if(loadingData){
+          <div class="h-12 flex justify-center items-center">
+            <app-spinner></app-spinner>
+          </div>
+          } @else { @if(searchedStreetDataItems &&
+          searchedStreetDataItems.length) { @for (item of
+          searchedStreetDataItems; track $index) {
           <street-data-searched-item
             [searchedStreetData]="item"
             (clickEvent)="onSearchedStreetDataClick($event)"
           ></street-data-searched-item>
           } } @else {
-          <div class="h-12 flex justify-center items-center">
-            <app-spinner></app-spinner>
+          <div class="h-12 flex justify-center items-center text-sm">
+            No record found.
           </div>
-          }
+          } }
         </dashboard-search-display-pane>
         }
       </div>
@@ -45,25 +54,54 @@ export class NewStreetDataSearchSectionComponent {
   @Output() selectedStreetDataEvent =
     new EventEmitter<SearchedStreetDataType>();
 
-  search = '';
-  debouncedSearch = '';
-  searchedStreetDataItems: SearchedStreetDataType[] = [
-    {
-      id: 1,
-      streetAddresss: 'No 18 Isa Sule Close',
-      developmentName: 'Development One',
-      imageUrl: 'https://picsum.photos/200/300',
-      uniqueCode: 'IKJ/OSI/46/2399',
-    },
-    {
-      id: 2,
-      streetAddresss: 'No 102 Isa Sule Close',
-      developmentName: 'Development tWO',
-      imageUrl: 'https://picsum.photos/200/300',
-      uniqueCode: 'IKJ/OSI/46/JH99',
-    },
-  ];
+  searchedTerm = '';
+  searchedStreetDataItems: SearchedStreetDataType[] | null = null;
+  isSearchDisplayPaneOpen = false;
+  loadingData = false;
 
+  constructor(
+    private streetDataSearchService: StreetDataSearchService,
+    private debouncedSearchService: DebouncedSearchService
+  ) {}
+
+  ngOnInit(): void {
+    this.debouncedSearchService
+      .debouncedObservable(this.fetchSearchStreetDataOptions.bind(this))
+      .pipe(tap(() => (this.loadingData = false)))
+      .subscribe((value) => {
+        this.searchedStreetDataItems = value;
+      });
+  }
+
+  onSearchTermChange(searchedTerm: string) {
+    this.searchedTerm = searchedTerm;
+    this.debouncedSearchService.emit(this.searchedTerm);
+  }
+
+  onFocusFetchData(searchedTerm: string) {
+    this.isSearchDisplayPaneOpen = true
+    if (!searchedTerm)
+    this.fetchSearchStreetDataOptions()
+      .pipe(tap(() => (this.loadingData = false)))
+      .subscribe((value) => {
+        this.searchedStreetDataItems = value;
+      });
+  }
+
+  private fetchSearchStreetDataOptions(searchedTerm: string = '') {
+    this.loadingData = true;
+    return this.streetDataSearchService.query(searchedTerm).pipe(
+      map((value) => {
+        return value.map((v) => ({
+          id: v.id,
+          uniqueCode: v.unique_code,
+          streetAddress: v.street_address,
+          developmentName: v.development_name,
+          imagePath: v.image_path,
+        }));
+      })
+    );
+  }
   onSearchedStreetDataClick(streetData: SearchedStreetDataType) {
     this.selectedStreetDataEvent.emit(streetData);
   }

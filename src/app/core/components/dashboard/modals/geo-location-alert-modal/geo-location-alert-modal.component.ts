@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { TextButtonComponent } from '../../text-btn/text-btn.component';
 import { ModalService } from '@shared/services/modal.service';
-import { GeolocationService } from '@core/dashboard/geolocation.service';
+import { GeolocationService } from '@core/services/dashboard/geolocation.service';
 
 @Component({
   selector: 'geolocation-alert-modal',
