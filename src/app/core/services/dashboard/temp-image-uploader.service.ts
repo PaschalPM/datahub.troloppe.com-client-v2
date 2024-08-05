@@ -17,7 +17,7 @@ export class TempImageUploaderService {
 
   deleteImage(imageUrl: string) {
     return this.http.delete(
-      `${BASE_API_URL}/delete-image?image_url=${imageUrl}`,
+      `${BASE_API_URL}/delete-tmp-image?image_url=${imageUrl}`,
       apiHttpOptions
     );
   }

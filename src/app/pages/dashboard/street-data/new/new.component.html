@@ -3,19 +3,26 @@
   [tabs]="paneTabs"
 ></pane-navigator-panel>
 
-@if(activePane === 'new-entry') {
-<ng-container *ngTemplateOutlet="formTemplate"></ng-container>
-
+@if(resettingForm) {
+<ng-container *ngTemplateOutlet="spinnerTemplate"></ng-container>
+} @else { @if(activePane === 'new-entry') {
+<div [@visibleTrigger]="!resettingForm && 'visible'">
+  <street-data-form
+    [streetDataFormGroup]="streetDataFormGroup"
+    type="new-create"
+    [onSubmit]="onCreateStreetData.bind(this)"
+  ></street-data-form>
+</div>
 } @else {
-    <new-street-data-search-section (selectedStreetDataEvent)="fetchStreetData($event)"></new-street-data-search-section>
-}
+<div [@visibleTrigger]="!resettingForm && 'visible'">
+  <new-street-data-search-section
+    (selectedStreetDataEvent)="fetchStreetData($event)"
+  ></new-street-data-search-section>
+</div>
+} }
 
-<ng-template #formTemplate>
-  <div class="w-full p-2 md:p-4 lg:w-3/4 mx-auto -mt-5">
-    <form
-      [formGroup]="streetDataFormGroup"
-      (ngSubmit)="onCreate()"
-      class="rounded-lg bg-white p-4 md:p-8 text-sm shadow-md backdrop-blur-md my-6 dark:border-white/50 dark:bg-white/5 dark:shadow-sm dark:shadow-white/35"
-    ></form>
+<ng-template #spinnerTemplate>
+  <div class="w-full py-10 flex justify-center items-center">
+    <app-spinner></app-spinner>
   </div>
 </ng-template>

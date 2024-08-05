@@ -1,5 +1,5 @@
 import { NgIf } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { SpinnerComponent } from '../spinner/spinner.component';
 import { UtilsService } from '@shared/services/utils.service';
 
@@ -8,19 +8,35 @@ import { UtilsService } from '@shared/services/utils.service';
   standalone: true,
   imports: [NgIf, SpinnerComponent],
   template: `
-    <div [class]="utils.cn({'text-left': forDashboard, 'text-center': !forDashboard})">
+    <div
+      [class]="
+        utils.cn({ 'text-left': forDashboard, 'text-center': !forDashboard })
+      "
+    >
       <button
         *ngIf="!loading"
-        [class]="utils.cn('btn px-6 rounded-md mt-3 text-base-100', {'btn-secondary': forDashboard, 'btn-info  w-full': !forDashboard})"
+        [id]="id"
+        [class]="
+          utils.cn('btn px-6 rounded-md mt-3 text-base-100', {
+            'btn-secondary': forDashboard,
+            'btn-info  w-full': !forDashboard,
+            'btn-outline': variant === 'outline'
+          })
+        "
       >
         {{ text }}
       </button>
       <button
         *ngIf="loading"
-        [class]="utils.cn('btn  btn-circle mt-3', {'btn-secondary': forDashboard, 'btn-info': !forDashboard})"
+        [class]="
+          utils.cn('btn  btn-circle mt-3', {
+            'btn-secondary': forDashboard,
+            'btn-info': !forDashboard
+          })
+        "
         type="button"
       >
-      <app-spinner clx='text-base-100'></app-spinner>
+        <app-spinner clx="text-base-100"></app-spinner>
       </button>
     </div>
   `,
@@ -34,6 +50,14 @@ export class FormSubmitBtnComponent {
   @Input({ required: true }) text!: string;
   @Input() loading = false;
   @Input() forDashboard = false;
+  @Input() id = 'submit'
+  @Input() variant : 'solid' | 'outline' = 'solid'
 
-  constructor(protected utils: UtilsService) { }
+  @Output() clickEvent = new EventEmitter();
+
+  constructor(protected utils: UtilsService) {}
+
+  onClick() {
+    this.clickEvent.emit(this.id);
+  }
 }

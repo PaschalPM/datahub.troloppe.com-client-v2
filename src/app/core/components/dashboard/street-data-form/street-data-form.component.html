@@ -1,15 +1,15 @@
 <div class="w-full p-2 md:p-4 lg:w-3/4 mx-auto -mt-5">
   <form
     [formGroup]="streetDataFormGroup"
-    (ngSubmit)="onSubmit()"
+    (ngSubmit)="onSubmit($event)"
     class="rounded-lg bg-base-300 p-4 md:p-8 text-sm shadow-md backdrop-blur-md my-6"
   >
     <div class="flex justify-between items-center relative">
       <!---: Image URL -->
       <app-image-uploader
         label="Photo Preview"
-        name="image_path"
-        [viewOnly]="true"
+        [name]="type.includes('create') ? 'image' : 'image_path'"
+        [viewOnly]="!type.includes('create')"
         [formGroup]="streetDataFormGroup"
       >
       </app-image-uploader>
@@ -22,14 +22,14 @@
         "
       >
         <div>
-          @if(isPermitted){
+          @if(isPermitted && !type.includes('create')){
           <!---: Creator  -->
           <h2 class="font-semibold">By {{ creator }}</h2>
           }
           <h3 class="font-medium" *ngIf="isPermitted">{{ "@" + createdAt }}</h3>
           <h3 class="font-medium" *ngIf="!isPermitted">{{ createdAt }}</h3>
         </div>
-        @if(isPermitted){
+        @if(isPermitted || type === 'view'){
         <div class="font-medium">
           <app-input-field
             clx="my-2"
@@ -42,7 +42,7 @@
         }
       </div>
     </div>
-    @if(isPermitted){
+    @if(type === "view" || (isPermitted && type !== 'new-create')){
     <!---: Property Unique Code -->
     <app-input-field
       [withCounter]="true"
@@ -98,7 +98,7 @@
       [formGroup]="streetDataFormGroup"
     >
     </app-input-field>
-    } @else {
+    } @else { @if(selectedSectorId){
 
     <app-select-dropdown
       clx="my-2"
@@ -112,8 +112,7 @@
       (changeEvent)="onSubSectorChange($event)"
     >
     </app-select-dropdown>
-    }
-
+    } }
     <!---: Location  -->
     <app-input-field
       clx="my-2"
@@ -260,8 +259,7 @@
           <my-mat-icon>warning</my-mat-icon> Geolocation not available
         </span>
       </div>
-      } @if(type !== 'view'){
-
+      } @if(type !== 'view'){ @if(type === 'edit') {
       <!---: Submit Button -->
       <app-form-submit-btn
         text="Save"
@@ -269,7 +267,25 @@
         [forDashboard]="true"
       >
       </app-form-submit-btn>
-      }
+      } @else if (type === 'new-create') {
+      <div class="flex gap-2">
+        <app-form-submit-btn
+          id="create"
+          text="Create"
+          [loading]="isImageLoading"
+          [forDashboard]="true"
+        >
+        </app-form-submit-btn>
+        <app-form-submit-btn
+          id="createAnother"
+          text="Create Another"
+          [loading]="isImageLoading"
+          [forDashboard]="true"
+          variant="outline"
+        >
+        </app-form-submit-btn>
+      </div>
+      } }
     </div>
   </form>
 </div>

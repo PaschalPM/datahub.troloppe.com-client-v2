@@ -63,6 +63,8 @@ type IdAndNameType = { id: number; name: string };
 type NameAndValueType = { name: string; value: number };
 type SectionType = IdAndNameType & { location_id: number };
 type LocationType = IdAndNameType & { is_active: boolean };
+type CreationType = 'create' | 'createAnother' | null
+
 
 // Street Data Table
 type OptionType = { value: string; label: string };
@@ -103,3 +105,4 @@ type SearchedStreetDataType = {
   uniqueCode: string
   imagePath: string
 }
+

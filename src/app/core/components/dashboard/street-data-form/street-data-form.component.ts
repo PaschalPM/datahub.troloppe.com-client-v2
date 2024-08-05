@@ -9,6 +9,8 @@ import { MyMatIconComponent } from '@shared/components/my-mat-icon/my-mat-icon.c
 import { SelectDropdownComponent } from '@shared/components/select-dropdown/select-dropdown.component';
 import { FormFieldDataService } from '@core/services/dashboard/form-field-data.service';
 import { constructionStatusOptions } from 'app/fixtures/street-data';
+import { ActiveLocationService } from '@core/services/dashboard/active-location.service';
+
 
 @Component({
   selector: 'street-data-form',
@@ -20,25 +22,29 @@ import { constructionStatusOptions } from 'app/fixtures/street-data';
     NgIf,
     FormSubmitBtnComponent,
     MyMatIconComponent,
-    SelectDropdownComponent
+    SelectDropdownComponent,
   ],
   templateUrl: './street-data-form.component.html',
   styles: `
     :host{
       display: contents
     }
-  `
+  `,
 })
 export class StreetDataFormComponent {
   @Input({ required: true }) streetDataFormGroup!: FormGroup;
-  @Input({ required: true }) type!: 'view' | 'edit' | 'new-create' | 'existing-create'
-  @Input() onSubmit!: () => void;
-  
-  @Input() geolocation= ''
-  @Input() creator= ''
-  @Input() createdAt= ''
+  @Input({ required: true }) type!:
+    | 'view'
+    | 'edit'
+    | 'new-create'
+    | 'existing-create';
+  @Input() onSubmit!: (event: SubmitEvent) => void;
+
+  @Input() geolocation = '';
+  @Input() creator = '';
+  @Input() createdAt = '';
   @Input() isPermitted = false;
-  
+
   constructionStatusOptions: OptionType[] = constructionStatusOptions;
   formIsSubmitting = false;
   subSectorPending = false;
@@ -46,30 +52,33 @@ export class StreetDataFormComponent {
   sectionOptions: IdAndNameType[] = [];
   sectorOptions: IdAndNameType[] = [];
   subSectorOptions: IdAndNameType[] = [];
-  subSectorLabel = ''
+  subSectorLabel = '';
   isImageLoading = false;
 
+  selectedSectorId!: number;
+
+  fixedLocationId!: number;
   private formFieldData!: StreetDataFormFieldDataInterface;
-  private fixedLocationId!: number;
 
   constructor(
     public utils: UtilsService,
-    private streetDataFormFieldService: FormFieldDataService
+    private streetDataFormFieldService: FormFieldDataService,
+    private activeLocationService: ActiveLocationService
   ) {}
 
   ngOnInit(): void {
+    this.setLocationField();
     this.getUniqueCodeDataList();
     this.getFormFieldDataAndSetsOptionsValueFromAPI();
   }
-  
 
   onSectionChange(sectionId: number) {
     this.streetDataFormGroup.controls['section_id']?.setValue(sectionId);
     this.streetDataFormGroup.controls['section']?.setValue(sectionId);
-
   }
 
   onSectorChange(sectorId: number) {
+    this.selectedSectorId = sectorId;
     this.subSectorPending = true;
     this.streetDataFormGroup.get('sector')?.setValue(sectorId);
     this.streetDataFormGroup.get('sector_id')?.setValue(sectorId);
@@ -88,9 +97,10 @@ export class StreetDataFormComponent {
       .subscribe((formFieldData) => {
         if (formFieldData) {
           this.formFieldData = formFieldData;
+
           // Set fixed location ID
-          this.fixedLocationId =
-            this.streetDataFormGroup.get('location_id')?.value;
+          const locationId = this.streetDataFormGroup.get('location_id')?.value;
+          if (locationId) this.fixedLocationId = locationId;
 
           this.setSectionOptions();
           this.setSectorOptions();
@@ -115,7 +125,7 @@ export class StreetDataFormComponent {
         }
       });
   }
-  
+
   private setSectionOptions() {
     const fixedLocation = this.formFieldData.locations.find(
       (location) => location.id === this.fixedLocationId
@@ -138,12 +148,21 @@ export class StreetDataFormComponent {
     );
     if (selectedSector) {
       this.subSectorOptions = selectedSector.sub_sectors;
-      console.log(this.subSectorOptions)
+      console.log(this.subSectorOptions);
       this.subSectorLabel =
         this.utils.capitalize(selectedSector.name) + ' Sub Sector';
       setTimeout(() => {
         this.subSectorPending = false;
       }, 1000);
+    }
+  }
+
+  private setLocationField() {
+    if (this.type === 'new-create') {
+      this.activeLocationService.getActiveLocation().subscribe((location) => {
+        this.streetDataFormGroup.get('location')?.setValue(location?.name);
+        this.fixedLocationId = location?.id as number;
+      });
     }
   }
 }

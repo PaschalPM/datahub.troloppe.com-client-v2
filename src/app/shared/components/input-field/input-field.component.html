@@ -1,52 +1,87 @@
 <div [class]="clx">
-    <label class="form-control w-full">
-        <div class="label">
-            <span class="label-text font-semibold"> {{ label }} </span>
-            <span class="font-bold text-secondary" *ngIf="isRequired">*</span>
-        </div>
-        <!------------------------------------ INPUT FIELDS ----------------------------->
-        @if(type === 'password')
-        {
-        <div class="relative">
-            <input #passwordInputElement [formControl]="control" [type]="displayPassword ? 'text': 'password'"
-                (input)="formIsSubmitting=false" [name]="name" [placeholder]="placeholder" [class]="utils.cn(inputClx, errorClx)" />
-            <span (click)="toggleVisibility()" [class]="pwVisibilityClx">
-                <pw-visibility-icon [show]="displayPassword"></pw-visibility-icon>
-            </span>
-        </div>
-        }
-        @else if (type === 'textarea') {
-        <textarea [class]="utils.cn('textarea h-24', inputClx)" [placeholder]="placeholder" [formControl]="control"
-            (input)="formIsSubmitting=false"></textarea>
+  <label class="form-control w-full">
+    <div class="label">
+      <span class="label-text font-semibold"> {{ label }} </span>
+      <span class="font-bold text-secondary" *ngIf="isRequired">*</span>
+    </div>
+    <!------------------------------------ INPUT FIELDS ----------------------------->
+    @if(type === 'password') {
+    <div class="relative">
+      <input
+        #passwordInputElement
+        [formControl]="control"
+        [type]="displayPassword ? 'text' : 'password'"
+        (input)="formIsSubmitting = false"
+        [name]="name"
+        [placeholder]="placeholder"
+        [class]="utils.cn(inputClx, errorClx)"
+      />
+      <span (click)="toggleVisibility()" [class]="pwVisibilityClx">
+        <pw-visibility-icon [show]="displayPassword"></pw-visibility-icon>
+      </span>
+    </div>
+    } @else if (type === 'textarea') {
+    <textarea
+      [class]="utils.cn('textarea h-24', inputClx, errorClx)"
+      [placeholder]="placeholder"
+      [formControl]="control"
+      (input)="setCurrentLength($event)"
+      (input)="formIsSubmitting = false"
+    ></textarea>
+    } @else if (type === 'number-list'){
+    <input
+      autocomplete="off"
+      #nonPasswordInputElement
+      type="text"
+      [formControl]="control"
+      [class]="utils.cn(inputClx, errorClx)"
+      [placeholder]="placeholder"
+      (input)="formIsSubmitting = false"
+    />
+    } @else if (type === 'checkbox') {
+    <input
+      type="checkbox"
+      class="checkbox checkbox-secondary"
+      [formControl]="control"
+    />
+    } @else {
+    <input
+      #nonPasswordInputElement
+      [attr.list]="dataList && dataList.length && name + 'options'"
+      [formControl]="control"
+      (input)="setCurrentLength($event)"
+      [type]="type"
+      [placeholder]="placeholder"
+      [class]="utils.cn(inputClx, errorClx)"
+      (input)="formIsSubmitting = false"
+    />
+    <datalist [id]="name + 'options'" *ngIf="dataList && dataList.length">
+      @for(data of dataList; track data){
+      <option [value]="data"></option>
+      }
+    </datalist>
+    }
+    <!------------------------------------ END OF INPUT FIELDS ----------------------------->
+  </label>
 
-        }
-        @else if (type === 'number-list'){
-        <input autocomplete="off" #nonPasswordInputElement type="text" [formControl]="control" [class]="utils.cn(inputClx, errorClx)"
-            [placeholder]="placeholder" (input)="formIsSubmitting=false" />
-        }
-        @else if (type === 'checkbox') {
-        <input type="checkbox" class="checkbox checkbox-secondary" [formControl]="control" />
-        }
-        @else {
-        <input #nonPasswordInputElement [attr.list]="dataList && dataList.length && name+'options'"
-            [formControl]="control" (input)="setCurrentLength($event)" [type]="type" [placeholder]="placeholder" [class]="utils.cn(inputClx, errorClx)"
-            (input)="formIsSubmitting=false" />
-        <datalist [id]="name+'options'" *ngIf="dataList && dataList.length">
-            @for(data of dataList; track data){
-            <option [value]="data">
-                }
-        </datalist>
-        }
-        <!------------------------------------ END OF INPUT FIELDS ----------------------------->
-    </label>
+  <!------------------------------------ ERROR SECTION ---------------------------------------->
+  <app-input-field-error-section
+    [control]="control"
+    [name]="name"
+    [formIsSubmitting]="formIsSubmitting"
+  ></app-input-field-error-section>
+  <!------------------------------------ END OF ERROR SECTION ---------------------------------------->
 
-
-    <!------------------------------------ ERROR SECTION ---------------------------------------->
-    <app-input-field-error-section [control]="control" [name]="name"
-        [formIsSubmitting]="formIsSubmitting"></app-input-field-error-section>
-    <!------------------------------------ END OF ERROR SECTION ---------------------------------------->
-
-    <div *ngIf="withCounter && !(formIsSubmitting && control.invalid) && type !== 'number' && type !== 'checkbox' && !control.disabled"
-    class="mt-1 text-right text-sm text-base-content/75"> {{ currentLength }}/{{ maxLength }}
+  <div
+    *ngIf="
+      withCounter &&
+      !(formIsSubmitting && control.invalid) &&
+      type !== 'number' &&
+      type !== 'checkbox' &&
+      !control.disabled
+    "
+    class="mt-1 text-right text-sm text-base-content/75"
+  >
+    {{ currentLength }}/{{ maxLength }}
   </div>
 </div>

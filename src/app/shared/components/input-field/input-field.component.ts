@@ -1,4 +1,4 @@
-import { Component, input, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { InputFieldErrorSectionComponent } from '../input-field-error-section/input-field-error-section.component';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputFieldHelperComponent } from '@shared/helper-components/input-field-helper/input-field-helper.component';

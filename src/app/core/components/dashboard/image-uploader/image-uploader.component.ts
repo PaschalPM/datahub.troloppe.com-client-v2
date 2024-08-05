@@ -24,7 +24,10 @@ import { FormSubmissionService } from '@shared/services/form-submission.service'
     <div class="mb-6">
       <div>
         <label [for]="name" class=" label-text font-semibold">
-          {{ label }}<span class="font-bold text-secondary" *ngIf="isRequired"> *</span></label
+          {{ label
+          }}<span class="font-bold text-secondary" *ngIf="isRequired">
+            *</span
+          ></label
         >
         <!---: Image Uploader -->
         <div class="relative size-32" *ngIf="!imagePath && !viewOnly">
@@ -62,7 +65,7 @@ import { FormSubmissionService } from '@shared/services/form-submission.service'
             type="button"
             *ngIf="!control.disabled"
             (click)="deleteImage()"
-            class="text-3xl absolute -top-1 right-1 font-medium text-red-500 "
+            class="text-3xl absolute -top-1 right-1 font-medium text-red-500"
           >
             &times;
           </button>
@@ -71,7 +74,7 @@ import { FormSubmissionService } from '@shared/services/form-submission.service'
             *ngIf="isLoading"
             class="absolute inset-0 bg-black/50 flex justify-center items-center"
           >
-            <my-mat-icon class="animate-spin"> settings </my-mat-icon>
+            <my-mat-icon clx="animate-spin"> settings </my-mat-icon>
           </div>
         </div>
         <!---: End Image Viewer -->
@@ -87,10 +90,12 @@ import { FormSubmissionService } from '@shared/services/form-submission.service'
         </div>
         <!---: End Image View Only Spinner  -->
       </div>
+
+      <!---: Error Section  -->
       <div
         [class]="
           utils.cn(
-            '!-mt-1  transform rounded text-sm text-red-500 opacity-100 transition-all duration-150 ease-in-out dark:text-red-400',
+            '!-mt-1  transform rounded text-sm text-error opacity-100 transition-all duration-150 ease-in-out',
             { '!mt-1 opacity-100': formIsSubmitting && control.invalid }
           )
         "
@@ -122,7 +127,7 @@ export class ImageUploaderComponent {
 
   get errorBorder() {
     return this.formIsSubmitting && this.control.invalid
-      ? 'ring-1 ring-red-500 dark:ring-red-400 border-none'
+      ? 'ring-1 ring-error border-none'
       : '';
   }
 
@@ -131,13 +136,13 @@ export class ImageUploaderComponent {
     this.isLoadingChange.emit(this.isLoading);
   }
 
-  private formSubmitSubscription!: Subscription
+  private formSubmitSubscription!: Subscription;
   constructor(
     private tempImgUploader: TempImageUploaderService,
     public utils: UtilsService,
     private imageViewerService: ImageViewerModalService,
     private formSubmit: FormSubmissionService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.control = this.formGroup.controls?.[this.name] as FormControl;
@@ -148,8 +153,8 @@ export class ImageUploaderComponent {
     }
 
     this.control.valueChanges.subscribe((value) => {
-      this.imagePath = value
-    })
+      this.imagePath = value;
+    });
 
     this.formSubmitSubscription = this.formSubmit.formSubmitEvent.subscribe(
       (value) => {
@@ -160,18 +165,21 @@ export class ImageUploaderComponent {
     );
   }
 
-
   deleteImage() {
     if (this.imagePath && !this.isLoading) {
-      this.loadingState = true;
-      this.tempImgUploader.deleteImage(this.imagePath).subscribe({
-        next: () => {
-          this.resetImage();
-        },
-        error: () => {
-          this.resetImage();
-        },
-      });
+      if (this.viewOnly) {
+        this.resetImage();
+      } else {
+        this.loadingState = true;
+        this.tempImgUploader.deleteImage(this.imagePath).subscribe({
+          next: () => {
+            this.resetImage();
+          },
+          error: () => {
+            this.resetImage();
+          },
+        });
+      }
     }
   }
 
@@ -189,7 +197,7 @@ export class ImageUploaderComponent {
   }
 
   ngOnDestroy() {
-    this.formSubmitSubscription.unsubscribe()
+    this.formSubmitSubscription.unsubscribe();
   }
 
   private uploadToServer(image: File) {
