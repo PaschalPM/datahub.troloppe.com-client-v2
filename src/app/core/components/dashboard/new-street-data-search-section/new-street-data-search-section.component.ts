@@ -4,7 +4,7 @@ import { SearchDisplayPaneComponent } from '../search-display-pane/search-displa
 import { StreetDataSearchedItemComponent } from '../street-data-searched-item/street-data-searched-item.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { StreetDataSearchService } from '@core/services/dashboard/street-data-search.service';
-import { delay, map, Observable, of, startWith, tap } from 'rxjs';
+import { map, tap } from 'rxjs';
 import { DebouncedSearchService } from '@shared/services/debounced-search.service';
 
 @Component({
@@ -21,12 +21,10 @@ import { DebouncedSearchService } from '@shared/services/debounced-search.servic
       <div class="m-auto w-[95%] max-w-xl">
         <dashboard-search-input
           [search]="searchedTerm"
-          (focusEvent)="onFocusFetchData($event)"
-          (blurEvent)="isSearchDisplayPaneOpen = false"
           (searchChange)="onSearchTermChange($event)"
           placeholder="Search For Verified Street Data"
         ></dashboard-search-input>
-        @if(isSearchDisplayPaneOpen || searchedTerm) {
+        @if(loadingData || debouncedSearchedTerm) {
         <dashboard-search-display-pane clx="max-w-xl w-[90%] mt-2">
           @if(loadingData){
           <div class="h-12 flex justify-center items-center">
@@ -55,6 +53,7 @@ export class NewStreetDataSearchSectionComponent {
     new EventEmitter<SearchedStreetDataType>();
 
   searchedTerm = '';
+  debouncedSearchedTerm = '';
   searchedStreetDataItems: SearchedStreetDataType[] | null = null;
   isSearchDisplayPaneOpen = false;
   loadingData = false;
@@ -67,7 +66,11 @@ export class NewStreetDataSearchSectionComponent {
   ngOnInit(): void {
     this.debouncedSearchService
       .debouncedObservable(this.fetchSearchStreetDataOptions.bind(this))
-      .pipe(tap(() => (this.loadingData = false)))
+      .pipe(
+        tap(() => {
+          this.debouncedSearchedTerm = this.searchedTerm;
+        })
+      )
       .subscribe((value) => {
         this.searchedStreetDataItems = value;
       });
@@ -75,22 +78,28 @@ export class NewStreetDataSearchSectionComponent {
 
   onSearchTermChange(searchedTerm: string) {
     this.searchedTerm = searchedTerm;
+    if (searchedTerm.length == 1) {
+      this.loadingData = true;
+    }
+    if (searchedTerm.length <= 0) {
+      this.debouncedSearchedTerm = '';
+      this.loadingData = false;
+    }
+
     this.debouncedSearchService.emit(this.searchedTerm);
   }
 
-  onFocusFetchData(searchedTerm: string) {
-    this.isSearchDisplayPaneOpen = true
-    if (!searchedTerm)
-    this.fetchSearchStreetDataOptions()
-      .pipe(tap(() => (this.loadingData = false)))
-      .subscribe((value) => {
-        this.searchedStreetDataItems = value;
-      });
+  onSearchedStreetDataClick(streetData: SearchedStreetDataType) {
+    this.selectedStreetDataEvent.emit(streetData);
   }
-
   private fetchSearchStreetDataOptions(searchedTerm: string = '') {
-    this.loadingData = true;
+    if (searchedTerm.length > 1) {
+      this.loadingData = true;
+    }
     return this.streetDataSearchService.query(searchedTerm).pipe(
+      tap(() => {
+        this.loadingData = false;
+      }),
       map((value) => {
         return value.map((v) => ({
           id: v.id,
@@ -101,8 +110,5 @@ export class NewStreetDataSearchSectionComponent {
         }));
       })
     );
-  }
-  onSearchedStreetDataClick(streetData: SearchedStreetDataType) {
-    this.selectedStreetDataEvent.emit(streetData);
   }
 }

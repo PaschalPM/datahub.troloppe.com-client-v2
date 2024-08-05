@@ -15,9 +15,7 @@
 </div>
 } @else {
 <div [@visibleTrigger]="!resettingForm && 'visible'">
-  <new-street-data-search-section
-    (selectedStreetDataEvent)="fetchStreetData($event)"
-  ></new-street-data-search-section>
+  <existing-create-street-data></existing-create-street-data>
 </div>
 } }
 

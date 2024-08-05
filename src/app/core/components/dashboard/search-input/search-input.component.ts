@@ -11,8 +11,7 @@ import { FormsModule } from '@angular/forms';
     [ngModel]="search"
     (ngModelChange)="onSearchChange($event)"
     (focus)="onFocus()"
-    (blur)="onBlur()"
-    (input)="onClearInput()"
+    (input)="onInput()"
     [placeholder]="placeholder"
   />`,
   styles: `
@@ -27,8 +26,7 @@ export class SearchInputComponent {
 
   @Output() searchChange = new EventEmitter<string>();
   @Output() focusEvent = new EventEmitter<string>();
-  @Output() blurEvent = new EventEmitter<string>();
-  @Output() clearInputEvent = new EventEmitter<string>();
+  @Output() inputEvent = new EventEmitter<string>();
 
   onSearchChange(value: string) {
     this.search = value;
@@ -39,14 +37,7 @@ export class SearchInputComponent {
     this.focusEvent.emit(this.search)
   }
 
-  onBlur()
-  {
-    this.blurEvent.emit()
-  }
-
-  onClearInput(){
-    if (!this.search){
-      this.clearInputEvent.emit()
-    }
+  onInput(){
+      this.inputEvent.emit()
   }
 }

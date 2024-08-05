@@ -42,6 +42,7 @@ export class StreetDataSearchedItemComponent {
 
   emitClickEvent()
   {
+    alert("Hello")
     this.clickEvent.emit(this.searchedStreetData)
   }
 }

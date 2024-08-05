@@ -1,60 +1,28 @@
 import { Component, ViewChild } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
+import { ConfirmModalComponent } from '@core/components/dashboard/modals/confirm-modal/confirm-modal.component';
 import { GeolocationAlertModalComponent } from '@core/components/dashboard/modals/geo-location-alert-modal/geo-location-alert-modal.component';
-import {
-  GeolocationService,
-  PERMISSION_DENIED,
-} from '@core/services/dashboard/geolocation.service';
-import { routeFadeInOut, visibleTrigger } from '@shared/animations';
+import { StreetDataFormComponent } from '@core/components/dashboard/street-data-form/street-data-form.component';
+import { GeolocationService, PERMISSION_DENIED } from '@core/services/dashboard/geolocation.service';
+import { StreetDataService } from '@core/services/dashboard/street-data.service';
+import { AlertService } from '@shared/services/alert.service';
+import { FormSubmissionService } from '@shared/services/form-submission.service';
+import { LoaderService } from '@shared/services/loader.service';
 import { ModalService } from '@shared/services/modal.service';
 import { UtilsService } from '@shared/services/utils.service';
-import { BackBtnComponent } from '@shared/components/back-btn/back-btn.component';
-import {
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import { PaneNavigatorPanelComponent } from '@core/components/dashboard/pane-navigator-panel/pane-navigator-panel.component';
-import { CommonModule } from '@angular/common';
-import { NewStreetDataSearchSectionComponent } from '@core/components/dashboard/new-street-data-search-section/new-street-data-search-section.component';
-import { StreetDataFormComponent } from '@core/components/dashboard/street-data-form/street-data-form.component';
-import { FormSubmissionService } from '@shared/services/form-submission.service';
-import { ConfirmModalComponent } from '@core/components/dashboard/modals/confirm-modal/confirm-modal.component';
-import { LoaderService } from '@shared/services/loader.service';
-import { AlertService } from '@shared/services/alert.service';
-import { StreetDataService } from '@core/services/dashboard/street-data.service';
-import { Router } from '@angular/router';
-import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
-import { ExistingCreateStreetDataComponent } from "../../partials/existing-create-street-data/existing-create-street-data.component";
 
 @Component({
-  selector: 'app-new',
-  standalone: true,
-  imports: [
-    BackBtnComponent,
-    ReactiveFormsModule,
-    PaneNavigatorPanelComponent,
-    CommonModule,
-    NewStreetDataSearchSectionComponent,
-    StreetDataFormComponent,
-    SpinnerComponent,
-    ExistingCreateStreetDataComponent
-],
-  templateUrl: './new.component.html',
-  animations: [routeFadeInOut, visibleTrigger],
-  host: {
-    '[@routeFadeInOut]': 'true',
-    '[style.display]': 'contents',
-  },
+  template: ``,
 })
-export class NewComponent {
-  activePane: 'new-entry' | 'existing-entry' = 'existing-entry';
+export class NewStreetDataHelperComponent {
+  activePane: 'new-entry' | 'existing-entry' = 'new-entry';
   paneTabs = [
     { pane: 'new-entry', tabLabel: 'New Entry' },
     { pane: 'existing-entry', tabLabel: 'Existing Entry' },
   ];
   streetDataFormGroup!: FormGroup;
-  resettingForm = false
+  resettingForm = false;
 
   @ViewChild(StreetDataFormComponent) streetDatForm!: StreetDataFormComponent;
 
@@ -62,37 +30,13 @@ export class NewComponent {
     public utils: UtilsService,
     private geoService: GeolocationService,
     private modalService: ModalService,
-    private fb: FormBuilder,
     private formSubmit: FormSubmissionService,
     private loader: LoaderService,
     private alertService: AlertService,
     private geo: GeolocationService,
     private streetDataService: StreetDataService,
     private router: Router
-  ) {
-    // -----> Form Group
-    this.streetDataFormGroup = this.fb.group(
-      {
-        unique_code: [{ value: null, disabled: true }],
-        street_address: [null, [Validators.required]],
-        description: [null, [Validators.required]], // *
-        sector: [null, [Validators.required]],
-        sub_sector: [null, [Validators.required]],
-        location: [{ value: null, disabled: true }, [Validators.required]],
-        section: [null, [Validators.required]],
-        number_of_units: [null, [Validators.required, Validators.max(1000)]], // *
-        contact_name: [null],
-        contact_numbers: [null],
-        contact_email: [null, [Validators.email]],
-        construction_status: [null, [Validators.required]],
-        development_name: [null],
-        image: [null, [Validators.required]],
-
-        geolocation: [null],
-      },
-      { updateOn: 'submit' }
-    );
-  }
+  ) {}
 
   ngOnInit(): void {
     this.geolocationPrompts();
@@ -130,7 +74,7 @@ export class NewComponent {
                 'Street Data successfully saved.'
               );
               if (creationType === 'createAnother') {
-                this.resetForm()
+                this.resetForm();
               } else {
                 this.router.navigateByUrl(
                   `/dashboard/street-data/${streetData.id}`
@@ -148,7 +92,9 @@ export class NewComponent {
     }
   }
 
-
+  fetchStreetData(searchedStreetData: SearchedStreetDataType) {
+    console.log(searchedStreetData);
+  }
 
   private geolocationPrompts() {
     window.navigator.permissions
@@ -201,11 +147,11 @@ export class NewComponent {
     return body;
   }
 
-  private resetForm(){
-    this.resettingForm = true
+  private resetForm() {
+    this.resettingForm = true;
     setTimeout(() => {
-      this.streetDataFormGroup.reset()
-      this.resettingForm = false
-    }, 1000)
+      this.streetDataFormGroup.reset();
+      this.resettingForm = false;
+    }, 1000);
   }
 }
