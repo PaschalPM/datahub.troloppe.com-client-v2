@@ -11,7 +11,6 @@ import { FormFieldDataService } from '@core/services/dashboard/form-field-data.s
 import { constructionStatusOptions } from 'app/fixtures/street-data';
 import { ActiveLocationService } from '@core/services/dashboard/active-location.service';
 
-
 @Component({
   selector: 'street-data-form',
   standalone: true,
@@ -33,11 +32,7 @@ import { ActiveLocationService } from '@core/services/dashboard/active-location.
 })
 export class StreetDataFormComponent {
   @Input({ required: true }) streetDataFormGroup!: FormGroup;
-  @Input({ required: true }) type!:
-    | 'view'
-    | 'edit'
-    | 'new-create'
-    | 'existing-create';
+  @Input({ required: true }) type!: StreetDataFormType;
   @Input() onSubmit!: (event: SubmitEvent) => void;
 
   @Input() geolocation = '';
@@ -158,7 +153,7 @@ export class StreetDataFormComponent {
   }
 
   private setLocationField() {
-    if (this.type === 'new-create') {
+    if (this.type.includes('create')) {
       this.activeLocationService.getActiveLocation().subscribe((location) => {
         this.streetDataFormGroup.get('location')?.setValue(location?.name);
         this.fixedLocationId = location?.id as number;

@@ -6,6 +6,7 @@ import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { StreetDataSearchService } from '@core/services/dashboard/street-data-search.service';
 import { map, tap } from 'rxjs';
 import { DebouncedSearchService } from '@shared/services/debounced-search.service';
+import { ActiveLocationService } from '@core/services/dashboard/active-location.service';
 
 @Component({
   selector: 'new-street-data-search-section',
@@ -22,9 +23,9 @@ import { DebouncedSearchService } from '@shared/services/debounced-search.servic
         <dashboard-search-input
           [search]="searchedTerm"
           (searchChange)="onSearchTermChange($event)"
-          placeholder="Search For Verified Street Data"
+          [placeholder]="placeholder"
         ></dashboard-search-input>
-        @if(loadingData || debouncedSearchedTerm) {
+        @if(isSearchDisplayPaneOpen) {
         <dashboard-search-display-pane clx="max-w-xl w-[90%] mt-2">
           @if(loadingData){
           <div class="h-12 flex justify-center items-center">
@@ -57,10 +58,12 @@ export class NewStreetDataSearchSectionComponent {
   searchedStreetDataItems: SearchedStreetDataType[] | null = null;
   isSearchDisplayPaneOpen = false;
   loadingData = false;
+  placeholder = '';
 
   constructor(
     private streetDataSearchService: StreetDataSearchService,
-    private debouncedSearchService: DebouncedSearchService
+    private debouncedSearchService: DebouncedSearchService,
+    private activeLocationService: ActiveLocationService
   ) {}
 
   ngOnInit(): void {
@@ -74,16 +77,22 @@ export class NewStreetDataSearchSectionComponent {
       .subscribe((value) => {
         this.searchedStreetDataItems = value;
       });
+
+    this.activeLocationService.getActiveLocation(false).subscribe((value) => {
+      this.placeholder = `Search For Verified Street Data (${value?.name})`;
+    });
   }
 
   onSearchTermChange(searchedTerm: string) {
     this.searchedTerm = searchedTerm;
     if (searchedTerm.length == 1) {
       this.loadingData = true;
+      this.isSearchDisplayPaneOpen = true;
     }
     if (searchedTerm.length <= 0) {
       this.debouncedSearchedTerm = '';
       this.loadingData = false;
+      this.isSearchDisplayPaneOpen = false;
     }
 
     this.debouncedSearchService.emit(this.searchedTerm);
@@ -91,6 +100,10 @@ export class NewStreetDataSearchSectionComponent {
 
   onSearchedStreetDataClick(streetData: SearchedStreetDataType) {
     this.selectedStreetDataEvent.emit(streetData);
+    this.isSearchDisplayPaneOpen = false;
+    this.searchedTerm = '';
+    this.debouncedSearchedTerm = '';
+    this.searchedStreetDataItems = null;
   }
   private fetchSearchStreetDataOptions(searchedTerm: string = '') {
     if (searchedTerm.length > 1) {

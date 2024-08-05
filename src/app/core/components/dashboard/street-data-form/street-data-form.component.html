@@ -9,7 +9,7 @@
       <app-image-uploader
         label="Photo Preview"
         [name]="type.includes('create') ? 'image' : 'image_path'"
-        [viewOnly]="!type.includes('create')"
+        [mode]="type.includes('create') ? 'view-edit' : 'view-only'"
         [formGroup]="streetDataFormGroup"
       >
       </app-image-uploader>
@@ -26,10 +26,12 @@
           <!---: Creator  -->
           <h2 class="font-semibold">By {{ creator }}</h2>
           }
-          <h3 class="font-medium" *ngIf="isPermitted">{{ "@" + createdAt }}</h3>
-          <h3 class="font-medium" *ngIf="!isPermitted">{{ createdAt }}</h3>
+          @if(type === 'edit' || type === 'view'){
+            <h3 class="font-medium" *ngIf="isPermitted">{{ "@" + createdAt }}</h3>
+            <h3 class="font-medium" *ngIf="!isPermitted">{{ createdAt }}</h3>
+          }
         </div>
-        @if(isPermitted || type === 'view'){
+        @if(type === 'view' || (isPermitted && type === 'edit')){
         <div class="font-medium">
           <app-input-field
             clx="my-2"
@@ -42,6 +44,7 @@
         }
       </div>
     </div>
+
     @if(type === "view" || (isPermitted && type !== 'new-create')){
     <!---: Property Unique Code -->
     <app-input-field
@@ -239,7 +242,7 @@
         })
       "
     >
-      @if(isPermitted){
+      @if(isPermitted && !type.includes('create')){
       <!---: Google URL -->
       <div
         [class]="

@@ -15,7 +15,7 @@
 </div>
 } @else {
 <div [@visibleTrigger]="!resettingForm && 'visible'">
-  <existing-create-street-data></existing-create-street-data>
+  <existing-create-street-data [streetDataFormGroup]="streetDataFormGroup"></existing-create-street-data>
 </div>
 } }
 

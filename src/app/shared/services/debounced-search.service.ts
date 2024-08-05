@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import {
   debounceTime,
-  distinctUntilChanged,
   Observable,
   Subject,
   switchMap,
@@ -24,7 +23,6 @@ export class DebouncedSearchService {
   ) {
     return this.searchSubject.asObservable().pipe(
       debounceTime(wait),
-      distinctUntilChanged(),
       switchMap((searchTerm) => {
         return observableFunc(searchTerm);
       })

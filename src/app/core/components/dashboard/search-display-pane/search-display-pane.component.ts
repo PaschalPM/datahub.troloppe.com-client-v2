@@ -9,7 +9,7 @@ import { UtilsService } from '@shared/services/utils.service';
     <div
       [class]="
         utils.cn(
-          'shadow-lg border-b border-r bg-base-100/20 border-base-content max-h-72 min-h-12 space-y-1w overflow-auto absolute w-full z-25',
+          'shadow-lg border-b border-r bg-base-200 border-base-content max-h-72 min-h-12 space-y-1w overflow-auto absolute w-full z-25',
           clx
         )
       "

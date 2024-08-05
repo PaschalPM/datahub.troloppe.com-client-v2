@@ -114,15 +114,15 @@ export class NewComponent {
 
           let googleMapsUrl;
 
-          if (!this.utils.isVPNActive()) {
-            try {
-              googleMapsUrl = await this.geo.getGoogleMapsUrl();
-            } catch (error) {
-              googleMapsUrl = null;
-              console.error(error);
-            }
-            body.geolocation = googleMapsUrl;
-          }
+          // if (!this.utils.isVPNActive()) {
+          //   try {
+          //     googleMapsUrl = await this.geo.getGoogleMapsUrl();
+          //   } catch (error) {
+          //     googleMapsUrl = null;
+          //     console.error(error);
+          //   }
+          //   body.geolocation = googleMapsUrl;
+          // }
           this.streetDataService.store(body).subscribe({
             next: (streetData) => {
               this.alertService.success(
@@ -147,8 +147,6 @@ export class NewComponent {
       );
     }
   }
-
-
 
   private geolocationPrompts() {
     window.navigator.permissions

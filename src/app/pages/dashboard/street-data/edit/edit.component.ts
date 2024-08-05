@@ -60,7 +60,6 @@ export class EditComponent extends StreetDataDetails {
           this.location.back()
         },
         error: (error) => {
-          console.log(error);
           this.alert.error('Error', error.message);
           this.loader.stop();
         },
@@ -127,7 +126,7 @@ export class EditComponent extends StreetDataDetails {
 
   ngOnInit(): void {
     this.setStreetDataId();
-    this.initFormDataAndSomeProperties(true);
+    this.initFormDataAndSomeProperties('edit');
     this.checkDataIsLoaded();
     this.setPermission()
   }

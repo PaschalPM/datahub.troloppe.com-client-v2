@@ -30,7 +30,7 @@ import { FormSubmissionService } from '@shared/services/form-submission.service'
           ></label
         >
         <!---: Image Uploader -->
-        <div class="relative size-32" *ngIf="!imagePath && !viewOnly">
+        <div class="relative size-32" *ngIf="!imagePath && mode !== 'view-only'">
           <div
             [class]="
               utils.cn(
@@ -80,7 +80,7 @@ import { FormSubmissionService } from '@shared/services/form-submission.service'
         <!---: End Image Viewer -->
 
         <!---: Image View Only Spinner -->
-        <div class="relative size-32" *ngIf="viewOnly && viewOnlyLoading">
+        <div class="relative size-32" *ngIf="mode === 'view-only' && viewOnlyLoading">
           <!---: Uploading Spinner -->
           <div
             class="absolute inset-0 bg-black/50 flex justify-center items-center"
@@ -111,7 +111,7 @@ export class ImageUploaderComponent {
   @Input({ required: true }) label!: string;
   @Input({ required: true }) name!: string;
   @Input({ required: true }) formGroup!: FormGroup;
-  @Input() viewOnly = false;
+  @Input() mode: 'view-only' | 'view-edit' | 'default' = 'default';
   @Input() isLoading = false;
 
   @Output() isLoadingChange = new EventEmitter();
@@ -147,7 +147,7 @@ export class ImageUploaderComponent {
   ngOnInit(): void {
     this.control = this.formGroup.controls?.[this.name] as FormControl;
     this.isRequired = this.control.hasValidator(Validators.required);
-    if (this.viewOnly) {
+    if (this.mode === 'view-only' || this.mode === 'view-edit') {
       this.imagePath = this.control.value;
       this.viewOnlyLoading = false;
     }
@@ -167,7 +167,7 @@ export class ImageUploaderComponent {
 
   deleteImage() {
     if (this.imagePath && !this.isLoading) {
-      if (this.viewOnly) {
+      if (this.mode === 'view-only') {
         this.resetImage();
       } else {
         this.loadingState = true;

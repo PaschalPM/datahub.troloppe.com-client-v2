@@ -7,7 +7,7 @@ type AuthType = {
   token: string;
 };
 
-type AlertSeverityType = 'success' | 'error'
+type AlertSeverityType = 'success' | 'error';
 
 type NotificationType = {
   id: string;
@@ -22,19 +22,19 @@ type NotificationsPaneType = 'unread' | 'all';
 
 // Types for Components
 type RouteType = {
-  routerLink: string
-  title: string
-}
+  routerLink: string;
+  title: string;
+};
 
-type DynamicRouteType = RouteType | (() => RouteType)
+type DynamicRouteType = RouteType | (() => RouteType);
 
 type FeatureDetailsType = {
-  title: string
-  body: string
-  circleBgClx: string
-}
+  title: string;
+  body: string;
+  circleBgClx: string;
+};
 
-type EmailVerificationAndLoginStageType = 'VERIFY_EMAIL' | 'LOGIN_STAGE'
+type EmailVerificationAndLoginStageType = 'VERIFY_EMAIL' | 'LOGIN_STAGE';
 
 type OverviewWidgetItem = {
   id: number;
@@ -43,10 +43,15 @@ type OverviewWidgetItem = {
   myMatIcon: string;
 };
 
+type StreetDataFormType = 'view' | 'edit' | 'new-create' | 'existing-create';
 
 // MODAL TYPES
 type InputsType = Record<string, unknown> | undefined;
-type ModalValueType = { template: Type<any>; inputs: InputsType; modalIcon?: string };
+type ModalValueType = {
+  template: Type<any>;
+  inputs: InputsType;
+  modalIcon?: string;
+};
 type ImageModalValueType = { template: Type<any>; imageUrl: string };
 
 // Confirmation Modal
@@ -63,8 +68,7 @@ type IdAndNameType = { id: number; name: string };
 type NameAndValueType = { name: string; value: number };
 type SectionType = IdAndNameType & { location_id: number };
 type LocationType = IdAndNameType & { is_active: boolean };
-type CreationType = 'create' | 'createAnother' | null
-
+type CreationType = 'create' | 'createAnother' | null;
 
 // Street Data Table
 type OptionType = { value: string; label: string };
@@ -85,24 +89,23 @@ type StreetDataColType = Pick<
 // Window Augmentation
 interface Window {
   ipData: {
-    city: string
-    country: string
-    hostname: string
-    ip: string
-    loc: string
-    org: string
-    readme: string
-    region: string
-    timezone: string
-  }
+    city: string;
+    country: string;
+    hostname: string;
+    ip: string;
+    loc: string;
+    org: string;
+    readme: string;
+    region: string;
+    timezone: string;
+  };
 }
 
-// Street Data Search 
+// Street Data Search
 type SearchedStreetDataType = {
-  id: number
-  streetAddress: string
-  developmentName: string
-  uniqueCode: string
-  imagePath: string
-}
-
+  id: number;
+  streetAddress: string;
+  developmentName: string;
+  uniqueCode: string;
+  imagePath: string;
+};

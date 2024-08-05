@@ -87,7 +87,7 @@ export const routes: Routes = [
       },
       {
         path: 'street-data/new',
-        // canActivate: [newStreetDataFormGuard],
+        canActivate: [newStreetDataFormGuard],
         component: StreetDataNewComponent,
         title: 'Create Street Data',
       },
