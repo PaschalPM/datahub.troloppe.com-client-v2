@@ -58,7 +58,6 @@ export class NotificationsService {
         }),
         tap({
           next: (value) => {
-            console.log(value)
             this.notificationsObservable.next(value);
           },
         })

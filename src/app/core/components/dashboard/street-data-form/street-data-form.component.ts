@@ -143,7 +143,6 @@ export class StreetDataFormComponent {
     );
     if (selectedSector) {
       this.subSectorOptions = selectedSector.sub_sectors;
-      console.log(this.subSectorOptions);
       this.subSectorLabel =
         this.utils.capitalize(selectedSector.name) + ' Sub Sector';
       setTimeout(() => {

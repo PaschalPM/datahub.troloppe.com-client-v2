@@ -89,13 +89,8 @@ export class StreetDataService {
       );
   }
 
-  ngOnDestroy(): void {
-    this.streetDataSubscription.unsubscribe();
-  }
-
   parseStreetDataForForm(streetData: StreetData, formType: StreetDataFormType) {
     let newStreetDataValue: StreetData;
-    console.log(streetData)
     if (streetData) {
       if (formType !== 'view') {
         const valueCopy = { ...streetData };
@@ -117,7 +112,11 @@ export class StreetDataService {
     }
     return null;
   }
-  
+
+  ngOnDestroy(): void {
+    this.streetDataSubscription.unsubscribe();
+  }
+
   private retrieveStreetData() {
     return this.auth.onCurrentUser().pipe(
       switchMap((currentUser) => {

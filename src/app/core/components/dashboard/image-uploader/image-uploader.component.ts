@@ -34,7 +34,7 @@ import { FormSubmissionService } from '@shared/services/form-submission.service'
           <div
             [class]="
               utils.cn(
-                'h-full bg-base-300 border rounded-xl flex justify-center items-center text-4xl',
+                'h-full border border-base-100 rounded-xl flex justify-center items-center text-4xl',
                 errorBorder
               )
             "

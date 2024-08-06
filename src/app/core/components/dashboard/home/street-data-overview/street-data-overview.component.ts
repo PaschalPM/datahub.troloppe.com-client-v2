@@ -6,11 +6,13 @@ import { ChartContainerComponent } from '../chart-container/chart-container.comp
 import { UserRoles } from '@shared/enums/user-roles';
 import { PermissionService } from '@shared/services/permission.service';
 import { ActiveLocationIndicatorComponent } from '../active-location-indicator/active-location-indicator.component';
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { TextButtonComponent } from '../../text-btn/text-btn.component';
 import { OverviewService } from '@core/services/dashboard/overview.service';
 import { UtilsService } from '@shared/services/utils.service';
 import { SpinnerComponent } from "@shared/components/spinner/spinner.component";
+import { MyMatIconComponent } from "@shared/components/my-mat-icon/my-mat-icon.component";
+import { CreateAndDownloadStreetDataBtnsComponent } from "../../../dashbaord/create-and-download-street-data-btns/create-and-download-street-data-btns.component";
 
 @Component({
   selector: 'dashboard-street-data-overview',
@@ -23,7 +25,9 @@ import { SpinnerComponent } from "@shared/components/spinner/spinner.component";
     ActiveLocationIndicatorComponent,
     TextButtonComponent,
     RouterModule,
-    SpinnerComponent
+    SpinnerComponent,
+    MyMatIconComponent,
+    CreateAndDownloadStreetDataBtnsComponent
 ],
   templateUrl: './street-data-overview.component.html',
 })
@@ -67,7 +71,6 @@ export class StreetDataOverviewComponent {
 
   constructor(
     private permission: PermissionService,
-    private router: Router,
     private streetDataOverviewService: OverviewService,
     private utils: UtilsService
   ) {
@@ -79,9 +82,7 @@ export class StreetDataOverviewComponent {
     this.getVisualOverviewData();
     this.getUserPerformanceVisuals();
   }
-  routeToNewStreetView() {
-    this.router.navigateByUrl('/dashboard/street-data/new');
-  }
+
 
   getWidgetOverviewData() {
     this.streetDataOverviewService.getWidgetSet().subscribe((value) => {

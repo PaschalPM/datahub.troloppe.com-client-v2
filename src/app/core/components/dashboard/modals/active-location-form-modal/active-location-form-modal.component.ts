@@ -121,7 +121,6 @@ export class ActiveLocationFormModalComponent {
   private getLocationOptions() {
 
     this.locationOptions$ = this.sdffd.getFormFieldData().pipe(map((value) => {
-      console.log(value)
       return value?.locations as IdAndNameType[]
     }))
   }

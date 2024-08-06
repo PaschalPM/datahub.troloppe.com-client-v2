@@ -23,6 +23,7 @@ import { ActiveLocationService } from '@core/services/dashboard/active-location.
         <dashboard-search-input
           [search]="searchedTerm"
           (searchChange)="onSearchTermChange($event)"
+          (focusEvent)="onFocusFetchSearchData()"
           [placeholder]="placeholder"
         ></dashboard-search-input>
         @if(isSearchDisplayPaneOpen) {
@@ -84,17 +85,16 @@ export class NewStreetDataSearchSectionComponent {
   }
 
   onSearchTermChange(searchedTerm: string) {
-    this.searchedTerm = searchedTerm;
-    if (searchedTerm.length == 1) {
+    if (searchedTerm.length <= 0 && this.searchedTerm.length === 1) {
+      this.loadingData = false;
+      this.isSearchDisplayPaneOpen = false;
+      this.searchedStreetDataItems = null;
+    } else if (searchedTerm.length === 1 && this.searchedTerm.length <= 0) {
       this.loadingData = true;
       this.isSearchDisplayPaneOpen = true;
     }
-    if (searchedTerm.length <= 0) {
-      this.debouncedSearchedTerm = '';
-      this.loadingData = false;
-      this.isSearchDisplayPaneOpen = false;
-    }
-
+    
+    this.searchedTerm = searchedTerm;
     this.debouncedSearchService.emit(this.searchedTerm);
   }
 
@@ -104,6 +104,14 @@ export class NewStreetDataSearchSectionComponent {
     this.searchedTerm = '';
     this.debouncedSearchedTerm = '';
     this.searchedStreetDataItems = null;
+  }
+
+  onFocusFetchSearchData() {
+    this.isSearchDisplayPaneOpen = true;
+    this.loadingData = true;
+    this.fetchSearchStreetDataOptions().subscribe((value) => {
+      this.searchedStreetDataItems = value;
+    });
   }
   private fetchSearchStreetDataOptions(searchedTerm: string = '') {
     if (searchedTerm.length > 1) {

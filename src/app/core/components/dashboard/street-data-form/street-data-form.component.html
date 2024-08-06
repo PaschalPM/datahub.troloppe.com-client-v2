@@ -25,10 +25,9 @@
           @if(isPermitted && !type.includes('create')){
           <!---: Creator  -->
           <h2 class="font-semibold">By {{ creator }}</h2>
-          }
-          @if(type === 'edit' || type === 'view'){
-            <h3 class="font-medium" *ngIf="isPermitted">{{ "@" + createdAt }}</h3>
-            <h3 class="font-medium" *ngIf="!isPermitted">{{ createdAt }}</h3>
+          } @if(type === 'edit' || type === 'view'){
+          <h3 class="font-medium" *ngIf="isPermitted">{{ "@" + createdAt }}</h3>
+          <h3 class="font-medium" *ngIf="!isPermitted">{{ createdAt }}</h3>
           }
         </div>
         @if(type === 'view' || (isPermitted && type === 'edit')){
@@ -279,6 +278,8 @@
           [forDashboard]="true"
         >
         </app-form-submit-btn>
+        @if(type === 'new-create'){
+
         <app-form-submit-btn
           id="createAnother"
           text="Create Another"
@@ -287,6 +288,7 @@
           variant="outline"
         >
         </app-form-submit-btn>
+        }
       </div>
       } }
     </div>

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { routeFadeInOut } from '@shared/animations';
-import { ActiveLocationIndicatorComponent } from "@core/components/dashboard/home/active-location-indicator/active-location-indicator.component";
-import { TextButtonComponent } from "@core/components/dashboard/text-btn/text-btn.component";
+import { ActiveLocationIndicatorComponent } from '@core/components/dashboard/home/active-location-indicator/active-location-indicator.component';
+import { TextButtonComponent } from '@core/components/dashboard/text-btn/text-btn.component';
 import { Router } from '@angular/router';
 import { UtilsService } from '@shared/services/utils.service';
 import { PermissionService } from '@shared/services/permission.service';
@@ -13,11 +13,18 @@ import { ActionsComponent } from '@shared/components/ag-grid/street-data/actions
 import { ImagePreviewComponent } from '@shared/components/ag-grid/street-data/image-preview/image-preview.component';
 import { AsyncPipe } from '@angular/common';
 import { StreetDataService } from '@core/services/dashboard/street-data.service';
+import { CreateAndDownloadStreetDataBtnsComponent } from '@core/components/dashbaord/create-and-download-street-data-btns/create-and-download-street-data-btns.component';
 
 @Component({
   selector: 'app-index',
   standalone: true,
-  imports: [ActiveLocationIndicatorComponent, TextButtonComponent, AgGridAngular, AsyncPipe],
+  imports: [
+    ActiveLocationIndicatorComponent,
+    TextButtonComponent,
+    AgGridAngular,
+    AsyncPipe,
+    CreateAndDownloadStreetDataBtnsComponent,
+  ],
   templateUrl: './index.component.html',
   animations: [routeFadeInOut],
   host: {
@@ -79,27 +86,31 @@ export class IndexComponent {
     autoHeight: true,
     cellClass: '!flex !items-center',
   };
-  tableThemeColor: 'dark' | 'light' = 'light'
-  isLoading = true
-  private actualColorSchemeSubscription!: Subscription
+  tableThemeColor: 'dark' | 'light' = 'light';
+  isLoading = true;
+  private actualColorSchemeSubscription!: Subscription;
 
   constructor(
     private sd: StreetDataService,
     private router: Router,
     private utils: UtilsService,
     private permission: PermissionService,
-    public colorScheme: ColorSchemeService,
-  ) { }
+    public colorScheme: ColorSchemeService
+  ) {}
 
   ngOnInit() {
-    this.rowData = this.sd.getStreetData().pipe(tap((value) => {
-      if (value) {
-        this.isLoading = false
-      }
-    }))
-    this.actualColorSchemeSubscription = this.colorScheme.getActualColorScheme().subscribe((value) => {
-      this.tableThemeColor = value
-    })
+    this.rowData = this.sd.getStreetData().pipe(
+      tap((value) => {
+        if (value) {
+          this.isLoading = false;
+        }
+      })
+    );
+    this.actualColorSchemeSubscription = this.colorScheme
+      .getActualColorScheme()
+      .subscribe((value) => {
+        this.tableThemeColor = value;
+      });
   }
 
   onCellClick(event: CellClickedEvent) {
@@ -118,6 +129,6 @@ export class IndexComponent {
   }
 
   ngOnDestroy() {
-    this.actualColorSchemeSubscription.unsubscribe()
+    this.actualColorSchemeSubscription.unsubscribe();
   }
 }

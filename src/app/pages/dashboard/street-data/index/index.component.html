@@ -1,7 +1,6 @@
 <div class="my-4 flex justify-between items-center">
     <dashboard-active-location-indicator />
-    <text-button withIcon="add" [isFlexed]="true" (clickEvent)="routeToNewStreetView()"
-        text="New Street Data"></text-button>
+    <dashboard-create-and-download-street-data-btns/>
 </div>
 
 <ag-grid-angular [loading]="isLoading" [rowData]="rowData | async" class="!bg-transparent h-[calc(100vh-220px)]"
