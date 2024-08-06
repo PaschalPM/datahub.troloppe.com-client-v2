@@ -270,7 +270,7 @@
         [forDashboard]="true"
       >
       </app-form-submit-btn>
-      } @else if (type === 'new-create') {
+      } @else if (type.includes('create')) {
       <div class="flex gap-2">
         <app-form-submit-btn
           id="create"

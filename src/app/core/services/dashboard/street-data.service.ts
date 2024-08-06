@@ -117,6 +117,7 @@ export class StreetDataService {
     }
     return null;
   }
+  
   private retrieveStreetData() {
     return this.auth.onCurrentUser().pipe(
       switchMap((currentUser) => {

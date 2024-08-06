@@ -1,8 +1,16 @@
-<new-street-data-search-section (selectedStreetDataEvent)="fetchStreetData($event)"></new-street-data-search-section>
+<new-street-data-search-section
+  (selectedStreetDataEvent)="fetchStreetData($event)"
+></new-street-data-search-section>
 @if(selectedStreetDatum) {
-<street-data-form [streetDataFormGroup]="streetDataFormGroup" type="existing-create" [isPermitted]="isPermitted" [onSubmit]="onExistingCreateStreetData.bind(this)"></street-data-form>
-}
-@else {
+<div [@visibleTrigger]="selectedStreetDatum ? 'visible' : ''">
+  <street-data-form
+    [streetDataFormGroup]="streetDataFormGroup"
+    type="existing-create"
+    [isPermitted]="isPermitted"
+    [onSubmit]="onExistingCreateStreetData.bind(this)"
+  ></street-data-form>
+</div>
+} @else {
 <div class="w-full py-20 flex justify-center items-center">
   No Street Datum Selected...
 </div>

@@ -18,7 +18,7 @@ import { ActiveLocationService } from '@core/services/dashboard/active-location.
     SpinnerComponent,
   ],
   template: `
-    <div class="static flex flex-col">
+    <div class="static flex flex-col z-30">
       <div class="m-auto w-[95%] max-w-xl">
         <dashboard-search-input
           [search]="searchedTerm"
@@ -26,7 +26,7 @@ import { ActiveLocationService } from '@core/services/dashboard/active-location.
           [placeholder]="placeholder"
         ></dashboard-search-input>
         @if(isSearchDisplayPaneOpen) {
-        <dashboard-search-display-pane clx="max-w-xl w-[90%] mt-2">
+        <dashboard-search-display-pane clx="max-w-xl w-[90%] mt-2 z-50">
           @if(loadingData){
           <div class="h-12 flex justify-center items-center">
             <app-spinner></app-spinner>

@@ -1,15 +1,20 @@
 import { Component, ViewChild } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ConfirmModalComponent } from '@core/components/dashboard/modals/confirm-modal/confirm-modal.component';
 import { GeolocationAlertModalComponent } from '@core/components/dashboard/modals/geo-location-alert-modal/geo-location-alert-modal.component';
 import { StreetDataFormComponent } from '@core/components/dashboard/street-data-form/street-data-form.component';
-import { GeolocationService, PERMISSION_DENIED } from '@core/services/dashboard/geolocation.service';
+import {
+  GeolocationService,
+  PERMISSION_DENIED,
+} from '@core/services/dashboard/geolocation.service';
 import { StreetDataService } from '@core/services/dashboard/street-data.service';
+import { UserRoles } from '@shared/enums/user-roles';
 import { AlertService } from '@shared/services/alert.service';
 import { FormSubmissionService } from '@shared/services/form-submission.service';
 import { LoaderService } from '@shared/services/loader.service';
 import { ModalService } from '@shared/services/modal.service';
+import { PermissionService } from '@shared/services/permission.service';
 import { UtilsService } from '@shared/services/utils.service';
 
 @Component({
@@ -23,6 +28,7 @@ export class NewStreetDataHelperComponent {
   ];
   streetDataFormGroup!: FormGroup;
   resettingForm = false;
+  isPermitted = false;
 
   @ViewChild(StreetDataFormComponent) streetDatForm!: StreetDataFormComponent;
 
@@ -30,19 +36,51 @@ export class NewStreetDataHelperComponent {
     public utils: UtilsService,
     private geoService: GeolocationService,
     private modalService: ModalService,
+    private fb: FormBuilder,
     private formSubmit: FormSubmissionService,
     private loader: LoaderService,
     private alertService: AlertService,
     private geo: GeolocationService,
-    private streetDataService: StreetDataService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private permissionService: PermissionService,
+    protected streetDataService: StreetDataService
+  ) {
+    // -----> Form Group
+    this.streetDataFormGroup = this.fb.group(
+      {
+        unique_code: [{ value: null, disabled: true }],
+        street_address: [null, [Validators.required]],
+        description: [null, [Validators.required]], // *
+        sector: [null, [Validators.required]],
+        sub_sector: [null, [Validators.required]],
+        location: [{ value: null, disabled: true }, [Validators.required]],
+        section: [null, [Validators.required]],
+        number_of_units: [null, [Validators.required, Validators.max(1000)]], // *
+        contact_name: [null],
+        contact_numbers: [null],
+        contact_email: [null, [Validators.email]],
+        construction_status: [null, [Validators.required]],
+        development_name: [null],
+        image: [null, [Validators.required]],
+
+        geolocation: [null],
+      },
+      { updateOn: 'submit' }
+    );
+  }
 
   ngOnInit(): void {
     this.geolocationPrompts();
+    this.setPermission();
   }
 
-  onCreateStreetData(event: SubmitEvent) {
+  onCreateStreetData(
+    event: SubmitEvent,
+    formType: Extract<
+      StreetDataFormType,
+      'new-create' | 'existing-create'
+    > = 'new-create'
+  ) {
     this.formSubmit.onFormSubmission();
     if (this.streetDataFormGroup.valid) {
       const creationType: CreationType = event.submitter?.id as CreationType;
@@ -54,10 +92,12 @@ export class NewStreetDataHelperComponent {
         severity: 'warning',
         ok: async () => {
           this.loader.start();
-          const body = this.formatedDataForSubmission();
-
+          let body = this.formatedDataForSubmission();
+          if (formType === 'existing-create') {
+            body.unique_code =
+              this.streetDataFormGroup.get('unique_code')?.value;
+          }
           let googleMapsUrl;
-
           if (!this.utils.isVPNActive()) {
             try {
               googleMapsUrl = await this.geo.getGoogleMapsUrl();
@@ -92,8 +132,8 @@ export class NewStreetDataHelperComponent {
     }
   }
 
-  fetchStreetData(searchedStreetData: SearchedStreetDataType) {
-    console.log(searchedStreetData);
+  ngOnDestroy(): void {
+    this.streetDataFormGroup.reset();
   }
 
   private geolocationPrompts() {
@@ -153,5 +193,12 @@ export class NewStreetDataHelperComponent {
       this.streetDataFormGroup.reset();
       this.resettingForm = false;
     }, 1000);
+  }
+
+  private setPermission() {
+    this.isPermitted = this.permissionService.isPermitted([
+      UserRoles.Admin,
+      UserRoles.ResearchManager,
+    ]);
   }
 }
