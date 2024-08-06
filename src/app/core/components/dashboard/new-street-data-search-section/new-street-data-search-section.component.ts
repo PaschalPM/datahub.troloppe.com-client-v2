@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Output } from '@angular/core';
 import { SearchInputComponent } from '../search-input/search-input.component';
 import { SearchDisplayPaneComponent } from '../search-display-pane/search-display-pane.component';
 import { StreetDataSearchedItemComponent } from '../street-data-searched-item/street-data-searched-item.component';
@@ -7,6 +7,7 @@ import { StreetDataSearchService } from '@core/services/dashboard/street-data-se
 import { map, tap } from 'rxjs';
 import { DebouncedSearchService } from '@shared/services/debounced-search.service';
 import { ActiveLocationService } from '@core/services/dashboard/active-location.service';
+import { ClickOutsideDirective } from '@shared/directives/click-outside.directive';
 
 @Component({
   selector: 'new-street-data-search-section',
@@ -16,9 +17,14 @@ import { ActiveLocationService } from '@core/services/dashboard/active-location.
     SearchDisplayPaneComponent,
     StreetDataSearchedItemComponent,
     SpinnerComponent,
+    ClickOutsideDirective,
   ],
   template: `
-    <div class="static flex flex-col z-30">
+    <div
+      appClickOutside
+      (clickOutside)="reset()"
+      class="static flex flex-col z-30"
+    >
       <div class="m-auto w-[95%] max-w-xl">
         <dashboard-search-input
           [search]="searchedTerm"
@@ -85,15 +91,6 @@ export class NewStreetDataSearchSectionComponent {
   }
 
   onSearchTermChange(searchedTerm: string) {
-    if (searchedTerm.length <= 0 && this.searchedTerm.length === 1) {
-      this.loadingData = false;
-      this.isSearchDisplayPaneOpen = false;
-      this.searchedStreetDataItems = null;
-    } else if (searchedTerm.length === 1 && this.searchedTerm.length <= 0) {
-      this.loadingData = true;
-      this.isSearchDisplayPaneOpen = true;
-    }
-    
     this.searchedTerm = searchedTerm;
     this.debouncedSearchService.emit(this.searchedTerm);
   }
@@ -113,10 +110,16 @@ export class NewStreetDataSearchSectionComponent {
       this.searchedStreetDataItems = value;
     });
   }
+
+  reset() {
+    this.loadingData = false;
+    this.isSearchDisplayPaneOpen = false;
+    this.searchedStreetDataItems = null;
+  }
+
   private fetchSearchStreetDataOptions(searchedTerm: string = '') {
-    if (searchedTerm.length > 1) {
-      this.loadingData = true;
-    }
+    this.loadingData = true;
+
     return this.streetDataSearchService.query(searchedTerm).pipe(
       tap(() => {
         this.loadingData = false;
