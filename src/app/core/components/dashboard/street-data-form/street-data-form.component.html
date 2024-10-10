@@ -1,12 +1,13 @@
 <div class="w-full p-2 md:p-4 lg:w-3/4 mx-auto -mt-5">
   <form
     [formGroup]="streetDataFormGroup"
-    (ngSubmit)="onSubmit($event)"
+    (ngSubmit)="handleSubmit($event)"
     class="rounded-lg bg-base-300 p-4 md:p-8 text-sm shadow-md backdrop-blur-md my-6"
   >
     <div class="flex justify-between items-center relative">
       <!---: Image URL -->
       <app-image-uploader
+        #imageUploaderRef
         label="Photo Preview"
         [name]="type.includes('create') ? 'image' : 'image_path'"
         [mode]="type.includes('create') ? 'view-edit' : 'view-only'"
@@ -33,6 +34,7 @@
         @if(type === 'view' || (isPermitted && type === 'edit')){
         <div class="font-medium">
           <app-input-field
+            #inputFields
             clx="my-2"
             label="Is Verified?"
             name="is_verified"
@@ -47,6 +49,7 @@
     @if(type === "view" || (isPermitted && type !== 'new-create')){
     <!---: Property Unique Code -->
     <app-input-field
+      #inputFieldRefs
       [withCounter]="true"
       clx="my-2"
       label="Property Unique Code"
@@ -59,6 +62,7 @@
 
     <!---: Street Address -->
     <app-input-field
+      #inputFieldRefs
       [withCounter]="true"
       clx="my-2"
       label="Street Address"
@@ -71,6 +75,7 @@
     @if(type === 'view') {
 
     <app-input-field
+      #inputFieldRefs
       clx="my-2"
       label="Sector"
       name="sector"
@@ -79,7 +84,8 @@
     </app-input-field>
     } @else {
     <app-select-dropdown
-      clx="my-2"
+      #selectDropdownRefs
+      clx="my-3"
       label="Sector"
       name="sector"
       [items]="sectorOptions"
@@ -92,18 +98,20 @@
     }
 
     <!---:Sub Sector  -->
-    @if(type === 'view') {
+    @if(type === 'view' && streetDataFormGroup.get('sub_sector')?.value) {
     <app-input-field
+      #inputFieldRefs
       clx="my-2"
       label="Sub Sector"
       name="sub_sector"
       [formGroup]="streetDataFormGroup"
     >
     </app-input-field>
-    } @else { @if(selectedSectorId){
+    } @else { @if(selectedSectorId > 0 && subSectorOptions.length > 0){
 
     <app-select-dropdown
-      clx="my-2"
+      #selectDropdownRefs
+      clx="my-3"
       [label]="subSectorLabel"
       name="sub_sector"
       [items]="subSectorOptions"
@@ -114,9 +122,21 @@
       (changeEvent)="onSubSectorChange($event)"
     >
     </app-select-dropdown>
+    } @else if (selectedSectorId == 0){
+    <app-input-field
+      #inputFieldRefs
+      [withCounter]="true"
+      clx="my-2"
+      label="New Sector"
+      placeholder="Input New Sector"
+      name="new_sector"
+      [formGroup]="streetDataFormGroup"
+    >
+    </app-input-field>
     } }
     <!---: Location  -->
     <app-input-field
+      #inputFieldRefs
       clx="my-2"
       label="Location"
       name="location"
@@ -127,6 +147,7 @@
     <!---: Section  -->
     @if(type === 'view') {
     <app-input-field
+      #inputFieldRefs
       clx="my-2"
       label="Section"
       name="section"
@@ -136,6 +157,7 @@
     } @else {
 
     <app-select-dropdown
+      #selectDropdownRefs
       label="Section"
       name="section"
       [formGroup]="streetDataFormGroup"
@@ -149,7 +171,12 @@
     }
 
     <!---: Number of Units  -->
+    <!-- Displays if selected sector is Residential -->
+    @if (selectedSectorId == 1 || (type === "view" &&
+    streetDataFormGroup.get('sector')?.value === "Residential")) {
+
     <app-input-field
+      #inputFieldRefs
       clx="my-2"
       label="Number of Units"
       name="number_of_units"
@@ -157,31 +184,50 @@
       type="number"
     >
     </app-input-field>
+    } @else if(selectedSectorId < 1 || selectedSectorId > 1 || (type === "view"
+    && streetDataFormGroup.get('sector')?.value !== "Residential")) {
+    <app-input-field
+      #inputFieldRefs
+      clx="my-2"
+      label="Size (sqm)"
+      name="size"
+      [formGroup]="streetDataFormGroup"
+      type="number"
+    >
+    </app-input-field>
+    }
 
     <!---: Construction Status -->
-    @if(type === 'view') {
+    <!-- Hidden if selected sector is Land -->
+    @if(selectedSectorId != 4) { @if(type === 'view') { @if
+    (streetDataFormGroup.get('sector')?.value !== "Land") {
+
     <app-input-field
+      #inputFieldRefs
       clx="my-2"
       label="Construction Status"
       name="construction_status"
       [formGroup]="streetDataFormGroup"
     >
     </app-input-field>
-    } @else {
+    } } @else {
 
     <app-select-dropdown
+      #selectDropdownRefs
       label="Construction Status"
       name="construction_status"
       [formGroup]="streetDataFormGroup"
       bindLabel="label"
       bindValue="value"
       [items]="constructionStatusOptions"
+      clx="my-4"
     >
     </app-select-dropdown>
-    }
+    } }
 
     <!---: Description -->
     <app-input-field
+      #inputFieldRefs
       [withCounter]="true"
       clx="my-2"
       label="Description"
@@ -193,6 +239,7 @@
 
     <!---: Development Name -->
     <app-input-field
+      #inputFieldRefs
       [withCounter]="true"
       clx="my-2"
       label="Development Name"
@@ -203,6 +250,7 @@
 
     <!---: Contact Name -->
     <app-input-field
+      #inputFieldRefs
       [withCounter]="true"
       clx="my-2"
       label="Contact Name"
@@ -213,6 +261,7 @@
 
     <!---: Contact Numbers -->
     <app-input-field
+      #inputFieldRefs
       [withCounter]="true"
       clx="my-2"
       type="number-list"
@@ -224,6 +273,7 @@
 
     <!---: Contact Email -->
     <app-input-field
+      #inputFieldRefs
       [withCounter]="true"
       clx="my-2"
       label="Contact Email"
@@ -264,6 +314,7 @@
       } @if(type !== 'view'){ @if(type === 'edit') {
       <!---: Submit Button -->
       <app-form-submit-btn
+        #inputs
         text="Save"
         [loading]="isImageLoading"
         [forDashboard]="true"
@@ -272,6 +323,7 @@
       } @else if (type.includes('create')) {
       <div class="flex gap-2">
         <app-form-submit-btn
+          #inputs
           id="create"
           text="Create"
           [loading]="isImageLoading"

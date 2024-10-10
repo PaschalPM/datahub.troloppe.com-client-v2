@@ -9,7 +9,7 @@ export const POSITION_UNAVAILABLE = 2;
   providedIn: 'root',
 })
 export class GeolocationService {
-  constructor(private alertService: AlertService) { }
+  constructor(private alertService: AlertService) {}
 
   private errorEvents = new Subject();
   errorEvents$ = this.errorEvents.asObservable();
@@ -17,7 +17,7 @@ export class GeolocationService {
   observe() {
     if ('geolocation' in window.navigator) {
       window.navigator.geolocation.getCurrentPosition(
-        () => { },
+        () => {},
         (error: GeolocationPositionError) => {
           if (error.code === error.PERMISSION_DENIED) {
             this.errorEvents.next(PERMISSION_DENIED);
@@ -32,16 +32,12 @@ export class GeolocationService {
   displayPopupIfAble() {
     if ('geolocation' in window.navigator) {
       window.navigator.geolocation.getCurrentPosition(
-        () => {
-          alert('Good')
-         },
-        () => {
-         
-        },
+        () => {},
+        () => {},
         {
           enableHighAccuracy: true,
           timeout: 3000,
-          maximumAge: 1000
+          maximumAge: 1000,
         }
       );
     }

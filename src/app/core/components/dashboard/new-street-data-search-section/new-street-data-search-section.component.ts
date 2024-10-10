@@ -130,7 +130,7 @@ export class NewStreetDataSearchSectionComponent {
           uniqueCode: v.unique_code,
           streetAddress: v.street_address,
           developmentName: v.development_name,
-          imagePath: v.image_path,
+          imagePath: v.image_path || 'https://via.placeholder.com/300x200.png?text=Image+Not+Available',
         }));
       })
     );

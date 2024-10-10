@@ -48,6 +48,6 @@ export class VerifyEmailStageComponent extends EmailVerificationAndLoginHelper {
   }
 
   ngAfterViewInit(): void {
-    this.emailInputField.inputFocus()
+    this.emailInputField.focus()
   }
 }

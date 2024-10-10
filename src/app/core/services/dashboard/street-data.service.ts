@@ -9,6 +9,7 @@ import { LoaderService } from '@shared/services/loader.service';
 import { CacheService } from '@shared/services/cache.service';
 import { constructionStatusOptions } from 'app/fixtures/street-data';
 import { UtilsService } from '@shared/services/utils.service';
+import { SectorsService } from './sectors.service';
 
 @Injectable({
   providedIn: 'root',
@@ -24,7 +25,8 @@ export class StreetDataService {
     private router: Router,
     private loader: LoaderService,
     private cacheService: CacheService,
-    private utils: UtilsService
+    private utils: UtilsService,
+    private sectorsService: SectorsService
   ) {}
 
   getStreetData(revalidate = true) {
@@ -57,24 +59,49 @@ export class StreetDataService {
   }
 
   store(body: any) {
-    return this.httpClient
-      .post<{ id: number }>(apiUrlFactory(`/street-data`), body, apiHttpOptions)
-      .pipe(
-        tap(() => {
-          this.loader.stop();
+    const storeObservable = (body: any) =>
+      this.httpClient
+        .post<{ id: number }>(
+          apiUrlFactory(`/street-data`),
+          body,
+          apiHttpOptions
+        )
+        .pipe(
+          tap(() => {
+            this.loader.stop();
+          })
+        );
+
+    if (body.new_sector) {
+      return this.sectorsService.store({ name: body.new_sector }).pipe(
+        switchMap((value) => {
+          body.sector_id = value.id;
+          return storeObservable(body);
         })
       );
+    }
+    return storeObservable(body);
   }
 
   edit(body: any, streetDataId: number) {
-    return this.httpClient
-      .put(apiUrlFactory(`/street-data/${streetDataId}`), body, apiHttpOptions)
+    const editObservable = (body: any, id: number) => this.httpClient
+      .put(apiUrlFactory(`/street-data/${id}`), body, apiHttpOptions)
       .pipe(
         tap(() => {
           this.cacheService.remove(`street-data/${streetDataId}`);
           this.loader.stop();
         })
       );
+
+      if (body.new_sector) {
+        return this.sectorsService.store({ name: body.new_sector }).pipe(
+          switchMap((value) => {
+            body.sector_id = value.id;
+            return editObservable(body, streetDataId);
+          })
+        );
+      }
+      return editObservable(body, streetDataId);
   }
 
   delete(streetDataId: number) {
@@ -92,6 +119,7 @@ export class StreetDataService {
   parseStreetDataForForm(streetData: StreetData, formType: StreetDataFormType) {
     let newStreetDataValue: StreetData;
     if (streetData) {
+      
       if (formType !== 'view') {
         const valueCopy = { ...streetData };
         valueCopy.section = streetData.section_id as any;
@@ -100,8 +128,8 @@ export class StreetDataService {
         newStreetDataValue = valueCopy;
       } else {
         const valueCopy = { ...streetData };
-        valueCopy.sector = this.utils.capitalize(streetData.sector);
-        valueCopy.sub_sector = this.utils.capitalize(streetData.sub_sector);
+        valueCopy.sector = streetData.sector;
+        valueCopy.sub_sector = this.utils.capitalize(streetData.sub_sector ?? '');
         valueCopy.construction_status = constructionStatusOptions.find(
           (value) => value.value === valueCopy.construction_status
         )?.label as string;

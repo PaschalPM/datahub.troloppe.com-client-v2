@@ -104,13 +104,14 @@ export class EditComponent extends StreetDataDetails {
         location_id: [{ value: 0 }],
         sector: ['', [Validators.required]],
         sector_id: [{ value: 0 }],
-        sub_sector: ['', [Validators.required]],
+        sub_sector: [''],
         sub_sector_id: [{ value: 0 }],
         description: ['', [Validators.required]], // *
         section: ['', [Validators.required]],
         section_id: [null, [Validators.required]],
 
-        number_of_units: [null, [Validators.required, Validators.max(1000)]], // *
+        number_of_units: [null], // *
+        size:[null],
         contact_name: [''],
         contact_numbers: [''],
         contact_email: ['', [Validators.email]],
@@ -140,6 +141,7 @@ export class EditComponent extends StreetDataDetails {
 
   onEditStreetData() {
     this.formSubmit.onFormSubmission()
+    console.log(this.streetDataFormGroup)
     if (this.streetDataFormGroup.valid) {
       this.modalService.open(
         ConfirmModalComponent,

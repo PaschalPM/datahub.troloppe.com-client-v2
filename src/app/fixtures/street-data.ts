@@ -1,6 +1,6 @@
 export const constructionStatusOptions : Array<OptionType> = [
     {
-        value: 'onhold',
+        value: 'on_hold',
         label: 'On Hold'
     },
     {

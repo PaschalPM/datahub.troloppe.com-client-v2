@@ -78,6 +78,7 @@ export class ViewComponent extends StreetDataDetails {
         sub_sector: [{ value: '', disabled: true }],
         sub_sector_id: [{ value: 0, disabled: true }],
         number_of_units: [{ value: '', disabled: true }], // *
+        size: [{ value: '', disabled: true }], // *
         contact_name: [{ value: '', disabled: true }],
         contact_numbers: [{ value: '', disabled: true }],
         contact_email: [{ value: '', disabled: true }],

@@ -1,5 +1,5 @@
 import { NgIf } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UtilsService } from '@shared/services/utils.service';
 import { SpinnerComponent } from '../spinner/spinner.component';
@@ -7,6 +7,7 @@ import { visibleTrigger } from '@shared/animations';
 import { Subscription } from 'rxjs';
 import { FormSubmissionService } from '@shared/services/form-submission.service';
 import { InputFieldErrorSectionComponent } from "../input-field-error-section/input-field-error-section.component";
+import { Element } from '@angular/compiler';
 
 @Component({
   selector: 'app-select-dropdown',
@@ -16,6 +17,8 @@ import { InputFieldErrorSectionComponent } from "../input-field-error-section/in
   animations: [visibleTrigger]
 })
 export class SelectDropdownComponent {
+  @ViewChild("selectRef") selectRef !:ElementRef<HTMLDivElement>
+
   @Input({ required: true }) label!: string;
   @Input({ required: true }) name!: string;
   @Input({ required: true }) items!: Array<any>;
@@ -47,6 +50,10 @@ export class SelectDropdownComponent {
     const target = (event.target as HTMLSelectElement)
     this.control.setErrors(null);
     this.changeEvent.emit(target.value);
+  }
+
+  focus(){
+    this.selectRef.nativeElement.focus()
   }
 
   private setFormIsSubmitting() {

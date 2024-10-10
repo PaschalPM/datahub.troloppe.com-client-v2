@@ -2,6 +2,10 @@
 @import 'ag-grid-community/styles/ag-theme-quartz.css';
 @import "./dashboard";
 
+body {
+  scroll-behavior: smooth;
+}
+
 .app-backdrop {
   @apply bg-neutral/60 fixed inset-0 h-screen flex;
 }

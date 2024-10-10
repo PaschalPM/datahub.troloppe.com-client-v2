@@ -77,6 +77,6 @@ export class ForgetPasswordComponent {
   }
 
   ngAfterViewInit(): void {
-    this.emailInputField.inputFocus();
+    this.emailInputField.focus();
   }
 }

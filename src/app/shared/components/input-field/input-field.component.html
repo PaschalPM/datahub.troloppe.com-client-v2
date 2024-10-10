@@ -1,4 +1,5 @@
-<div [class]="clx">
+@if(!pending){
+<div [@visibleTrigger]="!pending && 'visible'" [class]="clx">
   <label class="form-control w-full">
     <div class="label">
       <span class="label-text font-semibold"> {{ label }} </span>
@@ -85,3 +86,8 @@
     {{ currentLength }}/{{ maxLength }}
   </div>
 </div>
+} @else {
+<div class="my-2">
+  <app-spinner></app-spinner>
+</div>
+}

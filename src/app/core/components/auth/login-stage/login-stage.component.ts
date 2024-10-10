@@ -70,6 +70,6 @@ export class LoginStageComponent extends EmailVerificationAndLoginHelper {
   }
 
   ngAfterViewInit(): void {
-    this.passwordInputField.inputFocus();
+    this.passwordInputField.focus();
   }
 }

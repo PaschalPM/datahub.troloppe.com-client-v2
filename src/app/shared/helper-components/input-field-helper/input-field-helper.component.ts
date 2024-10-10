@@ -81,7 +81,7 @@ export class InputFieldHelperComponent {
     return this.formIsSubmitting && this.control.errors ? 'input-error' : ''
   }
 
-  inputFocus() {
+  focus() {
     if (this.type === 'password') {
       this.passwordInputElement.nativeElement.focus();
     } else {

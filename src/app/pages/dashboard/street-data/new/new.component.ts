@@ -18,12 +18,6 @@ import { PaneNavigatorPanelComponent } from '@core/components/dashboard/pane-nav
 import { CommonModule } from '@angular/common';
 import { NewStreetDataSearchSectionComponent } from '@core/components/dashboard/new-street-data-search-section/new-street-data-search-section.component';
 import { StreetDataFormComponent } from '@core/components/dashboard/street-data-form/street-data-form.component';
-import { FormSubmissionService } from '@shared/services/form-submission.service';
-import { ConfirmModalComponent } from '@core/components/dashboard/modals/confirm-modal/confirm-modal.component';
-import { LoaderService } from '@shared/services/loader.service';
-import { AlertService } from '@shared/services/alert.service';
-import { StreetDataService } from '@core/services/dashboard/street-data.service';
-import { Router } from '@angular/router';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { ExistingCreateStreetDataComponent } from '../../partials/existing-create-street-data/existing-create-street-data.component';
 import { NewStreetDataHelperComponent } from '@core/components/helpers/new-street-data-helper/new-street-data-helper.component';

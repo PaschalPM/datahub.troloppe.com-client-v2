@@ -51,7 +51,7 @@ export class IndexComponent {
     { field: 'street_address', headerName: ' Street Address' },
     {
       field: 'sector',
-      valueFormatter: (params) => this.utils.capitalize(params.value),
+      valueFormatter: (params) => params.value,
     },
     { field: 'section' },
     { field: 'location' },

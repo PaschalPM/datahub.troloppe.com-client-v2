@@ -21,7 +21,7 @@ import { FormSubmissionService } from '@shared/services/form-submission.service'
   standalone: true,
   imports: [MyMatIconComponent, NgIf, CapitalizePipe],
   template: `
-    <div class="mb-6">
+    <div class="mb-6" [tabIndex]="0" #imageUploader>
       <div>
         <label [for]="name" class=" label-text font-semibold">
           {{ label
@@ -30,7 +30,10 @@ import { FormSubmissionService } from '@shared/services/form-submission.service'
           ></label
         >
         <!---: Image Uploader -->
-        <div class="relative size-32" *ngIf="!imagePath && mode !== 'view-only'">
+        <div
+          class="relative size-32"
+          *ngIf="!imagePath && mode !== 'view-only'"
+        >
           <div
             [class]="
               utils.cn(
@@ -80,7 +83,10 @@ import { FormSubmissionService } from '@shared/services/form-submission.service'
         <!---: End Image Viewer -->
 
         <!---: Image View Only Spinner -->
-        <div class="relative size-32" *ngIf="mode === 'view-only' && viewOnlyLoading">
+        <div
+          class="relative size-32"
+          *ngIf="mode === 'view-only' && viewOnlyLoading"
+        >
           <!---: Uploading Spinner -->
           <div
             class="absolute inset-0 bg-black/50 flex justify-center items-center"
@@ -116,6 +122,7 @@ export class ImageUploaderComponent {
 
   @Output() isLoadingChange = new EventEmitter();
 
+  @ViewChild('imageUploader') imageUploader!: ElementRef<HTMLDivElement>;
   @ViewChild('thumbnail', { static: false })
   thumbnail!: ElementRef<HTMLImageElement>;
   formIsSubmitting = false;
@@ -194,6 +201,10 @@ export class ImageUploaderComponent {
       });
       this.uploadToServer(file);
     }
+  }
+
+  focus() {
+    this.imageUploader.nativeElement.focus();
   }
 
   ngOnDestroy() {

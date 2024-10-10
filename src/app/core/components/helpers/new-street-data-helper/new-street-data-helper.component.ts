@@ -55,7 +55,8 @@ export class NewStreetDataHelperComponent {
         sub_sector: [null, [Validators.required]],
         location: [{ value: null, disabled: true }, [Validators.required]],
         section: [null, [Validators.required]],
-        number_of_units: [null, [Validators.required, Validators.max(1000)]], // *
+        number_of_units: [null], // *
+        size: [null], // *
         contact_name: [null],
         contact_numbers: [null],
         contact_email: [null, [Validators.email]],
@@ -124,11 +125,6 @@ export class NewStreetDataHelperComponent {
           });
         },
       });
-    } else {
-      this.alertService.error(
-        'Form Error',
-        'Check that all fields are correctly filled.'
-      );
     }
   }
 
@@ -144,13 +140,6 @@ export class NewStreetDataHelperComponent {
         if (this.utils.isVPNActive()) {
           window.alert(
             'Please ensure you turn off your VPN service before you process.'
-          );
-        }
-
-        // Location Prompt
-        if (value.state !== 'granted' && value.state === 'prompt') {
-          window.confirm(
-            'You will be prompted to share your location. Kindly allow this request.'
           );
         }
 
