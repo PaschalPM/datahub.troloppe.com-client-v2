@@ -8,7 +8,13 @@
     <dashboard-street-data-overview />
 </div>
 }
-@if (activePane === 'investment-data'){
+@if (activePane === 'external-listings'){
+<div [@visibleTrigger]="activePane === 'external-listings' && 'visible'" class="p-4 text-2xl">
+    External Listings
+</div>
+}
+
+@else if (activePane === 'investment-data'){
 <div [@visibleTrigger]="activePane === 'investment-data' && 'visible'" class="p-4 text-2xl">
     Coming Soon!!!
 </div>

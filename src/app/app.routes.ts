@@ -17,6 +17,8 @@ import { ViewComponent as StreetDataViewComponent } from '@pages/dashboard/stree
 import { EditComponent as StreetDataEditComponent } from '@pages/dashboard/street-data/edit/edit.component';
 import { NewComponent as StreetDataNewComponent } from '@pages/dashboard/street-data/new/new.component';
 import { newStreetDataFormGuard } from '@core/guards/new-street-data-form.guard';
+import { IndexComponent as ExternalListingsIndexComponent } from '@pages/dashboard/external-listings/index/index.component';
+import { NewComponent as ExternalListingsNewComponent } from '@pages/dashboard/external-listings/new/new.component';
 
 export const routes: Routes = [
   {
@@ -101,6 +103,19 @@ export const routes: Routes = [
         component: StreetDataEditComponent,
         title: 'Edit Street Data',
       },
+
+      // External Listings Section
+      {
+        path: 'external-listings',
+        component: ExternalListingsIndexComponent,
+        title: 'External Listings',
+      },
+      {
+        path: 'external-listings/new',
+        component: ExternalListingsNewComponent,
+        title: 'Create External Listing',
+      },
+      // Notification Section
       {
         path: 'notifications',
         component: NotificationsComponent,

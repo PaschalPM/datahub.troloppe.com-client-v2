@@ -47,3 +47,13 @@ type SearchedStreetDataApiType = {
   unique_code: string;
   image_path: string;
 };
+
+type ExternalListingsPaginatedResponseApiType = {
+  data: any,
+  totalPages: number,
+  limit: number,
+  totalRecords: number,
+  currentPage: number,
+  nextPage: number,
+  prevPage: number
+}

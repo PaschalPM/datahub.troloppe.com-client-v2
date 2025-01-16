@@ -90,13 +90,14 @@ export class IndexComponent {
   isLoading = true;
   private actualColorSchemeSubscription!: Subscription;
 
+
   constructor(
     private sd: StreetDataService,
     private router: Router,
     private utils: UtilsService,
     private permission: PermissionService,
     public colorScheme: ColorSchemeService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.rowData = this.sd.getStreetData().pipe(

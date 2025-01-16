@@ -109,3 +109,5 @@ type SearchedStreetDataType = {
   uniqueCode: string;
   imagePath: string;
 };
+
+type Nullable<T> = T | null

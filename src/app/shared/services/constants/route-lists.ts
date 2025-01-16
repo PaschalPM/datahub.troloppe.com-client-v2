@@ -4,6 +4,10 @@ export const dashboardRouteLists = {
       title: 'Street Data',
       routerLink: '/dashboard/street-data',
     },
+    {
+      title: 'External Listings',
+      routerLink: '/dashboard/external-listings',
+    },
   ],
   secondary: [
     {

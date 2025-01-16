@@ -20,11 +20,15 @@ import { routeFadeInOut, visibleTrigger } from '@shared/animations';
   },
 })
 export class HomeComponent {
-  activePane: 'street-data' | 'investment-data' = 'street-data';
+  activePane: 'street-data' | 'investment-data' | 'external-listings' = 'street-data';
   tabs = [
     {
       pane: 'street-data',
       tabLabel: `Street Data`,
+    },
+    {
+      pane: 'external-listings',
+      tabLabel: `External Listings`,
     },
     {
       pane: 'investment-data',

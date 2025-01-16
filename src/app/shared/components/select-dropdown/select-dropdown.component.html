@@ -1,39 +1,35 @@
 <div [class]="utils.cn('', clx)">
-  @if(!pending){
+
   <div [@visibleTrigger]="!pending && 'visible'" tabindex="-1" #selectRef>
-    <label class="form-control w-full">
+    <label class="form-control w-full relative">
       <div class="label">
         <span class="label-text font-semibold"> {{ label }} </span>
         <span class="font-bold text-secondary" *ngIf="isRequired">*</span>
       </div>
-      <select
-        (change)="onChange($event)"
-        [formControl]="control"
-        [class]="
-          utils.cn(
-            'select focus:outline-secondary w-full select-bordered rounded-md',
-            { 'select-error': formIsSubmitting && control.errors }
-          )
-        "
-      >
-        <option [value]="null" selected disabled hidden>Select Option</option>
-        @for (item of items; track $index) {
-        <option [value]="item[bindValue]">{{ item[bindLabel] }}</option>
+      <div class="h-fit w-full relative">
+        @if(displaySelect){
+        <select (change)="onChange($event)" [formControl]="control" [class]="selectClx">
+          <option [value]="null" [selected]="true" [disabled]="true" [hidden]="true">Select Option</option>
+          @for (item of items; track $index) {
+          <option [value]="item[bindValue]">{{ item[bindLabel] }}</option>
+          }
+        </select>
         }
-      </select>
+        @else {
+        <!-- Displays when no options available -->
+        <input [readonly]="true" [value]="optionsNotFoundText ?? 'No options found'" [class]="selectClx" />
+        }
+        @if(pending){
+        <div class="my-2 text-center absolute top-1 left-1/2 -translate-x-1/2">
+          <app-spinner></app-spinner>
+        </div>
+        }
+      </div>
     </label>
   </div>
 
   <!------------------------------------ ERROR SECTION ---------------------------------------->
-  <app-input-field-error-section
-    [control]="control"
-    [name]="name"
-    [formIsSubmitting]="formIsSubmitting"
-  ></app-input-field-error-section>
+  <app-input-field-error-section [control]="control" [name]="name"
+    [formIsSubmitting]="formIsSubmitting"></app-input-field-error-section>
   <!------------------------------------ END OF ERROR SECTION ---------------------------------------->
-  } @else {
-  <div class="my-2">
-    <app-spinner></app-spinner>
-  </div>
-  }
 </div>

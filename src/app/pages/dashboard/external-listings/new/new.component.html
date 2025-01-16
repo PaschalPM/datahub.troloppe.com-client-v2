@@ -1,0 +1,80 @@
+<div class="w-full p-2 md:p-4 lg:w-3/4 mx-auto">
+    <form class="rounded-lg bg-base-300 p-4 md:p-8 text-sm shadow-md backdrop-blur-md my-6">
+
+        <div class="md:flex gap-2 justify-between">
+
+            <!-- State Select Field -->
+            <app-select-dropdown clx="my-3" label="State" name="state" [items]="options$['state'] | async"
+                [formGroup]="externalListingFormGroup" bindLabel="name" bindValue="id"
+                (changeEvent)="onStateChange($event)">
+            </app-select-dropdown>
+
+            <!-- Region Select Field -->
+            <app-select-dropdown clx="my-3" label="Region" name="region" [items]="options$['region'] | async"
+                [formGroup]="externalListingFormGroup" bindLabel="name" bindValue="id"
+                (changeEvent)="onRegionChange($event)" [pending]="isFetching['region']">
+            </app-select-dropdown>
+        </div>
+
+        <div class="md:flex gap-2 justify-between">
+
+            <!-- Location Select Field -->
+            <app-select-dropdown clx="my-3" label="Location" name="location" [items]="options$['location'] | async"
+                [formGroup]="externalListingFormGroup" bindLabel="name" bindValue="id"
+                (changeEvent)="onLocationChange($event)" [pending]="isFetching['location']">
+            </app-select-dropdown>
+
+            <!-- Section Select Field -->
+            <app-select-dropdown clx="my-3" label="Section" name="section" [items]="options$['section'] | async"
+                [formGroup]="externalListingFormGroup" bindLabel="name" bindValue="id"
+                (changeEvent)="onSectionChange($event)" [pending]="isFetching['sections']">
+            </app-select-dropdown>
+        </div>
+
+        <div class="md:flex gap-2 justify-between">
+            <!-- LGA Select Field -->
+            <app-select-dropdown clx="my-3" label="L G A" name="lga" [items]="options$['lga'] | async"
+                [formGroup]="externalListingFormGroup" bindLabel="name" bindValue="id"
+                (changeEvent)="onLgaChange($event)" [pending]="isFetching['lga']">
+            </app-select-dropdown>
+
+            <!-- LCDA Select Field -->
+            <app-select-dropdown clx="my-3" label="L C D A" name="lcda" [items]="options$['lcda'] | async"
+                [formGroup]="externalListingFormGroup" bindLabel="name" bindValue="id" [pending]="isFetching['lcda']">
+            </app-select-dropdown>
+        </div>
+
+        <!-- Street Name Input Field -->
+        <app-input-field [formGroup]="externalListingFormGroup" label="Street Name" name="streetName"></app-input-field>
+
+        <!-- Street Number Input Field -->
+        <app-input-field [formGroup]="externalListingFormGroup" label="Street Number"
+            name="streetNumber"></app-input-field>
+
+        <!-- Development Input Field -->
+        <app-input-field [formGroup]="externalListingFormGroup" label="Development"
+            name="development"></app-input-field>
+
+        <div class="md:flex gap-2 justify-between">
+            <!-- Sector Select Field -->
+            <app-select-dropdown clx="my-3" label="Sector" name="sector" [items]="options$['sector'] | async"
+                [formGroup]="externalListingFormGroup" bindLabel="name" bindValue="id"
+                (changeEvent)="onSectorChange($event)">
+            </app-select-dropdown>
+
+            <!-- Sub Sector Select Field -->
+            <app-select-dropdown clx="my-3" label="Sub Sector" name="subSector" [items]="options$['subSector'] | async"
+                [formGroup]="externalListingFormGroup" bindLabel="name" bindValue="id"
+                [pending]="isFetching['subSector']">
+            </app-select-dropdown>
+        </div>
+
+        <!-- Sub Type Input Field -->
+        <app-input-field [formGroup]="externalListingFormGroup" label="Sub Type" name="subType"></app-input-field>
+
+        <!-- Offer Select Field -->
+        <app-select-dropdown clx="my-3" label="Offer" name="offer" [items]="options$['offer'] | async"
+            [formGroup]="externalListingFormGroup" bindLabel="name" bindValue="id">
+        </app-select-dropdown>
+    </form>
+</div>
