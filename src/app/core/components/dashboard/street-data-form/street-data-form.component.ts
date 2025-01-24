@@ -85,6 +85,12 @@ export class StreetDataFormComponent {
   onSectorChange(sectorId: number) {
     this.selectedSectorId = sectorId;
     this.subSectorPending = true;
+    this.streetDataFormGroup.patchValue({
+      sector: this.selectedSectorId,
+      sectorId: this.selectedSectorId,
+      sub_sector: null,
+      construction_status: null
+    })
     this.streetDataFormGroup.get('sector')?.setValue(this.selectedSectorId);
     this.streetDataFormGroup.get('sector_id')?.setValue(this.selectedSectorId);
     this.streetDataFormGroup.get('sub_sector')?.setValue(null);

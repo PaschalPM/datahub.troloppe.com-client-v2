@@ -1,22 +1,10 @@
-import { Component, ViewChild } from '@angular/core';
-import { GeolocationAlertModalComponent } from '@core/components/dashboard/modals/geo-location-alert-modal/geo-location-alert-modal.component';
-import {
-  GeolocationService,
-  PERMISSION_DENIED,
-} from '@core/services/dashboard/geolocation.service';
+import { Component } from '@angular/core';
 import { routeFadeInOut, visibleTrigger } from '@shared/animations';
-import { ModalService } from '@shared/services/modal.service';
-import { UtilsService } from '@shared/services/utils.service';
-import { BackBtnComponent } from '@shared/components/back-btn/back-btn.component';
 import {
-  FormBuilder,
-  FormGroup,
   ReactiveFormsModule,
-  Validators,
 } from '@angular/forms';
 import { PaneNavigatorPanelComponent } from '@core/components/dashboard/pane-navigator-panel/pane-navigator-panel.component';
 import { CommonModule } from '@angular/common';
-import { NewStreetDataSearchSectionComponent } from '@core/components/dashboard/new-street-data-search-section/new-street-data-search-section.component';
 import { StreetDataFormComponent } from '@core/components/dashboard/street-data-form/street-data-form.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { ExistingCreateStreetDataComponent } from '../../partials/existing-create-street-data/existing-create-street-data.component';
@@ -26,11 +14,9 @@ import { NewStreetDataHelperComponent } from '@core/components/helpers/new-stree
   selector: 'app-new',
   standalone: true,
   imports: [
-    BackBtnComponent,
     ReactiveFormsModule,
     PaneNavigatorPanelComponent,
     CommonModule,
-    NewStreetDataSearchSectionComponent,
     StreetDataFormComponent,
     SpinnerComponent,
     ExistingCreateStreetDataComponent,
@@ -42,4 +28,4 @@ import { NewStreetDataHelperComponent } from '@core/components/helpers/new-stree
     '[style.display]': 'contents',
   },
 })
-export class NewComponent extends NewStreetDataHelperComponent {}
+export class NewComponent extends NewStreetDataHelperComponent { }

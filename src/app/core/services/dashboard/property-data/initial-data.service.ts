@@ -21,12 +21,12 @@ export class InitialDataService {
 
   private getData(invalidateCache: boolean) {
 
-    const url = '/property-data/initial';
+    const url = apiUrlFactory('/property-data/initial');
     const cachedData = !invalidateCache ? this.cacheService.get<InitialDataType>(url) : null
 
     return cachedData
       ? of(cachedData)
-      : this.httpClient.get<InitialDataType>(apiUrlFactory(url));
+      : this.httpClient.get<InitialDataType>(url);
   }
 
   getAllStates(invalidateCache = false) {

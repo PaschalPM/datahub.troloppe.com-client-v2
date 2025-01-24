@@ -6,13 +6,14 @@
             <!-- State Select Field -->
             <app-select-dropdown clx="my-3" label="State" name="state" [items]="options$['state'] | async"
                 [formGroup]="externalListingFormGroup" bindLabel="name" bindValue="id"
-                (changeEvent)="onStateChange($event)">
+                [disableControlBasedOnData]="true" (changeEvent)="onStateChange($event)">
             </app-select-dropdown>
 
             <!-- Region Select Field -->
             <app-select-dropdown clx="my-3" label="Region" name="region" [items]="options$['region'] | async"
                 [formGroup]="externalListingFormGroup" bindLabel="name" bindValue="id"
-                (changeEvent)="onRegionChange($event)" [pending]="isFetching['region']">
+                [disableControlBasedOnData]="true" (changeEvent)="onRegionChange($event)"
+                [pending]="isFetching['region']">
             </app-select-dropdown>
         </div>
 
@@ -21,13 +22,15 @@
             <!-- Location Select Field -->
             <app-select-dropdown clx="my-3" label="Location" name="location" [items]="options$['location'] | async"
                 [formGroup]="externalListingFormGroup" bindLabel="name" bindValue="id"
-                (changeEvent)="onLocationChange($event)" [pending]="isFetching['location']">
+                [disableControlBasedOnData]="true" (changeEvent)="onLocationChange($event)"
+                [pending]="isFetching['location']">
             </app-select-dropdown>
 
             <!-- Section Select Field -->
             <app-select-dropdown clx="my-3" label="Section" name="section" [items]="options$['section'] | async"
                 [formGroup]="externalListingFormGroup" bindLabel="name" bindValue="id"
-                (changeEvent)="onSectionChange($event)" [pending]="isFetching['sections']">
+                [disableControlBasedOnData]="true" (changeEvent)="onSectionChange($event)"
+                [pending]="isFetching['sections']">
             </app-select-dropdown>
         </div>
 
@@ -35,7 +38,7 @@
             <!-- LGA Select Field -->
             <app-select-dropdown clx="my-3" label="L G A" name="lga" [items]="options$['lga'] | async"
                 [formGroup]="externalListingFormGroup" bindLabel="name" bindValue="id"
-                (changeEvent)="onLgaChange($event)" [pending]="isFetching['lga']">
+                [disableControlBasedOnData]="true" (changeEvent)="onLgaChange($event)" [pending]="isFetching['lga']">
             </app-select-dropdown>
 
             <!-- LCDA Select Field -->
@@ -59,7 +62,7 @@
             <!-- Sector Select Field -->
             <app-select-dropdown clx="my-3" label="Sector" name="sector" [items]="options$['sector'] | async"
                 [formGroup]="externalListingFormGroup" bindLabel="name" bindValue="id"
-                (changeEvent)="onSectorChange($event)">
+                [disableControlBasedOnData]="true" (changeEvent)="onSectorChange($event)">
             </app-select-dropdown>
 
             <!-- Sub Sector Select Field -->
@@ -76,5 +79,38 @@
         <app-select-dropdown clx="my-3" label="Offer" name="offer" [items]="options$['offer'] | async"
             [formGroup]="externalListingFormGroup" bindLabel="name" bindValue="id">
         </app-select-dropdown>
+
+        <div class="md:flex gap-2 justify-between">
+            <!-- Number of Beds Field -->
+            <app-input-field [formGroup]="externalListingFormGroup" label="Number of Beds" name="noOfBeds"
+                type="number"></app-input-field>
+
+            <!-- Size Field -->
+            <app-input-field [formGroup]="externalListingFormGroup" label="Size" name="size"
+                type="number"></app-input-field>
+
+            <!-- Land Area Field -->
+            <app-input-field [formGroup]="externalListingFormGroup" label="Land Area" name="landArea"
+                type="number"></app-input-field>
+        </div>
+
+        <div class="md:flex gap-2 justify-between">
+            <!-- Sale Price Field -->
+            <app-input-field [formGroup]="externalListingFormGroup" label="Sale Price" name="salePrice"
+                type="number"></app-input-field>
+
+            <!-- Lease Price Field -->
+            <app-input-field [formGroup]="externalListingFormGroup" label="Lease Price" name="leasePrice"
+                type="number"></app-input-field>
+        </div>
+        <div class="md:flex gap-2 justify-between">
+            <!-- Price/Sqm Field -->
+            <app-input-field [formGroup]="externalListingFormGroup" label="Price/Sqm" name="pricePerSqm"
+                type="number"></app-input-field>
+
+            <!-- Service Charge Field -->
+            <app-input-field [formGroup]="externalListingFormGroup" label="Service Charge" name="serviceCharge"
+                type="number"></app-input-field>
+        </div>
     </form>
 </div>

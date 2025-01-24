@@ -6,8 +6,8 @@ import { ExternalListingsService } from '@core/services/dashboard/external-listi
 import { ColorSchemeService } from '@shared/services/color-scheme.service';
 import { PermissionService } from '@shared/services/permission.service';
 import { AgGridAngular } from 'ag-grid-angular';
-import { ColDef } from 'ag-grid-community';
-import { map, Observable, Subscription, tap } from 'rxjs';
+import { ColDef, GridOptions } from 'ag-grid-community';
+import { Observable, Subscription, tap } from 'rxjs';
 
 @Component({
   selector: 'external-listing-index',
@@ -17,15 +17,25 @@ import { map, Observable, Subscription, tap } from 'rxjs';
   styleUrl: './index.component.scss'
 })
 export class IndexComponent {
-  gridOptions = {
+  gridOptions: GridOptions = {
     suppressFieldDotNotation: true, // Treats dot as part of the field name
-    rowBuffer: 25
+    rowBuffer: 5,
+    getRowId: params => `${params.data.id}`
   };
   rowData!: Observable<any | null>;
   colDefs: ColDef<any>[] = [
-    { headerName: 'S/N', width: 75, valueGetter: 'node.rowIndex + 1' },
+    {
+      headerName: 'S/N', width: 75, filter: false, field: 'id',
+      cellRenderer(params: any) {
+        if (!params.value) {
+          return 'Loading...'
+        }
+        return params.node.rowIndex + 1
+      }
+    },
     {
       field: 'Date',
+      sortable: false
     },
     {
       field: 'Region',
@@ -39,16 +49,20 @@ export class IndexComponent {
     {
       field: "L.G.A",
       headerName: "L. G. A",
+      filter: false
     },
     {
       field: "L.C.D.A",
       headerName: "L. C. D. A",
+      filter: false
     },
     {
       field: "Street",
+      filter: false
     },
     {
       field: "Street Number",
+      filter: false
     },
     {
       field: "Development",
@@ -110,7 +124,8 @@ export class IndexComponent {
     },
     {
       field: "Comment",
-      width: 250
+      width: 250,
+      filter: false
     },
     {
       field: "Source",
@@ -124,10 +139,14 @@ export class IndexComponent {
   defaultColDefs: ColDef<any> = {
     sortable: true,
     filter: true,
-    autoHeight: true,
+    filterParams: {
+      debounceMs: 500,     // Debounce time for user input
+      filterOptions: ['contains']
+    },
+    autoHeight: false,
     cellClass: '!flex !items-center',
     cellStyle: { 'white-space': 'normal', 'word-wrap': 'break-word', 'height': 'max-content' },
-    width: 150
+    width: 150,
   };
   tableThemeColor: 'dark' | 'light' = 'light';
   isLoading = true;
@@ -148,10 +167,22 @@ export class IndexComponent {
       getRows: (params: any) => {
 
         const startRow = params.startRow;
-        const currentPage = Math.floor(startRow / this.pageSize) + 1; // Ensure page calculation works for both up and down scrolls
+        const currentPage = (Math.floor(startRow / this.pageSize) + 1); // Ensure page calculation works for both up and down scrolls
+        const paginatedListingParams: PaginatedListingsParams = {
+          limit: this.pageSize,
+          currentPage,
+        }
+        if (Object.keys(params.filterModel).length > 0) {
+          paginatedListingParams.agFilterModel = params.filterModel
+        }
+        if (params.sortModel.length > 0) {
+          const sort = params.sortModel[0].sort
+          const colId = params.sortModel[0].colId
+          const sortBy = `${colId}:${sort}`
+          paginatedListingParams.sortBy = sortBy
+        }
+        this.els.getPaginatedListings(paginatedListingParams).pipe(tap(() => {
 
-        this.els.getPaginatedListings({ limit: this.pageSize, currentPage }).pipe(tap(() => {
-    
         })).subscribe({
           next: (value) => {
             params.successCallback(value.data, value.totalRecords);

@@ -12,7 +12,7 @@ export class FormFieldDataService {
 
   private formFieldDataSubscription!: Subscription;
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) { }
 
   getFormFieldData(revalidate = true) {
     if (revalidate) {

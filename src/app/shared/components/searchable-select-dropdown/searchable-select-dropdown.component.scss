@@ -1,0 +1,27 @@
+ng-select.dark-mode {
+  & div.ng-placeholder {
+    color: oklch(0.773835 0.043586 245.097) !important;
+  }
+  & div.ng-placeholder {
+    color: oklch(0.773835 0.043586 245.097) !important;
+  }
+  & input {
+    color: white !important;
+  }
+  & ng-dropdown-panel {
+    background-color: oklch(0.22 0.019 237.69) !important;
+    color: #ddd !important;
+  }
+
+  & div.ng-select-container::after {
+    border-bottom-color: #444 !important;
+  }
+
+  & .ng-option {
+    color: #ddd !important;
+    &:hover {
+      background-color: skyblue !important;
+      color: oklch(0.22 0.019 237.69) !important;
+    }
+  }
+}

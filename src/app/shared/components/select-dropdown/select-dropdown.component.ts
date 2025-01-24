@@ -20,7 +20,7 @@ import { visibleTrigger } from '@shared/animations';
 import { Subscription } from 'rxjs';
 import { FormSubmissionService } from '@shared/services/form-submission.service';
 import { InputFieldErrorSectionComponent } from '../input-field-error-section/input-field-error-section.component';
-import { Element } from '@angular/compiler';
+
 
 @Component({
   selector: 'app-select-dropdown',
@@ -48,6 +48,7 @@ export class SelectDropdownComponent {
   @Input({ required: true }) formGroup!: FormGroup;
   @Input({ required: true }) bindValue!: string;
   @Input({ required: true }) bindLabel!: string;
+  @Input() disableControlBasedOnData = false
   @Input() optionsNotFoundText?: string;
 
   @Input() clx!: string;
@@ -84,11 +85,13 @@ export class SelectDropdownComponent {
   ngOnChanges(changes: SimpleChanges): void {
     const currentValue = changes['items']?.currentValue;
     this.displaySelect = true
+
     if (currentValue) {
       this.control.enable();
       currentValue.length === 0 ? (this.displaySelect = false) : (this.displaySelect = true)
+    }
 
-    } else {
+    if (this.disableControlBasedOnData && !currentValue) {
       this.control.disable();
     }
   }

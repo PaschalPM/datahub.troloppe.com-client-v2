@@ -19,8 +19,14 @@ import { NewComponent as StreetDataNewComponent } from '@pages/dashboard/street-
 import { newStreetDataFormGuard } from '@core/guards/new-street-data-form.guard';
 import { IndexComponent as ExternalListingsIndexComponent } from '@pages/dashboard/external-listings/index/index.component';
 import { NewComponent as ExternalListingsNewComponent } from '@pages/dashboard/external-listings/new/new.component';
+import { TestComponent } from '@pages/test/test.component';
 
 export const routes: Routes = [
+  {
+    path: 'test',
+    component: TestComponent
+  },
+
   {
     path: '',
     component: BaseLayoutComponent,

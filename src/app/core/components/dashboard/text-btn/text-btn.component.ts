@@ -44,7 +44,7 @@ import { NgIf } from '@angular/common';
   `,
 })
 export class TextButtonComponent {
-  @Input({ required: true }) text!: string;
+  @Input() text = '';
   @Input() class = '';
   @Input() type: 'button' | 'submit' | 'reset' | 'menu' = 'button';
   @Input() small = false;

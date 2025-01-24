@@ -1,0 +1,20 @@
+<div class="p-4 flex items-center gap-1">
+    <ng-select class="grow" [class.dark-mode]="isDarkMode$ | async" placeholder="Select a city"
+        [(ngModel)]="selectedItem" [searchable]="true" [loading]="loading" [virtualScroll]="true"
+        (scrollToEnd)="onScrollEnd()" [typeahead]="search$">
+        @for (item of mappedItems; track item[bindValue]) {
+        <ng-option [value]="item.id">
+            <span class="mr-1">
+                {{item[bindLabel]}}
+            </span>
+            @if(bindSubLabel && item[bindSubLabel]){
+            <small class="font-semibold"> ({{ item[bindSubLabel]}}) </small>
+            }
+        </ng-option>
+        }
+    </ng-select>
+    <div [class.hidden]="!showAddBtn">
+        <text-button withIcon="add" [small]="true" [isFlexed]="true" (clickEvent)="emitAddEvent($event)">
+        </text-button>
+    </div>
+</div>

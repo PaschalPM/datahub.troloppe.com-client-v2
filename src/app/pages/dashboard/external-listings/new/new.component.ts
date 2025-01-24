@@ -15,7 +15,6 @@ import { FormDataService } from '@core/services/dashboard/property-data/form-dat
   standalone: true,
   imports: [SelectDropdownComponent, AsyncPipe, InputFieldComponent],
   templateUrl: './new.component.html',
-  styleUrl: './new.component.scss',
   animations: [routeFadeInOut, visibleTrigger],
   host: {
     '[@routeFadeInOut]': 'true',
@@ -48,6 +47,14 @@ export class NewComponent {
       subSector: ['', [Validators.required]],
       subType: [''],
       offer: ['', [Validators.required]],
+      noOfBeds: [],
+      size: [],
+      landArea: [],
+      
+      salePrice: [],
+      leasePrice: [],
+      pricePerSqm: [],
+      serviceCharge: [],
     });
   }
 

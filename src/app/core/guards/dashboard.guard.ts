@@ -21,9 +21,9 @@ export const dashboardGuard: CanActivateFn = (route, state) => {
             returnUrl: state.url,
           },
         });
-        loader.stop();
         return of(null);
       }
+      loader.stop();
       return throwError(() => err);
     }),
     switchMap(() => {
