@@ -1,21 +1,41 @@
 ng-select.dark-mode {
+  
+  
+  & .ng-select-container {
+    background-color: oklch(0.22 0.019 237.69) !important;
+  }
+  & ng-dropdown-panel {
+    background-color: oklch(0.22 0.019 237.69) !important;
+    color: #ddd !important;
+
+    & .ng-option {
+      background-color: inherit!important;
+    }
+  }
+
   & div.ng-placeholder {
     color: oklch(0.773835 0.043586 245.097) !important;
   }
+
+  & .ng-value {
+    color: oklch(0.773835 0.043586 245.097) !important;
+  }
+  & .ng-clear-wrapper {
+    color: oklch(0.773835 0.043586 245.097) !important;
+  }
+
   & div.ng-placeholder {
     color: oklch(0.773835 0.043586 245.097) !important;
   }
   & input {
     color: white !important;
   }
-  & ng-dropdown-panel {
-    background-color: oklch(0.22 0.019 237.69) !important;
-    color: #ddd !important;
-  }
 
   & div.ng-select-container::after {
-    border-bottom-color: #444 !important;
+    border-color: #444 !important;
+    outline: none;
   }
+ 
 
   & .ng-option {
     color: #ddd !important;

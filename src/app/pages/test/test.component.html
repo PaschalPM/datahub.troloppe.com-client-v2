@@ -1,1 +1,13 @@
-<app-searchable-select-dropdown></app-searchable-select-dropdown>
+<app-searchable-select-dropdown 
+    label="Developers"
+    [name]="pptyPaginatedSFS.resourceName"
+    [bindSubLabel]="pptyPaginatedSFS.subLabel"
+    [formGroup]="formGroup" 
+    [loading]="pptyPaginatedSFS.loading"
+    [items]="pptyPaginatedSFS.items"
+    [showAddBtn]="true"
+    (searchParamChange)="pptyPaginatedSFS.onSearchParamChange($event)"
+    (scrollEnd)="pptyPaginatedSFS.onScrollEnd()"
+    (addBtnClick)="openDeveloperFormModal()"
+    >
+</app-searchable-select-dropdown>

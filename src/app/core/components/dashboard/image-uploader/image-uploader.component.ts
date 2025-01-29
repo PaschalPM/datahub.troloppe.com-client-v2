@@ -165,7 +165,7 @@ export class ImageUploaderComponent {
 
     this.formSubmitSubscription = this.formSubmit.formSubmitEvent.subscribe(
       (value) => {
-        if (value.formName === 'form') {
+        if (value.formGroup === this.formGroup) {
           this.formIsSubmitting = value.isSubmitting;
         }
       }

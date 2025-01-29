@@ -1,49 +1,52 @@
 <div class="w-full p-2 md:p-4 lg:w-3/4 mx-auto">
-    <form class="rounded-lg bg-base-300 p-4 md:p-8 text-sm shadow-md backdrop-blur-md my-6">
+    <form class="rounded-lg bg-base-300 p-4 md:p-8 text-sm shadow-md backdrop-blur-md my-6"
+        [formGroup]="externalListingFormGroup" (ngSubmit)="handleSubmit($event)">
 
         <div class="md:flex gap-2 justify-between">
 
             <!-- State Select Field -->
-            <app-select-dropdown clx="my-3" label="State" name="state" [items]="options$['state'] | async"
+            <app-select-dropdown clx="my-3" label="State" name="state" [items]="optionsRecord['state']"
                 [formGroup]="externalListingFormGroup" bindLabel="name" bindValue="id"
-                [disableControlBasedOnData]="true" (changeEvent)="onStateChange($event)">
+                [disableControlBasedOnData]="true" (valueChange)="onStateChange($event)">
             </app-select-dropdown>
 
             <!-- Region Select Field -->
-            <app-select-dropdown clx="my-3" label="Region" name="region" [items]="options$['region'] | async"
+            <app-select-dropdown clx="my-3" label="Region" name="region" [items]="optionsRecord['region']"
                 [formGroup]="externalListingFormGroup" bindLabel="name" bindValue="id"
-                [disableControlBasedOnData]="true" (changeEvent)="onRegionChange($event)"
-                [pending]="isFetching['region']">
+                [disableControlBasedOnData]="true" (valueChange)="onRegionChange($event)"
+                [pending]="isFetchingRecord['region']">
             </app-select-dropdown>
         </div>
 
         <div class="md:flex gap-2 justify-between">
 
             <!-- Location Select Field -->
-            <app-select-dropdown clx="my-3" label="Location" name="location" [items]="options$['location'] | async"
+            <app-select-dropdown clx="my-3" label="Location" name="location" [items]="optionsRecord['location']"
                 [formGroup]="externalListingFormGroup" bindLabel="name" bindValue="id"
-                [disableControlBasedOnData]="true" (changeEvent)="onLocationChange($event)"
-                [pending]="isFetching['location']">
+                [disableControlBasedOnData]="true" (valueChange)="onLocationChange($event)"
+                [pending]="isFetchingRecord['location']">
             </app-select-dropdown>
 
             <!-- Section Select Field -->
-            <app-select-dropdown clx="my-3" label="Section" name="section" [items]="options$['section'] | async"
+            <app-select-dropdown clx="my-3" label="Section" name="section" [items]="optionsRecord['section']"
                 [formGroup]="externalListingFormGroup" bindLabel="name" bindValue="id"
-                [disableControlBasedOnData]="true" (changeEvent)="onSectionChange($event)"
-                [pending]="isFetching['sections']">
+                [disableControlBasedOnData]="true" (valueChange)="onSectionChange($event)"
+                [pending]="isFetchingRecord['sections']">
             </app-select-dropdown>
         </div>
 
         <div class="md:flex gap-2 justify-between">
             <!-- LGA Select Field -->
-            <app-select-dropdown clx="my-3" label="L G A" name="lga" [items]="options$['lga'] | async"
+            <app-select-dropdown clx="my-3" label="L G A" name="lga" [items]="optionsRecord['lga']"
                 [formGroup]="externalListingFormGroup" bindLabel="name" bindValue="id"
-                [disableControlBasedOnData]="true" (changeEvent)="onLgaChange($event)" [pending]="isFetching['lga']">
+                [disableControlBasedOnData]="true" (valueChange)="onLgaChange($event)"
+                [pending]="isFetchingRecord['lga']">
             </app-select-dropdown>
 
             <!-- LCDA Select Field -->
-            <app-select-dropdown clx="my-3" label="L C D A" name="lcda" [items]="options$['lcda'] | async"
-                [formGroup]="externalListingFormGroup" bindLabel="name" bindValue="id" [pending]="isFetching['lcda']">
+            <app-select-dropdown clx="my-3" label="L C D A" name="lcda" [items]="optionsRecord['lcda']"
+                [formGroup]="externalListingFormGroup" bindLabel="name" bindValue="id"
+                [pending]="isFetchingRecord['lcda']">
             </app-select-dropdown>
         </div>
 
@@ -60,15 +63,15 @@
 
         <div class="md:flex gap-2 justify-between">
             <!-- Sector Select Field -->
-            <app-select-dropdown clx="my-3" label="Sector" name="sector" [items]="options$['sector'] | async"
+            <app-select-dropdown clx="my-3" label="Sector" name="sector" [items]="optionsRecord['sector']"
                 [formGroup]="externalListingFormGroup" bindLabel="name" bindValue="id"
-                [disableControlBasedOnData]="true" (changeEvent)="onSectorChange($event)">
+                [disableControlBasedOnData]="true" (valueChange)="onSectorChange($event)" [showAddBtn]="false">
             </app-select-dropdown>
 
             <!-- Sub Sector Select Field -->
-            <app-select-dropdown clx="my-3" label="Sub Sector" name="subSector" [items]="options$['subSector'] | async"
+            <app-select-dropdown clx="my-3" label="Sub Sector" name="subSector" [items]="optionsRecord['subSector']"
                 [formGroup]="externalListingFormGroup" bindLabel="name" bindValue="id"
-                [pending]="isFetching['subSector']">
+                [pending]="isFetchingRecord['subSector']">
             </app-select-dropdown>
         </div>
 
@@ -76,8 +79,8 @@
         <app-input-field [formGroup]="externalListingFormGroup" label="Sub Type" name="subType"></app-input-field>
 
         <!-- Offer Select Field -->
-        <app-select-dropdown clx="my-3" label="Offer" name="offer" [items]="options$['offer'] | async"
-            [formGroup]="externalListingFormGroup" bindLabel="name" bindValue="id">
+        <app-select-dropdown clx="my-3" label="Offer" name="offer" [items]="optionsRecord['offer']"
+            [formGroup]="externalListingFormGroup" bindLabel="name" bindValue="id" [showAddBtn]="false">
         </app-select-dropdown>
 
         <div class="md:flex gap-2 justify-between">
@@ -111,6 +114,25 @@
             <!-- Service Charge Field -->
             <app-input-field [formGroup]="externalListingFormGroup" label="Service Charge" name="serviceCharge"
                 type="number"></app-input-field>
+        </div>
+
+        <div>
+            <!-- Developers Field -->
+            <app-ppty-searchable-select-dropdown [formGroup]="externalListingFormGroup" label="Developer"
+                name="developer" resourceName="developers" subLabel="phone_number">
+            </app-ppty-searchable-select-dropdown>
+        </div>
+        <div>
+            <!-- Listing Agents Field -->
+            <app-ppty-searchable-select-dropdown [formGroup]="externalListingFormGroup" label="Listing Agent"
+                name="listingAgent" resourceName="listingAgents" subLabel="phone_numbers">
+            </app-ppty-searchable-select-dropdown>
+        </div>
+        <div>
+            <!-- Listing Sources Field -->
+            <app-ppty-searchable-select-dropdown [formGroup]="externalListingFormGroup" label="Listing Source"
+                name="listingSource" resourceName="listingSources">
+            </app-ppty-searchable-select-dropdown>
         </div>
     </form>
 </div>

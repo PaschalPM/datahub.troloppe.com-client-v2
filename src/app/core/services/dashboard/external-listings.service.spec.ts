@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ExternalListingsServiceTsService } from './external-listings.service.ts.service';
+import { ExternalListingsServiceTsService } from './external-listings.service';
 
 describe('ExternalListingsServiceTsService', () => {
   let service: ExternalListingsServiceTsService;

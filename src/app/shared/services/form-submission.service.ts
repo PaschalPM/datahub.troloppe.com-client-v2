@@ -1,17 +1,18 @@
 import { EventEmitter, Injectable } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FormSubmissionService {
   formSubmitEvent = new EventEmitter<{
-    formName: string;
+    formGroup: FormGroup;
     isSubmitting: boolean;
   }>();
 
-  constructor() {}
+  constructor() { }
 
-  onFormSubmission(formName: string = 'form') {
-    this.formSubmitEvent.emit({ formName, isSubmitting: true });
+  onFormSubmission(formGroup: FormGroup) {
+    this.formSubmitEvent.emit({ formGroup, isSubmitting: true });
   }
 }

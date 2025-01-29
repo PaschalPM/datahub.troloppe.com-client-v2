@@ -51,7 +51,7 @@ export class ForgetPasswordComponent {
   }
 
   onSendResetLinkMail() {
-    this.formSubmit.onFormSubmission();
+    this.formSubmit.onFormSubmission(this.forgotPasswordFormGroup);
 
     if (this.forgotPasswordFormGroup.valid) {
       const emailControl = this.forgotPasswordFormGroup.get('email')

@@ -69,7 +69,7 @@ export class ResetPasswordComponent {
   }
 
   onResetPassword() {
-    this.formSubmit.onFormSubmission();
+    this.formSubmit.onFormSubmission(this.resetPasswordFormGroup);
 
     if (this.resetPasswordFormGroup.valid) {
       this.loading = true;

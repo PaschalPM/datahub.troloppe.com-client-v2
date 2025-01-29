@@ -43,7 +43,7 @@ export class LoginStageComponent extends EmailVerificationAndLoginHelper {
   }
 
   onLogin() {
-    this.formSubmit.onFormSubmission();
+    this.formSubmit.onFormSubmission(this.loginFormGroup);
     if (this.loginFormGroup.valid) {
       this.loading = true;
       this.authService.signIn(this.loginFormGroup.value).subscribe({

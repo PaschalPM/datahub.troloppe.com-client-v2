@@ -28,7 +28,7 @@ export class VerifyEmailStageComponent extends EmailVerificationAndLoginHelper {
   }
 
   onEmailVerification() {
-    this.formSubmit.onFormSubmission();
+    this.formSubmit.onFormSubmission(this.loginFormGroup);
     if (this.loginFormGroup.get('email')?.valid) {
       this.loading = true;
       this.authService.verifyUserByEmail(this.loginFormGroup.value).subscribe({

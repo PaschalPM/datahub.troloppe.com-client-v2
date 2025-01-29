@@ -1,20 +1,38 @@
-<div class="p-4 flex items-center gap-1">
-    <ng-select class="grow" [class.dark-mode]="isDarkMode$ | async" placeholder="Select a city"
-        [(ngModel)]="selectedItem" [searchable]="true" [loading]="loading" [virtualScroll]="true"
-        (scrollToEnd)="onScrollEnd()" [typeahead]="search$">
-        @for (item of mappedItems; track item[bindValue]) {
-        <ng-option [value]="item.id">
-            <span class="mr-1">
-                {{item[bindLabel]}}
+<div>
+    <div class="py-3">
+        <div class="label">
+            <span class="label-text font-semibold flex items-center">
+                <span class="mr-1">
+                    {{ label }}
+                </span>
+                <button [class.invisible]="!showAddBtn" class="brightness-50 hover:brightness-100 active:scale-95">
+                    <my-mat-icon class="font-black"
+                        (click)="selectDropdownService.emitAddBtnClick(formGroup, name)">add</my-mat-icon>
+                </button>
             </span>
-            @if(bindSubLabel && item[bindSubLabel]){
-            <small class="font-semibold"> ({{ item[bindSubLabel]}}) </small>
-            }
-        </ng-option>
-        }
-    </ng-select>
-    <div [class.hidden]="!showAddBtn">
-        <text-button withIcon="add" [small]="true" [isFlexed]="true" (clickEvent)="emitAddEvent($event)">
-        </text-button>
+            <span class="font-bold text-secondary" *ngIf="isRequired">*</span>
+        </div>
+        <div class="flex items-center gap-1">
+            <ng-select class="grow" [class.dark-mode]="isDarkMode$ | async" placeholder="" [formControl]="formControl"
+                [searchable]="true" [loading]="loading" [virtualScroll]="true" (scrollToEnd)="scrollEnd.emit()"
+                [typeahead]="search$"
+                (change)="onChange($event)"
+                >
+                @for (item of items; track item[bindValue]) {
+                <ng-option [value]="item.id">
+                    <span class="mr-1">
+                        {{item[bindLabel]}}
+                    </span>
+                    @if(bindSubLabel && item[bindSubLabel]){
+                    <small class="font-semibold"> ({{ item[bindSubLabel]}}) </small>
+                    }
+                </ng-option>
+                }
+            </ng-select>
+        </div>
     </div>
+    <!------------------------------------ ERROR SECTION ---------------------------------------->
+    <app-input-field-error-section [control]="formControl" [name]="name"
+        [formIsSubmitting]="formIsSubmitting"></app-input-field-error-section>
+    <!------------------------------------ END OF ERROR SECTION ---------------------------------------->
 </div>

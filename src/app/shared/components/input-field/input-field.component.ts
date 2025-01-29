@@ -31,9 +31,6 @@ export class InputFieldComponent extends InputFieldHelperComponent {
   override ngOnInit(): void {
     this.control = this.formGroup.controls?.[this.name] as FormControl;
     this.isRequired = this.control.hasValidator(Validators.required);
-    if (this.name ==='size'){
-      console.log(this.isRequired)
-    }
     this.setFormIsSubmitting();
     this.inputClx = this.getBaseInputClx('shared-input')
     if (this.control.value) {

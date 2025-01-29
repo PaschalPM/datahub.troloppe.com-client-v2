@@ -1,0 +1,6 @@
+<app-searchable-select-dropdown [label]="label" [name]="name" [bindSubLabel]="pptyPaginatedSFS.subLabel"
+    [formGroup]="formGroup" [loading]="pptyPaginatedSFS.loading" [items]="pptyPaginatedSFS.items" [showAddBtn]="true"
+    (searchParamChange)="pptyPaginatedSFS.onSearchParamChange($event)" (scrollEnd)="pptyPaginatedSFS.onScrollEnd()"
+    (valueChange)="valueChange.emit($event)"
+    >
+</app-searchable-select-dropdown>

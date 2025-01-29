@@ -20,6 +20,8 @@ import { visibleTrigger } from '@shared/animations';
 import { Subscription } from 'rxjs';
 import { FormSubmissionService } from '@shared/services/form-submission.service';
 import { InputFieldErrorSectionComponent } from '../input-field-error-section/input-field-error-section.component';
+import { MyMatIconComponent } from "../my-mat-icon/my-mat-icon.component";
+import { SelectDropdownService } from '@shared/services/select-dropdown.service';
 
 
 @Component({
@@ -30,6 +32,7 @@ import { InputFieldErrorSectionComponent } from '../input-field-error-section/in
     ReactiveFormsModule,
     SpinnerComponent,
     InputFieldErrorSectionComponent,
+    MyMatIconComponent
   ],
   templateUrl: './select-dropdown.component.html',
   animations: [visibleTrigger],
@@ -49,13 +52,17 @@ export class SelectDropdownComponent {
   @Input({ required: true }) bindValue!: string;
   @Input({ required: true }) bindLabel!: string;
   @Input() disableControlBasedOnData = false
+  @Input() disableControl = false
+
   @Input() optionsNotFoundText?: string;
+  @Input() showAddBtn = true
 
   @Input() clx!: string;
   @Input() pending = false;
   @Input() optionsLabel = '';
 
-  @Output() changeEvent = new EventEmitter();
+  @Output() valueChange = new EventEmitter();
+
 
   control = new FormControl();
   isRequired = true;
@@ -69,6 +76,7 @@ export class SelectDropdownComponent {
   private formSubmitSubscription!: Subscription;
   constructor(
     public utils: UtilsService,
+    public sds: SelectDropdownService,
     private formSubmit: FormSubmissionService
   ) { }
 
@@ -76,9 +84,10 @@ export class SelectDropdownComponent {
     this.control = this.formGroup.controls?.[this.name] as FormControl;
     this.control.value;
     this.isRequired = this.control.hasValidator(Validators.required);
-    if (!this.items) {
+    if (!this.items || this.disableControl) {
       this.control.disable()
     }
+
     this.setFormIsSubmitting();
   }
 
@@ -94,11 +103,20 @@ export class SelectDropdownComponent {
     if (this.disableControlBasedOnData && !currentValue) {
       this.control.disable();
     }
+
+    if (this.disableControl) {
+      this.control.disable()
+    }
   }
   onChange(event: Event) {
     const target = event.target as HTMLSelectElement;
+    const selectedItem = this.getSelectedItem(target.value)
     this.control.setErrors(null);
-    this.changeEvent.emit(target.value);
+    this.valueChange.emit(selectedItem);
+  }
+
+  private getSelectedItem(value: any) {
+    return this.items?.find(v => v[this.bindValue] == value)
   }
 
   focus() {
@@ -108,7 +126,7 @@ export class SelectDropdownComponent {
   private setFormIsSubmitting() {
     this.formSubmitSubscription = this.formSubmit.formSubmitEvent.subscribe(
       (value) => {
-        if (value.formName === 'form') {
+        if (value.formGroup === this.formGroup) {
           this.formIsSubmitting = value.isSubmitting;
         }
       }

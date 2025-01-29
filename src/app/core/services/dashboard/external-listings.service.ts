@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { apiUrlFactory } from '@configs/global';
 import { CacheService } from '@shared/services/cache.service';
 import { LoaderService } from '@shared/services/loader.service';
@@ -10,11 +11,43 @@ import { of, tap } from 'rxjs';
   providedIn: 'root'
 })
 export class ExternalListingsService {
+  formGroup!: FormGroup;
+  dropdownSelectedData: Record<string, IdAndNameType> = {}
 
   constructor(
     private readonly httpClient: HttpClient,
     private readonly cacheService: CacheService,
-  ) { }
+    private fb: FormBuilder,
+
+  ) {
+    this.formGroup = this.fb.group({
+      state: ['', [Validators.required]],
+      region: ['', [Validators.required]],
+      location: ['', [Validators.required]],
+      section: ['', [Validators.required]],
+      lga: ['', [Validators.required]],
+      lcda: ['', [Validators.required]],
+      streetName: ['', [Validators.required]],
+      streetNumber: [''],
+      development: [''],
+      sector: ['', [Validators.required]],
+      subSector: ['', [Validators.required]],
+      subType: [''],
+      offer: ['', [Validators.required]],
+      noOfBeds: [],
+      size: [],
+      landArea: [],
+
+      salePrice: [],
+      leasePrice: [],
+      pricePerSqm: [],
+      serviceCharge: [],
+
+      developer: [null, [Validators.required]],
+      listingAgent: [null, [Validators.required]],
+      listingSource: [null, [Validators.required]],
+    });
+  }
 
 
   public getPaginatedListings(
@@ -22,8 +55,7 @@ export class ExternalListingsService {
     invalidateCache = false
   ) {
     // Destructure and set default values for pagination parameters.
-    const { limit = 10, currentPage = 1, updatedById = null, agFilterModel, sortBy } = params || {};
-
+    const { limit = 250, currentPage = 1, updatedById = null, agFilterModel, sortBy } = params || {};
     // Constructs the API URL with query parameters for pagination and filtering.
     let url = apiUrlFactory(
       '/external-listings/listings',

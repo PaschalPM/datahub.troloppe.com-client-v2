@@ -92,7 +92,7 @@
       [formGroup]="streetDataFormGroup"
       bindLabel="name"
       bindValue="id"
-      (changeEvent)="onSectorChange($event)"
+      (valueChange)="onSectorChange($event)"
     >
     </app-select-dropdown>
     }
@@ -119,7 +119,7 @@
       bindLabel="name"
       bindValue="id"
       [pending]="subSectorPending"
-      (changeEvent)="onSubSectorChange($event)"
+      (valueChange)="onSubSectorChange($event)"
     >
     </app-select-dropdown>
     } @else if (selectedSectorId == 0){
@@ -165,7 +165,7 @@
       bindValue="id"
       notFoundText="Set a location first"
       [items]="sectionOptions"
-      (changeEvent)="onSectionChange($event)"
+      (valueChange)="onSectionChange($event)"
     >
     </app-select-dropdown>
     }

@@ -1,0 +1,19 @@
+<div class="min-h-36 relative">
+
+    <div class="prose">
+        <h3>Create {{ label }}</h3>
+    </div>
+
+    @for(selectedOption of preSelectedOptions; track selectedOption.itemName ) {
+    <app-select-dropdown clx="my-3" [label]="selectedOption.label" [name]="selectedOption.itemName"
+        [items]="selectedOption.items" [formGroup]="innerFormGroup" bindLabel="name" bindValue="id"
+        [disableControlBasedOnData]="true" [disableControl]="true" [showAddBtn]="false">
+    </app-select-dropdown>
+    }
+
+    <app-input-field [formGroup]="innerFormGroup" [name]="formControlName" [label]="label"> </app-input-field>
+
+    <div class="flex justify-end gap-2 mt-3">
+        <text-button text="Create" (clickEvent)="addResource()"></text-button>
+    </div>
+</div>

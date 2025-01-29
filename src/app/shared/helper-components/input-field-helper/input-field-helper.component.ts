@@ -58,7 +58,7 @@ export class InputFieldHelperComponent {
   protected setFormIsSubmitting() {
     this.formSubmitSubscription = this.formSubmit.formSubmitEvent.subscribe(
       (value) => {
-        if (value.formName === 'form') {
+        if (value.formGroup === this.formGroup) {
           this.formIsSubmitting = value.isSubmitting;
         }
       }

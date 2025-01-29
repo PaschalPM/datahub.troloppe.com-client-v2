@@ -55,7 +55,7 @@ export class ProfileModalComponent {
   }
 
   onSubmit() {
-    this.formSubmit.onFormSubmission();
+    this.formSubmit.onFormSubmission(this.profileFormGroup);
     if (this.profileFormGroup.valid) {
       this.loader.start();
       const body = {

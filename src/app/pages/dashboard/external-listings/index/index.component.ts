@@ -1,13 +1,13 @@
 import { AsyncPipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { TextButtonComponent } from '@core/components/dashboard/text-btn/text-btn.component';
-import { ExternalListingsService } from '@core/services/dashboard/external-listings.service.ts.service';
+import { ExternalListingsService } from '@core/services/dashboard/external-listings.service';
 import { ColorSchemeService } from '@shared/services/color-scheme.service';
 import { PermissionService } from '@shared/services/permission.service';
 import { AgGridAngular } from 'ag-grid-angular';
 import { ColDef, GridOptions } from 'ag-grid-community';
-import { Observable, Subscription, tap } from 'rxjs';
+import { Observable, Subject, Subscription, takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'external-listing-index',
@@ -16,7 +16,7 @@ import { Observable, Subscription, tap } from 'rxjs';
   templateUrl: './index.component.html',
   styleUrl: './index.component.scss'
 })
-export class IndexComponent {
+export class IndexComponent implements OnDestroy {
   gridOptions: GridOptions = {
     suppressFieldDotNotation: true, // Treats dot as part of the field name
     rowBuffer: 5,
@@ -150,9 +150,12 @@ export class IndexComponent {
   };
   tableThemeColor: 'dark' | 'light' = 'light';
   isLoading = true;
-  pageSize = 50
+  pageSize = 250
   initialRowCount = 0
   datasource: any;
+  totalRecords = 0
+  destroy$ = new Subject<void>()
+
   private actualColorSchemeSubscription!: Subscription;
 
   constructor(
@@ -163,6 +166,12 @@ export class IndexComponent {
   ) { }
 
   ngOnInit() {
+
+    this.els.getPaginatedListings({ limit: 1 }).pipe(takeUntil(this.destroy$))
+      .subscribe(v => {
+        this.totalRecords = v.totalPages
+      })
+
     this.datasource = {
       getRows: (params: any) => {
 
@@ -181,21 +190,22 @@ export class IndexComponent {
           const sortBy = `${colId}:${sort}`
           paginatedListingParams.sortBy = sortBy
         }
-        this.els.getPaginatedListings(paginatedListingParams).pipe(tap(() => {
+        this.els.getPaginatedListings(paginatedListingParams).pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (value) => {
 
-        })).subscribe({
-          next: (value) => {
-            params.successCallback(value.data, value.totalRecords);
-          },
-          error() {
-            params.failCallback();
-          }
-        })
+              params.successCallback(value.data, value.totalRecords);
+            },
+            error() {
+              params.failCallback();
+            }
+          })
       }
     }
 
     this.actualColorSchemeSubscription = this.colorScheme
       .getActualColorScheme()
+      .pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         this.tableThemeColor = value;
       });
@@ -205,7 +215,9 @@ export class IndexComponent {
     this.router.navigateByUrl('/dashboard/external-listings/new');
   }
 
-
-
+  ngOnDestroy(): void {
+    this.destroy$.next()
+    this.destroy$.complete()
+  }
 
 }

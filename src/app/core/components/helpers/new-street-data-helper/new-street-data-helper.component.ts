@@ -82,7 +82,7 @@ export class NewStreetDataHelperComponent {
       'new-create' | 'existing-create'
     > = 'new-create'
   ) {
-    this.formSubmit.onFormSubmission();
+    this.formSubmit.onFormSubmission(this.streetDataFormGroup);
     if (this.streetDataFormGroup.valid) {
       const creationType: CreationType = event.submitter?.id as CreationType;
 

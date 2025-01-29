@@ -21,6 +21,10 @@ export class CacheService {
     return this.store[key]?.value;
   }
 
+  getStore() {
+    return this.store
+  }
+
   set<T>(key: string, value: T) {
     this.store[key] = {
       value,

@@ -3,7 +3,14 @@
   <div [@visibleTrigger]="!pending && 'visible'" tabindex="-1" #selectRef>
     <label class="form-control w-full relative">
       <div class="label">
-        <span class="label-text font-semibold"> {{ label }} </span>
+        <span class="label-text font-semibold flex items-center">
+          <span class="mr-1">
+            {{ label }}
+          </span>
+          <button [class.invisible]="!showAddBtn || !items" class="brightness-50 hover:brightness-100 active:scale-95">
+            <my-mat-icon class="font-black" (click)="sds.emitAddBtnClick(formGroup, name)">add</my-mat-icon>
+          </button>
+        </span>
         <span class="font-bold text-secondary" *ngIf="isRequired">*</span>
       </div>
       <div class="h-fit w-full relative">
