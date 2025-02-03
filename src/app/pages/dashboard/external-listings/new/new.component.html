@@ -1,6 +1,6 @@
 <div class="w-full p-2 md:p-4 lg:w-3/4 mx-auto">
     <form class="rounded-lg bg-base-300 p-4 md:p-8 text-sm shadow-md backdrop-blur-md my-6"
-        [formGroup]="externalListingFormGroup" (ngSubmit)="handleSubmit($event)">
+        [formGroup]="externalListingFormGroup" (ngSubmit)="handleSubmit()">
 
         <div class="md:flex gap-2 justify-between">
 
@@ -119,7 +119,7 @@
         <div>
             <!-- Developers Field -->
             <app-ppty-searchable-select-dropdown [formGroup]="externalListingFormGroup" label="Developer"
-                name="developer" resourceName="developers" subLabel="phone_number">
+                name="developer" resourceName="developers" subLabel="phone_numbers">
             </app-ppty-searchable-select-dropdown>
         </div>
         <div>
@@ -133,6 +133,19 @@
             <app-ppty-searchable-select-dropdown [formGroup]="externalListingFormGroup" label="Listing Source"
                 name="listingSource" resourceName="listingSources">
             </app-ppty-searchable-select-dropdown>
+        </div>
+        <div class="">
+            <app-input-field [formGroup]="externalListingFormGroup" label="Comment" name="comment"></app-input-field>
+        </div>
+        <div class="flex gap-2">
+            <app-form-submit-btn #inputs id="create" text="Create" [loading]="isLoading" [forDashboard]="true"
+                (click)="creationType='create'">
+            </app-form-submit-btn>
+
+            <app-form-submit-btn id="createAnother" text="Create Another" [loading]="isLoading"
+                (click)="creationType='createAnother'" [forDashboard]="true" variant="outline">
+            </app-form-submit-btn>
+
         </div>
     </form>
 </div>

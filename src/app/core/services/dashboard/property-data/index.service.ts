@@ -9,8 +9,8 @@ export class IndexService {
 
   constructor(private httpClient: HttpClient) { }
 
-  createState(data: { state: string }) {
-    const url = apiUrlFactory('/property-data/create-state');
-    return this.httpClient.post<{message: string, data: any}>(url, data)
+  createResource(resourceName: string, data: { state: string }) {
+    const url = apiUrlFactory('/property-data/create-resource', { resource_name: resourceName });
+    return this.httpClient.post<{ message: string, data: any }>(url, data)
   }
 }

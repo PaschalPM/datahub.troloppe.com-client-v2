@@ -14,7 +14,7 @@ export class FormDataService {
     private cacheService: CacheService
   ) { }
 
-  private getPropertyData(url: string, key: string, invalidateCache = false) {
+  private getPropertyData(url: string, key: string, invalidateCache = true) {
     url = apiUrlFactory(`/property-data${url}`)
     const cachedData = !invalidateCache ? this.cacheService.get<IdAndNameType[]>(url) : null
 
@@ -25,32 +25,32 @@ export class FormDataService {
       );
   }
 
-  getLgasByRegionId(regionId: number, invalidateCache = false) {
+  getLgasByRegionId(regionId: number, invalidateCache = true) {
     const url = `/lgas?region_id=${regionId}`;
     return this.getPropertyData(url, "lgas", invalidateCache)
   }
 
-  getLcdasByLgaId(lgaId: number, invalidateCache = false) {
+  getLcdasByLgaId(lgaId: number, invalidateCache = true) {
     const url = `/lcdas?lga_id=${lgaId}`;
     return this.getPropertyData(url, "lcdas", invalidateCache)
   }
 
-  getLocationsByRegionId(regionId: number, invalidateCache = false) {
+  getLocationsByRegionId(regionId: number, invalidateCache = true) {
     const url = `/locations?region_id=${regionId}`;
     return this.getPropertyData(url, 'locations', invalidateCache)
   }
 
-  getRegionsByStateId(stateId: number, invalidateCache = false) {
+  getRegionsByStateId(stateId: number, invalidateCache = true) {
     const url = `/regions?state_id=${stateId}`;
     return this.getPropertyData(url, 'regions', invalidateCache)
   }
 
-  getSectionsByLocationId(locationId: number, invalidateCache = false) {
+  getSectionsByLocationId(locationId: number, invalidateCache = true) {
     const url = `/sections?location_id=${locationId}`;
     return this.getPropertyData(url, 'sections', invalidateCache)
   }
 
-  getSubSectorsBySectorId(sectorId: number, invalidateCache = false) {
+  getSubSectorsBySectorId(sectorId: number, invalidateCache = true) {
     const url = `/sub-sectors?sector_id=${sectorId}`;
     return this.getPropertyData(url, 'sub_sectors', invalidateCache)
 

@@ -1,22 +1,34 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { apiUrlFactory } from '@configs/global';
 import { CacheService } from '@shared/services/cache.service';
+import { FormSubmissionService } from '@shared/services/form-submission.service';
 import { LoaderService } from '@shared/services/loader.service';
-import { of, tap } from 'rxjs';
+import { of, Subject, takeUntil, tap } from 'rxjs';
+import { ModalService } from './modal.service';
+import { ConfirmModalComponent } from '@core/components/dashboard/modals/confirm-modal/confirm-modal.component';
+import { AuthService } from '@shared/services/auth.service';
+import { Router } from '@angular/router';
+import { AlertService } from '@shared/services/alert.service';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class ExternalListingsService {
+export class ExternalListingsService implements OnDestroy {
   formGroup!: FormGroup;
   dropdownSelectedData: Record<string, IdAndNameType> = {}
-
+  private destroy$ = new Subject<void>()
   constructor(
     private readonly httpClient: HttpClient,
     private readonly cacheService: CacheService,
+    private readonly formSubmissionService: FormSubmissionService,
+    private readonly modalService: ModalService,
+    private readonly loaderService: LoaderService,
+    private readonly authService: AuthService,
+    private readonly router: Router,
+    private readonly alertService: AlertService,
     private fb: FormBuilder,
 
   ) {
@@ -46,9 +58,11 @@ export class ExternalListingsService {
       developer: [null, [Validators.required]],
       listingAgent: [null, [Validators.required]],
       listingSource: [null, [Validators.required]],
+
+      comment: [],
+
     });
   }
-
 
   public getPaginatedListings(
     params: Nullable<PaginatedListingsParams> = null,
@@ -85,4 +99,98 @@ export class ExternalListingsService {
     );
   }
 
+  public storeExternalListing(data: any) {
+    let url = apiUrlFactory('/external-listings/listings');
+    return this.httpClient.post<{ success: boolean, message: string }>(url, data)
+  }
+
+  public getExternalListingsById(id: number) {
+    let url = apiUrlFactory(`/external-listings/listings/${id}`);
+    return this.httpClient.get<{ success: boolean, message: string, data: any }>(url)
+  }
+
+  public createExternalListing(creationType: CreationType) {
+    this.formSubmissionService.onFormSubmission(this.formGroup);
+    if (this.formGroup.valid) {
+
+      this.modalService.open(ConfirmModalComponent, {
+        matIconName: 'description',
+        title: 'Confirm Data Submission',
+        message: 'Proceed if you are sure this form was correctly filled.',
+        severity: 'warning',
+        ok: async () => {
+          this.loaderService.start()
+          const mappedData = this.prepareSubmissionData(this.formGroup.value)
+          this.storeExternalListing(mappedData).pipe(takeUntil(this.destroy$)).subscribe(
+            {
+              next: (v) => {
+                this.alertService.success(
+                  'Success',
+                  v.message
+                );
+                if (creationType === 'createAnother') {
+                  this.formGroup.reset()
+                } else {
+                  this.router.navigateByUrl(
+                    `/dashboard/external-listings` // Route to the read only version of resource
+                  );
+                }
+              },
+
+              error: (err) => {
+                console.error(err)
+                this.alertService.error('Error', 'An error occured while creating a new external listing')
+              },
+
+              complete: () => {
+                setTimeout(this.loaderService.stop.bind(this.loaderService), 3000)
+              }
+            }
+
+          )
+        }
+      })
+    }
+  }
+
+
+  private prepareSubmissionData(data: any) {
+    const mappedData: Record<string, any> = {
+      state_id: parseInt(data['state']),
+      region_id: parseInt(data['region']),
+      locality_id: parseInt(data['location']),
+      section_id: parseInt(data['section']),
+      lga_id: parseInt(data['lga']),
+      lcda_id: parseInt(data['lcda']),
+      street: data['streetName'],
+      street_number: data['streetNumber'],
+      development: data['development'],
+      sector_id: parseInt(data['sector']),
+      sub_sector_id: parseInt(data['subSector']),
+      offer_id: data['offer'],
+      no_of_beds: data['noOfBeds'],
+      size: data['size'],
+      land_area: data['landArea'],
+      sale_price: data['salePrice'],
+      lease_price: data['leasePrice'],
+      price_per_sqm: data['pricePerSqm'],
+      service_charge: data['serviceCharge'],
+      developer_id: parseInt(data['developer']),
+      listing_agent_id: parseInt(data['listingAgent']),
+      listing_source_id: parseInt(data['listingSource']),
+      comment: data['comment']
+    }
+
+    this.authService.onCurrentUser().subscribe(v => {
+      mappedData['updated_by_id'] = v?.id
+    })
+
+    return mappedData
+  }
+
+
+  ngOnDestroy(): void {
+    this.destroy$.next()
+    this.destroy$.complete()
+  }
 }

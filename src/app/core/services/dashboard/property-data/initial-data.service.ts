@@ -29,15 +29,15 @@ export class InitialDataService {
       : this.httpClient.get<InitialDataType>(url);
   }
 
-  getAllStates(invalidateCache = false) {
+  getAllStates(invalidateCache = true) {
     return this.getData(invalidateCache).pipe(map((value) => value.states));
   }
 
-  getAllSectors(invalidateCache = false) {
+  getAllSectors(invalidateCache = true) {
     return this.getData(invalidateCache).pipe(map((value) => value.sectors));
   }
 
-  getAllOffers(invalidateCache = false) {
+  getAllOffers(invalidateCache = true) {
     return this.getData(invalidateCache).pipe(map((value) => value.offers));
   }
 }

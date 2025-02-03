@@ -3,6 +3,8 @@ import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { TextButtonComponent } from '@core/components/dashboard/text-btn/text-btn.component';
 import { ExternalListingsService } from '@core/services/dashboard/external-listings.service';
+import { RouterService } from '@core/services/router.service';
+import { ClientStorageService } from '@shared/services/client-storage.service';
 import { ColorSchemeService } from '@shared/services/color-scheme.service';
 import { PermissionService } from '@shared/services/permission.service';
 import { AgGridAngular } from 'ag-grid-angular';
@@ -160,9 +162,10 @@ export class IndexComponent implements OnDestroy {
 
   constructor(
     private els: ExternalListingsService,
-    private router: Router,
+    private router: RouterService,
     public colorScheme: ColorSchemeService,
     private permission: PermissionService,
+    private clientStorage: ClientStorageService
   ) { }
 
   ngOnInit() {
@@ -213,6 +216,11 @@ export class IndexComponent implements OnDestroy {
 
   routeToNewListingView() {
     this.router.navigateByUrl('/dashboard/external-listings/new');
+  }
+
+  onRowClicked(ev: any) {
+    const data = ev.data
+    this.router.navigateByUrl(`/dashboard/external-listings/${data.id}`,  data)
   }
 
   ngOnDestroy(): void {

@@ -1,11 +1,10 @@
-import { AsyncPipe } from '@angular/common';
 import { Component, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { routeFadeInOut, visibleTrigger } from '@shared/animations';
 import { InputFieldComponent } from '@shared/components/input-field/input-field.component';
 import { SelectDropdownComponent } from '@shared/components/select-dropdown/select-dropdown.component';
 import { InitialDataService } from '@core/services/dashboard/property-data/initial-data.service';
-import { map, Observable, Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { SelectDropdownService } from '@shared/services/select-dropdown.service';
 import { FormDataService } from '@core/services/dashboard/property-data/form-data.service';
 import { PptySearchableSelectDropdownComponent } from "../../../../shared/components/ppty-searchable-select-dropdown/ppty-searchable-select-dropdown.component";
@@ -13,12 +12,13 @@ import { ModalService } from '@shared/services/modal.service';
 import { ResourceCreationFormModalComponent } from '@core/components/dashboard/modals/external-listings/resource-creation-form-modal/resource-creation-form-modal.component';
 import { ExternalListingsService } from '@core/services/dashboard/external-listings.service';
 import { ResourceCreationFormModalService } from '@core/services/dashboard/property-data/resource-creation-form-modal.service';
+import { FormSubmitBtnComponent } from "../../../../shared/components/form-submit-btn/form-submit-btn.component";
 
 
 @Component({
   selector: 'app-new',
   standalone: true,
-  imports: [SelectDropdownComponent, AsyncPipe, InputFieldComponent, PptySearchableSelectDropdownComponent, ReactiveFormsModule],
+  imports: [SelectDropdownComponent, InputFieldComponent, PptySearchableSelectDropdownComponent, ReactiveFormsModule, FormSubmitBtnComponent],
   templateUrl: './new.component.html',
   animations: [routeFadeInOut, visibleTrigger],
   host: {
@@ -29,6 +29,8 @@ import { ResourceCreationFormModalService } from '@core/services/dashboard/prope
 export class NewComponent implements OnDestroy {
   optionsRecord: Record<string, IdAndNameType[] | null> = {}
   isFetchingRecord: Record<string, boolean> = {}
+  isLoading = false
+  creationType: CreationType = 'create'
 
   externalListingFormGroup!: FormGroup;
 
@@ -64,7 +66,7 @@ export class NewComponent implements OnDestroy {
 
     if (resource) {
       const options = this.optionsRecord[resource.name]
-      this.optionsRecord[resource.name] = options ? [resource.data, ...options] : null
+      this.optionsRecord[resource.name] = options ? [resource.data, ...options] : [resource.data]
     }
     else {
       Object.entries(initialDataMap).forEach(([key, fetchData]) => {
@@ -127,8 +129,8 @@ export class NewComponent implements OnDestroy {
     }
   }
 
-  handleSubmit(formData: Event) {
-
+  handleSubmit() {
+    this.externalListingService.createExternalListing(this.creationType)
   }
 
   ngOnDestroy(): void {

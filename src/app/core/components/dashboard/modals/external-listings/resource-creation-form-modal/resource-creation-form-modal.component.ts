@@ -1,15 +1,9 @@
-import { Component, Input, OnDestroy } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ModalService } from '@shared/services/modal.service';
+import { Component, Input } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { InputFieldComponent } from "../../../../../../shared/components/input-field/input-field.component";
 import { TextButtonComponent } from "../../../text-btn/text-btn.component";
 import { SelectDropdownComponent } from "../../../../../../shared/components/select-dropdown/select-dropdown.component";
-import { ExternalListingsService } from '@core/services/dashboard/external-listings.service';
 import { UtilsService } from '@shared/services/utils.service';
-import { AlertService } from '@shared/services/alert.service';
-import { FormSubmissionService } from '@shared/services/form-submission.service';
-import { IndexService } from '@core/services/dashboard/property-data/index.service';
-import { Observable, Subject, takeUntil } from 'rxjs';
 import { ResourceCreationFormModalService } from '@core/services/dashboard/property-data/resource-creation-form-modal.service';
 
 @Component({
@@ -25,27 +19,18 @@ export class ResourceCreationFormModalComponent {
 
   innerFormGroup!: FormGroup
   preSelectedOptions: { itemName: string, items: IdAndNameType[], label: string }[] = []
-
-  private dependentSelectionMap: Record<string, string[]> = {
-    region: ['state'],
-    location: ['state', 'region'],
-    section: ['state', 'region', 'location'],
-    lga: ['state', 'region'],
-    lcda: ['state', 'region', 'lga'],
-    subSector: ['sector']
-  }
-
-  private resourceCreationMapper: Record<string, (data: any) => Observable<{ message: string }>> = {
-    state: (data) => this.indexPropertyDataService.createState(data)
-  }
+  inputFields: { label: string, name: string }[] = []
 
   constructor(
     private readonly fb: FormBuilder,
-    private readonly indexPropertyDataService: IndexService,
     private readonly resourceCreationFormModalService: ResourceCreationFormModalService,
     public readonly utils: UtilsService,
   ) {
     this.innerFormGroup = this.fb.group({})
+  }
+
+  get hasPreSelectedOptions() {
+    return !!this.preSelectedOptions.length
   }
 
   get label() {
@@ -53,12 +38,12 @@ export class ResourceCreationFormModalComponent {
   }
 
   ngOnInit(): void {
-    this.resourceCreationFormModalService.syncInitialSelections(
+    this.resourceCreationFormModalService.prepareFormState(
       this.outerFormGroup,
       this.innerFormGroup,
       this.formControlName,
-      this.dependentSelectionMap,
-      this.preSelectedOptions
+      this.preSelectedOptions,
+      this.inputFields
     )
   }
 
