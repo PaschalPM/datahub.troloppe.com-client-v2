@@ -3,7 +3,7 @@ import { environment } from 'environments/environment';
 
 export const BASEURL = environment.baseURL;
 export const BASE_API_URL = BASEURL + '/api';
-export const apiUrlFactory = (path: string, params: Nullable<Record<string, string | undefined>> = null) => {
+export const apiUrlFactory = (path: string, params: Nullable<Record<string, any>> = null) => {
   let urlSearchParams = null
   if (params) {
     urlSearchParams = new URLSearchParams()

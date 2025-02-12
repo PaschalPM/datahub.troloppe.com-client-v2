@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class CacheService {
   private store: Record<string, { value: any; exp: number } | null> = {};
-  private minutes = 5;
+  private minutes = 0.5;
 
   configureDuration(durationInMinutes: number) {
     this.minutes = durationInMinutes;

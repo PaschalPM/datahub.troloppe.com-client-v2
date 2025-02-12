@@ -165,12 +165,10 @@ export class IndexComponent implements OnDestroy {
     private router: RouterService,
     public colorScheme: ColorSchemeService,
     private permission: PermissionService,
-    private clientStorage: ClientStorageService
   ) { }
 
   ngOnInit() {
-
-    this.els.getPaginatedListings({ limit: 1 }).pipe(takeUntil(this.destroy$))
+    this.els.apiGetPaginatedListings({ limit: 1 }).pipe(takeUntil(this.destroy$))
       .subscribe(v => {
         this.totalRecords = v.totalPages
       })
@@ -193,7 +191,7 @@ export class IndexComponent implements OnDestroy {
           const sortBy = `${colId}:${sort}`
           paginatedListingParams.sortBy = sortBy
         }
-        this.els.getPaginatedListings(paginatedListingParams).pipe(takeUntil(this.destroy$))
+        this.els.apiGetPaginatedListings(paginatedListingParams).pipe(takeUntil(this.destroy$))
           .subscribe({
             next: (value) => {
 
@@ -214,8 +212,13 @@ export class IndexComponent implements OnDestroy {
       });
   }
 
-  routeToNewListingView() {
+  goToNewListingView() {
     this.router.navigateByUrl('/dashboard/external-listings/new');
+  }
+
+  goToViewAgents()
+  {
+    this.router.navigateByUrl('/dashboard/external-listings/agents');
   }
 
   onRowClicked(ev: any) {

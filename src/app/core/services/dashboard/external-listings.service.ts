@@ -5,20 +5,27 @@ import { apiUrlFactory } from '@configs/global';
 import { CacheService } from '@shared/services/cache.service';
 import { FormSubmissionService } from '@shared/services/form-submission.service';
 import { LoaderService } from '@shared/services/loader.service';
-import { of, Subject, takeUntil, tap } from 'rxjs';
+import { Observable, of, Subject, takeUntil, tap } from 'rxjs';
 import { ModalService } from './modal.service';
 import { ConfirmModalComponent } from '@core/components/dashboard/modals/confirm-modal/confirm-modal.component';
 import { AuthService } from '@shared/services/auth.service';
-import { Router } from '@angular/router';
 import { AlertService } from '@shared/services/alert.service';
+import { RouterService } from '../router.service';
 
+type OverviewWidgetType = {
+  total_external_listings: number
+  total_states_covered: number
+  total_sectors_covered: number
+  total_listing_agents: number
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class ExternalListingsService implements OnDestroy {
-  formGroup!: FormGroup;
   dropdownSelectedData: Record<string, IdAndNameType> = {}
+
+  private formGroup!: FormGroup;
   private destroy$ = new Subject<void>()
   constructor(
     private readonly httpClient: HttpClient,
@@ -27,7 +34,7 @@ export class ExternalListingsService implements OnDestroy {
     private readonly modalService: ModalService,
     private readonly loaderService: LoaderService,
     private readonly authService: AuthService,
-    private readonly router: Router,
+    private readonly router: RouterService,
     private readonly alertService: AlertService,
     private fb: FormBuilder,
 
@@ -55,7 +62,7 @@ export class ExternalListingsService implements OnDestroy {
       pricePerSqm: [],
       serviceCharge: [],
 
-      developer: [null, [Validators.required]],
+      developer: [null],
       listingAgent: [null, [Validators.required]],
       listingSource: [null, [Validators.required]],
 
@@ -64,7 +71,40 @@ export class ExternalListingsService implements OnDestroy {
     });
   }
 
-  public getPaginatedListings(
+  getFormGroup(data: any = null) {
+    if (data) {
+      for (let key in data) {
+        const mapper: Record<string, string> = {
+          state_id: 'state',
+          region_id: 'region',
+          locality_id: 'location',
+          section_id: 'section',
+          lga_id: 'lga',
+          lcda_id: 'lcda',
+          sector_id: 'sector',
+          sub_sector_id: 'subSector',
+          street: 'streetName',
+          street_number: 'streetNumber',
+          sub_type: 'subType',
+          no_of_beds: 'noOfBeds',
+          land_area: 'landArea',
+          offer_id: 'offer',
+          sale_price: 'salePrice',
+          lease_price: 'leasePrice',
+          price_per_sqm: 'pricePerSqm',
+          service_charge: 'serviceCharge',
+          developer_id: 'developer',
+          listing_agent_id: 'listingAgent',
+          listing_source_id: 'listingSource'
+        }
+        this.formGroup.patchValue({ [mapper[key] ?? key]: data[key] })
+      }
+      return this.formGroup
+    }
+    return this.formGroup
+  }
+
+  apiGetPaginatedListings(
     params: Nullable<PaginatedListingsParams> = null,
     invalidateCache = false
   ) {
@@ -99,62 +139,76 @@ export class ExternalListingsService implements OnDestroy {
     );
   }
 
-  public storeExternalListing(data: any) {
+  apiStoreExternalListing(data: any) {
     let url = apiUrlFactory('/external-listings/listings');
-    return this.httpClient.post<{ success: boolean, message: string }>(url, data)
+    return this.httpClient.post<{ success: boolean, message: string, data: any }>(url, data)
   }
 
-  public getExternalListingsById(id: number) {
+  apiUpdateExternalListing(data: any, id: number) {
     let url = apiUrlFactory(`/external-listings/listings/${id}`);
+    return this.httpClient.put<{ success: boolean, message: string, data: any }>(url, data)
+  }
+
+  apiGetExternalListingById(id: number, view = true) {
+    let url = apiUrlFactory(`/external-listings/listings/${id}`, { view });
     return this.httpClient.get<{ success: boolean, message: string, data: any }>(url)
   }
 
-  public createExternalListing(creationType: CreationType) {
-    this.formSubmissionService.onFormSubmission(this.formGroup);
-    if (this.formGroup.valid) {
+  apiDeleteExternalListingById(id: number) {
+    let url = apiUrlFactory(`/external-listings/listings/${id}`);
+    return this.httpClient.delete<{ success: boolean, message: string }>(url)
+  }
 
-      this.modalService.open(ConfirmModalComponent, {
-        matIconName: 'description',
-        title: 'Confirm Data Submission',
-        message: 'Proceed if you are sure this form was correctly filled.',
-        severity: 'warning',
-        ok: async () => {
-          this.loaderService.start()
-          const mappedData = this.prepareSubmissionData(this.formGroup.value)
-          this.storeExternalListing(mappedData).pipe(takeUntil(this.destroy$)).subscribe(
-            {
-              next: (v) => {
-                this.alertService.success(
-                  'Success',
-                  v.message
-                );
-                if (creationType === 'createAnother') {
-                  this.formGroup.reset()
-                } else {
-                  this.router.navigateByUrl(
-                    `/dashboard/external-listings` // Route to the read only version of resource
-                  );
-                }
-              },
+  apiGetOverviewWidgetSet() {
+    let url = apiUrlFactory(`/external-listings/overview/widget-set`);
+    return this.httpClient.get<OverviewWidgetType>(url)
+  }
 
-              error: (err) => {
-                console.error(err)
-                this.alertService.error('Error', 'An error occured while creating a new external listing')
-              },
-
-              complete: () => {
-                setTimeout(this.loaderService.stop.bind(this.loaderService), 3000)
-              }
-            }
-
-          )
-        }
-      })
-    }
+  apiGetOverviewVisualSet() {
+    let url = apiUrlFactory(`/external-listings/overview/visual-set`);
+    return this.httpClient.get<NameAndValueType[]>(url)
+  }
+  
+  apiGetOverviewAgentPerformance() {
+    let url = apiUrlFactory(`/external-listings/overview/agent-performance`);
+    return this.httpClient.get<NameAndValueType[]>(url)
   }
 
 
-  private prepareSubmissionData(data: any) {
+  createExternalListing(creationType: CreationType) {
+    this.mutateExternalListings(creationType, (mappedData) => this.apiStoreExternalListing(mappedData))
+  }
+
+  updateExternalListing(id: number) {
+    this.mutateExternalListings("edit", (mappedData) => this.apiUpdateExternalListing(mappedData, id))
+  }
+
+  deleteExternalListing(id: number) {
+    this.modalService.open(ConfirmModalComponent, {
+      matIconName: 'delete',
+      title: 'Confirm Delete',
+      message: 'Are you sure you want to delete this external listing?',
+      ok: () => {
+        this.loaderService.start();
+        this.apiDeleteExternalListingById(id).subscribe({
+          next: (v) => {
+            this.alertService.success('Success', 'External Listing deleted successfully.');
+            this.cacheService.clear()
+            this.loaderService.stop();
+            this.router.navigateByUrl(
+              `/dashboard/external-listings`
+            );
+          },
+          error: (error) => {
+            this.alertService.error('Error', error.message);
+            this.loaderService.stop();
+          },
+        });
+      },
+
+    })
+  }
+  private prepareSubmissionData(data: any, action: CreationType | 'edit' = 'create') {
     const mappedData: Record<string, any> = {
       state_id: parseInt(data['state']),
       region_id: parseInt(data['region']),
@@ -181,13 +235,66 @@ export class ExternalListingsService implements OnDestroy {
       comment: data['comment']
     }
 
-    this.authService.onCurrentUser().subscribe(v => {
-      mappedData['updated_by_id'] = v?.id
-    })
+    if (action !== 'edit') {
+      this.authService.onCurrentUser().subscribe(v => {
+        mappedData['updated_by_id'] = v?.id
+      })
+    }
+    else {
+      mappedData['id'] = data['id']
+    }
 
     return mappedData
   }
 
+  private mutateExternalListings(action: CreationType | 'edit' = 'create', mutateBaseFunct: (mappedData: any) => Observable<{
+    success: boolean;
+    message: string;
+    data: any;
+  }>) {
+    this.formSubmissionService.onFormSubmission(this.formGroup);
+    if (this.formGroup.valid) {
+
+      this.modalService.open(ConfirmModalComponent, {
+        matIconName: 'description',
+        title: 'Confirm Data Submission',
+        message: 'Proceed if you are sure this form was correctly filled.',
+        severity: 'warning',
+        ok: async () => {
+          this.loaderService.start()
+          const mappedData = this.prepareSubmissionData(this.formGroup.value, action)
+          mutateBaseFunct(mappedData).pipe(takeUntil(this.destroy$)).subscribe(
+            {
+              next: (v) => {
+                const newRecord = v.data
+                this.alertService.success(
+                  'Success',
+                  v.message
+                );
+                console.log(v.message)
+                if (action === 'createAnother') {
+                  setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 2000);
+                } else {
+                  this.router.navigateByUrl(
+                    `/dashboard/external-listings/${newRecord.id}`,
+                    newRecord
+                  );
+                }
+              },
+              error: (err) => {
+                console.error(err)
+                this.alertService.error('Error', `An error occured while ${action === 'create' ? 'creating a new' : 'updating this'} external listing`)
+              },
+
+              complete: () => {
+                setTimeout(this.loaderService.stop.bind(this.loaderService), 3000)
+              }
+            }
+          )
+        }
+      })
+    }
+  }
 
   ngOnDestroy(): void {
     this.destroy$.next()

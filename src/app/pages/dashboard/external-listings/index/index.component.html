@@ -1,5 +1,7 @@
-<div class="my-4 flex justify-end items-center">
-    <text-button withIcon="add" [isFlexed]="true" (clickEvent)="routeToNewListingView()" text="New Listing">
+<div class="my-4 flex justify-between items-center">
+    <text-button withIcon="group" [isFlexed]="true" (clickEvent)="goToViewAgents()" text="View Agents">
+    </text-button>
+    <text-button withIcon="add" [isFlexed]="true" (clickEvent)="goToNewListingView()" text="New Listing">
     </text-button>
 </div>
 
@@ -8,8 +10,7 @@
     [datasource]="datasource" [infiniteInitialRowCount]="initialRowCount" [cacheBlockSize]="pageSize"
     [maxBlocksInCache]="2" [class.ag-theme-quartz]="tableThemeColor === 'light'" [columnDefs]="colDefs"
     [defaultColDef]="defaultColDefs" [animateRows]="true" [gridOptions]="gridOptions" [cacheBlockSize]="20"
-    (rowClicked)="onRowClicked($event)"
-    >
+    (rowClicked)="onRowClicked($event)">
 </ag-grid-angular>
 
 <div class="text-sm mt-2 font-semibold">

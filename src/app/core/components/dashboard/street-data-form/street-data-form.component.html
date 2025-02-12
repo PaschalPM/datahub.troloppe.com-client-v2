@@ -107,7 +107,7 @@
       [formGroup]="streetDataFormGroup"
     >
     </app-input-field>
-    } @else { @if(selectedSectorId > 0 && subSectorOptions.length > 0){
+    } @else { @if(selectedSectorId > 0 && subSectorOptions && subSectorOptions.length > 0){
 
     <app-select-dropdown
       #selectDropdownRefs

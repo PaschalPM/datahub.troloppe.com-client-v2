@@ -15,4 +15,8 @@ export class FormSubmissionService {
   onFormSubmission(formGroup: FormGroup) {
     this.formSubmitEvent.emit({ formGroup, isSubmitting: true });
   }
+  
+  onEndFormSubmission(formGroup: FormGroup) {
+    this.formSubmitEvent.emit({ formGroup, isSubmitting: false });
+  }
 }

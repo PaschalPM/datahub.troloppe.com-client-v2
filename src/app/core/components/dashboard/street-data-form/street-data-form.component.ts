@@ -220,7 +220,7 @@ export class StreetDataFormComponent {
       if (selectedSector && selectedSector.id > 0) {
         this.subSectorOptions = selectedSector.sub_sectors;
 
-        if (this.subSectorOptions.length > 0) {
+        if (this.subSectorOptions && this.subSectorOptions.length > 0) {
           this.subSectorLabel = selectedSector.name + ' Sub Sector';
           if (this.type !== 'view') {
             this.streetDataFormGroup

@@ -14,7 +14,7 @@ export class ClickOutsideDirective {
   private display = true;
   @Output() clickOutside = new EventEmitter();
 
-  constructor(private element: ElementRef<HTMLElement>) {}
+  constructor(private element: ElementRef<HTMLElement>) { }
 
   @HostListener('document:click', ['$event'])
   onClickOutside(event: MouseEvent) {

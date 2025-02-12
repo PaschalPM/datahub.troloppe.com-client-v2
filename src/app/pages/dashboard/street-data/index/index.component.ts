@@ -14,13 +14,13 @@ import { ImagePreviewComponent } from '@shared/components/ag-grid/street-data/im
 import { AsyncPipe } from '@angular/common';
 import { StreetDataService } from '@core/services/dashboard/street-data.service';
 import { CreateAndDownloadStreetDataBtnsComponent } from '@core/components/dashbaord/create-and-download-street-data-btns/create-and-download-street-data-btns.component';
+import { LoaderService } from '@shared/services/loader.service';
 
 @Component({
   selector: 'app-index',
   standalone: true,
   imports: [
     ActiveLocationIndicatorComponent,
-    TextButtonComponent,
     AgGridAngular,
     AsyncPipe,
     CreateAndDownloadStreetDataBtnsComponent,
@@ -96,7 +96,8 @@ export class IndexComponent {
     private router: Router,
     private utils: UtilsService,
     private permission: PermissionService,
-    public colorScheme: ColorSchemeService
+    public colorScheme: ColorSchemeService,
+    private loaderService: LoaderService
   ) { }
 
   ngOnInit() {

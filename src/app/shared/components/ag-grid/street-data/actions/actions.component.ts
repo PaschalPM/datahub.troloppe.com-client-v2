@@ -17,7 +17,7 @@ import { ICellRendererParams } from 'ag-grid-community';
 export class ActionsComponent implements ICellRendererAngularComp {
   public params: any;
 
-  agInit(params: ICellRendererParams<any, any, any>): void {
+   agInit(params: ICellRendererParams<any, any, any>): void {
     this.params = params;
   }
 

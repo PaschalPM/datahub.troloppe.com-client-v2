@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-route-list',
@@ -11,9 +11,9 @@ import { RouterModule } from '@angular/router';
       <li>
         <a
           [routerLink]="forDashboard ? '/dashboard' : '/'"
-          [routerLinkActive]="activeRouteClass"
-          [routerLinkActiveOptions]="{ exact: true }"
-        >
+          [class]="isHomeActive ? activeRouteClass : ''"
+
+          >
           Home
         </a>
       </li>
@@ -40,4 +40,17 @@ export class RouteListComponent {
   @Input() withHomeRoute = true;
   @Input() forDashboard = false;
   @Input() clx = '';
+
+  constructor(private readonly router: Router) { }
+
+  get isHomeActive() {
+    if (this.forDashboard) {
+
+      return this.router.isActive('/dashboard', { paths: 'exact', queryParams: 'ignored', matrixParams: 'ignored', fragment: 'ignored' })
+    }
+    return this.router.isActive('/', { paths: 'exact', queryParams: 'ignored', matrixParams: 'ignored', fragment: 'ignored' })
+
+  }
+
+
 }

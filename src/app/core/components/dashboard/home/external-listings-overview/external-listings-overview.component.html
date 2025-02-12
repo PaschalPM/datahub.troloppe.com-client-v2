@@ -1,0 +1,47 @@
+<div class="my-4 flex justify-between items-center">
+    <!-- <dashboard-active-location-indicator />
+    <dashboard-create-and-download-street-data-btns/> -->
+</div>
+
+<div class="my-4 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+    @for (overview of overviewItems; track overview.id) {
+    @if(overview.id === 1) {
+    <a routerLink="/dashboard/street-data">
+
+        <dashboard-widget-overview [totalSum]="overview.totalSum" [overviewTitle]="overview.overviewTitle"
+            [myMatIcon]="overview.myMatIcon"></dashboard-widget-overview>
+    </a>
+    }
+    @else {
+    <dashboard-widget-overview [totalSum]="overview.totalSum" [overviewTitle]="overview.overviewTitle"
+        [myMatIcon]="overview.myMatIcon"></dashboard-widget-overview>
+
+    }
+    }
+</div>
+
+<dashboard-chart-container class="hidden lg:flex flex-wrap  justify-evenly min-h-60">
+    @if(isLoadingVisualSet){
+    <app-spinner></app-spinner>
+    <app-spinner></app-spinner>
+    }
+    @else {
+    <dashboard-chart type="pie" [results]="sectorsChart" title="Sectors">
+    </dashboard-chart>
+    <!-- <dashboard-chart type="pie" [results]="verifiedStreetDataBySector" title="Verified Street Data By Sector">
+    </dashboard-chart> -->
+    }
+</dashboard-chart-container>
+
+<!-- @if (isPermitted) { -->
+<dashboard-chart-container class="hidden lg:flex justify-center min-h-52">
+    @if(isLoadingAgentPerformance){
+    <app-spinner></app-spinner>
+    }
+    @else {
+    <dashboard-chart [results]="agentPerformanceChart"
+        title="Top 10 Listing Agents"></dashboard-chart>
+    }
+</dashboard-chart-container>
+
+<!-- } -->

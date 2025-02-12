@@ -3,6 +3,8 @@ import { StreetDataOverviewComponent } from '@core/components/dashboard/home/str
 import { AuthNoticeComponent } from '@core/components/dashboard/home/auth-notice/auth-notice.component';
 import { PaneNavigatorPanelComponent } from '@core/components/dashboard/pane-navigator-panel/pane-navigator-panel.component';
 import { routeFadeInOut, visibleTrigger } from '@shared/animations';
+import { ExternalListingsOverviewComponent } from "../../../core/components/dashboard/home/external-listings-overview/external-listings-overview.component";
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'dashboard-home',
@@ -11,6 +13,7 @@ import { routeFadeInOut, visibleTrigger } from '@shared/animations';
     AuthNoticeComponent,
     PaneNavigatorPanelComponent,
     StreetDataOverviewComponent,
+    ExternalListingsOverviewComponent
   ],
   templateUrl: './home.component.html',
   animations: [visibleTrigger, routeFadeInOut],
@@ -35,4 +38,27 @@ export class HomeComponent {
       tabLabel: `Investment Data`,
     },
   ];
+
+  constructor(private readonly router: Router, private readonly activatedRoute: ActivatedRoute) {
+
+  }
+
+  ngOnInit(): void {
+    const queryParamMap = this.activatedRoute.snapshot.queryParamMap
+    const overviewQuery = queryParamMap.get('overview')
+    const panes = this.tabs.map((v) => v.pane)
+
+
+    if (overviewQuery && panes.includes(overviewQuery)) {
+      this.activePane = overviewQuery as any
+    }
+    else {
+      this.activePane = 'street-data'
+    }
+  }
+
+  setActivePane(event: any) {
+    this.router.navigateByUrl(`/dashboard?overview=${event}`)
+    this.activePane = event
+  }
 }

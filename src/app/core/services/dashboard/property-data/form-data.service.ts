@@ -45,7 +45,7 @@ export class FormDataService {
     return this.getPropertyData(url, 'regions', invalidateCache)
   }
 
-  getSectionsByLocationId(locationId: number, invalidateCache = true) {
+  getSectionsByLocalityId(locationId: number, invalidateCache = true) {
     const url = `/sections?location_id=${locationId}`;
     return this.getPropertyData(url, 'sections', invalidateCache)
   }

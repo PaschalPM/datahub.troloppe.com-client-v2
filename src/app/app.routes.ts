@@ -20,6 +20,8 @@ import { newStreetDataFormGuard } from '@core/guards/new-street-data-form.guard'
 import { IndexComponent as ExternalListingsIndexComponent } from '@pages/dashboard/external-listings/index/index.component';
 import { NewComponent as ExternalListingsNewComponent } from '@pages/dashboard/external-listings/new/new.component';
 import { ViewComponent as ExternalListingsViewComponent } from '@pages/dashboard/external-listings/view/view.component';
+import { EditComponent as ExternalListingEditComponent } from '@pages/dashboard/external-listings/edit/edit.component';
+import { IndexComponent as ListingAgentsIndexComponent } from '@pages/dashboard/external-listings/agents/index/index.component';
 
 export const routes: Routes = [
   {
@@ -83,6 +85,8 @@ export const routes: Routes = [
         component: DashboardHomeComponent,
         title: 'Home',
       },
+
+      // Street Data Routes
       {
         path: 'street-data',
         component: StreetDataIndexComponent,
@@ -104,8 +108,7 @@ export const routes: Routes = [
         component: StreetDataEditComponent,
         title: 'Edit Street Data',
       },
-
-      // External Listings Section
+      // External Listings Routes
       {
         path: 'external-listings',
         component: ExternalListingsIndexComponent,
@@ -117,11 +120,22 @@ export const routes: Routes = [
         title: 'Create External Listing',
       },
       {
+        path: 'external-listings/agents',
+        component: ListingAgentsIndexComponent,
+        title: 'View Listing Agents',
+      },
+      {
         path: 'external-listings/:id',
         component: ExternalListingsViewComponent,
         title: 'View External Listing',
       },
-      // Notification Section
+      {
+        path: 'external-listings/edit/:id',
+        component: ExternalListingEditComponent,
+        title: 'Edit External Listing',
+      },
+
+      // Notification Route
       {
         path: 'notifications',
         component: NotificationsComponent,
