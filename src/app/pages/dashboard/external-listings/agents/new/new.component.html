@@ -1,0 +1,22 @@
+<app-back-btn />
+
+
+<div class="w-full p-2 md:p-4 lg:w-3/4 mx-auto">
+    <form class="rounded-lg bg-base-300 p-4 md:p-8 text-sm shadow-md backdrop-blur-md my-6" [formGroup]="agentFormGroup"
+        (ngSubmit)="handleSubmit()">
+
+        @for(key of formGroupKeys; track key ){
+        <app-input-field [formGroup]="agentFormGroup" [label]="getLabel(key)" [name]="key"></app-input-field>
+        }
+        <div class="flex mt-4 gap-2">
+            <app-form-submit-btn #inputs id="create" text="Create" [loading]="isLoading" [forDashboard]="true"
+                (click)="creationType='create'">
+            </app-form-submit-btn>
+
+            <app-form-submit-btn id="createAnother" text="Create Another" [loading]="isLoading"
+                (click)="creationType='createAnother'" [forDashboard]="true" variant="outline">
+            </app-form-submit-btn>
+
+        </div>
+    </form>
+</div>

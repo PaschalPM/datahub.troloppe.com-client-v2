@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { NgxChartsModule, Color, ScaleType } from '@swimlane/ngx-charts';
 import { ColorSchemeService } from '@shared/services/color-scheme.service';
 import { UtilsService } from '@shared/services/utils.service';
 import { Subscription } from 'rxjs';
@@ -23,33 +23,38 @@ export class ChartComponent {
 
   actualColorSchemeSubscription!: Subscription
   fillColor = '#fff'
-
-  private darkColor = '#a66417'
-  private lightColor = '#cc8e48'
+  colorScheme!: Color
 
   constructor(
-    public colorScheme: ColorSchemeService,
+    public colorSchemeService: ColorSchemeService,
     private utils: UtilsService
   ) { }
 
+  getColorScheme(mode: 'light' | 'dark' = 'light'): Color {
+    return {
+      name: mode === 'dark' ? 'darkCustomScheme' : 'customScheme',   // Unique name
+      selectable: true,       // Allows selection
+      group: ScaleType.Ordinal,       // Color group type
+      domain: mode === 'dark' ? ['#8F2E60', '#8B5D34', '#3D9E73', '#365D8B'] : ['#9c672b', '#cc8e48', '#cc4886', '#4886cc']
+    };
+
+  }
 
   ngOnInit(): void {
     this.capitalizeKeyNamesInResults();
-    this.actualColorSchemeSubscription = this.colorScheme.getActualColorScheme().subscribe((value) => {
+    this.actualColorSchemeSubscription = this.colorSchemeService.getActualColorScheme().subscribe((value) => {
       if (value === 'dark') {
-        this.currentColor = () => this.darkColor
+        this.colorScheme = this.getColorScheme('dark')
         this.fillColor = '#8aa1b6'
       }
       else {
-        this.currentColor = () => this.lightColor
+        this.colorScheme = this.getColorScheme()
         this.fillColor = '#353e4b'
-
       }
     })
   }
 
 
-  currentColor: () => string = () => this.lightColor
 
   ngOnDestroy() {
     this.actualColorSchemeSubscription.unsubscribe()

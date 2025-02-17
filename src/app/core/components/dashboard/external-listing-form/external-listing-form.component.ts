@@ -15,6 +15,7 @@ import { FormSubmitBtnComponent } from '@shared/components/form-submit-btn/form-
 import { routeFadeInOut, visibleTrigger } from '@shared/animations';
 import { CommonModule } from '@angular/common';
 import { BackBtnComponent } from "../../../../shared/components/back-btn/back-btn.component";
+import { SpinnerComponent } from "../../../../shared/components/spinner/spinner.component";
 
 @Component({
   selector: 'app-external-listing-form',
@@ -26,7 +27,8 @@ import { BackBtnComponent } from "../../../../shared/components/back-btn/back-bt
     ReactiveFormsModule,
     FormSubmitBtnComponent,
     CommonModule,
-    BackBtnComponent
+    BackBtnComponent,
+    SpinnerComponent
 ],
   templateUrl: './external-listing-form.component.html',
   styleUrl: './external-listing-form.component.scss',

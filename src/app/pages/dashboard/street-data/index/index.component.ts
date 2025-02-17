@@ -23,7 +23,7 @@ import { LoaderService } from '@shared/services/loader.service';
     ActiveLocationIndicatorComponent,
     AgGridAngular,
     AsyncPipe,
-    CreateAndDownloadStreetDataBtnsComponent,
+
   ],
   templateUrl: './index.component.html',
   animations: [routeFadeInOut],
@@ -123,7 +123,7 @@ export class IndexComponent {
   }
 
   onEditClick({ rowData: { id } }: any) {
-    this.router.navigateByUrl(`/dashboard/street-data/edit/${id}`);
+    this.router.navigateByUrl(`/dashboard/street-data/${id}/edit`);
   }
 
   routeToNewStreetView() {

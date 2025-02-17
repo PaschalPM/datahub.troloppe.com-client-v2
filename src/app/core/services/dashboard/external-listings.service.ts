@@ -27,6 +27,7 @@ export class ExternalListingsService implements OnDestroy {
 
   private formGroup!: FormGroup;
   private destroy$ = new Subject<void>()
+
   constructor(
     private readonly httpClient: HttpClient,
     private readonly cacheService: CacheService,
@@ -164,11 +165,11 @@ export class ExternalListingsService implements OnDestroy {
     return this.httpClient.get<OverviewWidgetType>(url)
   }
 
-  apiGetOverviewVisualSet() {
-    let url = apiUrlFactory(`/external-listings/overview/visual-set`);
+  apiGetOverviewVisualSet(type = 'sectors') {
+    let url = apiUrlFactory(`/external-listings/overview/visual-set`, { type });
     return this.httpClient.get<NameAndValueType[]>(url)
   }
-  
+
   apiGetOverviewAgentPerformance() {
     let url = apiUrlFactory(`/external-listings/overview/agent-performance`);
     return this.httpClient.get<NameAndValueType[]>(url)
@@ -271,7 +272,6 @@ export class ExternalListingsService implements OnDestroy {
                   'Success',
                   v.message
                 );
-                console.log(v.message)
                 if (action === 'createAnother') {
                   setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 2000);
                 } else {

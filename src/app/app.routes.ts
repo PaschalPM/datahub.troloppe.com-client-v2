@@ -22,6 +22,10 @@ import { NewComponent as ExternalListingsNewComponent } from '@pages/dashboard/e
 import { ViewComponent as ExternalListingsViewComponent } from '@pages/dashboard/external-listings/view/view.component';
 import { EditComponent as ExternalListingEditComponent } from '@pages/dashboard/external-listings/edit/edit.component';
 import { IndexComponent as ListingAgentsIndexComponent } from '@pages/dashboard/external-listings/agents/index/index.component';
+import { NewComponent as ListingAgentsNewComponent } from '@pages/dashboard/external-listings/agents/new/new.component';
+import { ShowComponent as ListingAgentShowComponent } from '@pages/dashboard/external-listings/agents/show/show.component';
+import { EditComponent as ListingAgentsEditComponent } from '@pages/dashboard/external-listings/agents/edit/edit.component';
+import { editAgentsGuard } from '@core/guards/edit-agents.guard';
 
 export const routes: Routes = [
   {
@@ -101,10 +105,10 @@ export const routes: Routes = [
       {
         path: 'street-data/:id',
         component: StreetDataViewComponent,
-        title: 'View Street Data',
+        title: 'Street Data',
       },
       {
-        path: 'street-data/edit/:id',
+        path: 'street-data/:id/edit',
         component: StreetDataEditComponent,
         title: 'Edit Street Data',
       },
@@ -119,18 +123,31 @@ export const routes: Routes = [
         component: ExternalListingsNewComponent,
         title: 'Create External Listing',
       },
+      // LISTING AGENTS -- START
       {
         path: 'external-listings/agents',
         component: ListingAgentsIndexComponent,
-        title: 'View Listing Agents',
+        title: 'Listing Agents',
       },
+      {
+        canActivate: [editAgentsGuard],
+        path: 'external-listings/agents/:id/edit',
+        component: ListingAgentsEditComponent,
+        title: 'Edit Listing Agent',
+      },
+      {
+        path: 'external-listings/agents/:id',
+        component: ListingAgentShowComponent,
+        title: 'Listing Agent',
+      },
+      // LISTING AGENTS -- END
       {
         path: 'external-listings/:id',
         component: ExternalListingsViewComponent,
-        title: 'View External Listing',
+        title: 'External Listing',
       },
       {
-        path: 'external-listings/edit/:id',
+        path: 'external-listings/:id/edit',
         component: ExternalListingEditComponent,
         title: 'Edit External Listing',
       },

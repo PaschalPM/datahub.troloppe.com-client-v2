@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { NgIf } from '@angular/common';
 import { Component, Input } from '@angular/core';
 
 import { MyMatIconComponent } from '@shared/components/my-mat-icon/my-mat-icon.component';
@@ -9,13 +9,13 @@ import { ActiveLocationFormModalComponent } from '../../modals/active-location-f
 import { ActiveLocationService } from '@core/services/dashboard/active-location.service';
 import { PermissionService } from '@shared/services/permission.service';
 import { UserRoles } from '@shared/enums/user-roles';
-import { map, Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { SpinnerComponent } from "@shared/components/spinner/spinner.component";
 
 @Component({
   selector: 'dashboard-active-location-indicator',
   standalone: true,
-  imports: [NgIf, AsyncPipe, MyMatIconComponent, SpinnerComponent],
+  imports: [NgIf, MyMatIconComponent, SpinnerComponent],
   template: `
     <div
       class="my-6 mixin/base:font-bold mixin/base:font-mono mixin/base:flex mixin/base:items-center mixin/base:gap-2"

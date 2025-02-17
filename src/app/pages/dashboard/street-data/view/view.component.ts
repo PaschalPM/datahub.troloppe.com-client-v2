@@ -110,7 +110,7 @@ export class ViewComponent extends StreetDataDetails {
 
   routeToEditStreetView() {
     this.router.navigateByUrl(
-      `/dashboard/street-data/edit/${this.streetDataId}`
+      `/dashboard/street-data/${this.streetDataId}/edit`
     );
   }
 }

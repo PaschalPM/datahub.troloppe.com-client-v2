@@ -1,0 +1,50 @@
+<app-back-btn />
+@if(listingAgentData){
+<div class="py-6 max-w-4xl mx-auto">
+    <h2 class="text-2xl font-bold"> {{listingAgentData['name']}} </h2>
+</div>
+<div class="max-w-4xl mx-auto shadow-lg rounded-lg p-6">
+    <div class="flex items-center border-b pb-4 justify-between">
+
+        <h2 class="text-xl font-bold">Agent's Details</h2>
+        <div class="flex  flex-row items-end">
+            <text-button withIcon="edit" [isFlexed]="true" text="Edit" (clickEvent)="goToEditAgent()"></text-button>
+        </div>
+    </div>
+    <div class="grid grid-cols-2 gap-4 mt-4">
+        @for(key of listingAgentKeys; track key){
+        <div>
+            <span class="font-semibold">{{key === 'id'? 'ID' : getLabel(key)}}:</span>
+            <span>
+                {{ listingAgentData[key] }}
+            </span>
+        </div>
+        }
+    </div>
+</div>
+
+<div class="max-w-4xl mx-auto shadow-lg rounded-lg p-6 mt-4">
+    <div class="flex items-center border-b pb-4 justify-between">
+        <h2 class="text-xl font-bold">Agent's Listings</h2>
+    </div>
+    <div class=" mt-4">
+        <ag-grid-angular class="!bg-transparent" domLayout="autoHeight" [columnDefs]="columnDefs" [rowData]="rowData"
+            [rowHeight]="40" [animateRows]="true" [defaultColDef]="defaultColDef"
+            [class.ag-theme-quartz]="tableThemeColor === 'light'"
+            [class.ag-theme-quartz-dark]="tableThemeColor === 'dark'" (rowClicked)="onRowClicked($event)"
+            rowClass="cursor-pointer">
+
+        </ag-grid-angular>
+
+        <div class="text-sm mt-2 font-semibold">
+            Total Records: {{ totalRecords }}
+        </div>
+    </div>
+</div>
+
+}
+@else {
+<div class="p-6">
+    <app-spinner />
+</div>
+}

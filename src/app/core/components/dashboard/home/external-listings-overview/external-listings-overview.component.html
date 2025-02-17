@@ -1,6 +1,5 @@
-<div class="my-4 flex justify-between items-center">
-    <!-- <dashboard-active-location-indicator />
-    <dashboard-create-and-download-street-data-btns/> -->
+<div class="my-4 flex justify-end items-center">
+    <text-button withIcon="add" [isFlexed]="true" (clickEvent)="goToNewListing()" text="New Listing"></text-button>
 </div>
 
 <div class="my-4 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -20,27 +19,29 @@
     }
 </div>
 
-<dashboard-chart-container class="hidden lg:flex flex-wrap  justify-evenly min-h-60">
+<dashboard-chart-container class="hidden lg:flex flex-wrap  justify-evenly min-h-60" href = '/dashboard/external-listings'  linkTitle = 'View All External Listings'>
     @if(isLoadingVisualSet){
     <app-spinner></app-spinner>
     <app-spinner></app-spinner>
     }
     @else {
-    <dashboard-chart type="pie" [results]="sectorsChart" title="Sectors">
+    <dashboard-chart type="pie" [results]="sectorsChart" title="Sectors Covered">
     </dashboard-chart>
-    <!-- <dashboard-chart type="pie" [results]="verifiedStreetDataBySector" title="Verified Street Data By Sector">
-    </dashboard-chart> -->
+    <dashboard-chart type="pie" [results]="locationsChart" title="Top 10 Locations Covered">
+    </dashboard-chart>
     }
 </dashboard-chart-container>
 
 <!-- @if (isPermitted) { -->
-<dashboard-chart-container class="hidden lg:flex justify-center min-h-52">
+<dashboard-chart-container class="hidden lg:flex justify-center min-h-52"  href = '/dashboard/external-listings/agents'  linkTitle = 'View All Listing Agents'>
     @if(isLoadingAgentPerformance){
     <app-spinner></app-spinner>
     }
     @else {
-    <dashboard-chart [results]="agentPerformanceChart"
-        title="Top 10 Listing Agents"></dashboard-chart>
+    <div>
+        <dashboard-chart [results]="agentPerformanceChart" title="Top 10 Listing Agents"></dashboard-chart>
+    </div>
+
     }
 </dashboard-chart-container>
 

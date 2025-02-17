@@ -49,8 +49,7 @@
                 <!-- LCDA Select Field -->
                 <app-select-dropdown clx="my-3" label="L C D A" name="lcda" [items]="optionsRecord['lcda']"
                     [formGroup]="externalListingFormGroup" bindLabel="name" bindValue="id"
-                    [disableControlBasedOnData]="true"
-                    [pending]="isFetchingRecord['lcda']">
+                    [disableControlBasedOnData]="true" [pending]="isFetchingRecord['lcda']">
                 </app-select-dropdown>
             </div>
 
@@ -145,17 +144,17 @@
             </div>
             <div class="flex mt-4 gap-2">
                 @if(action === 'create'){
-                    <app-form-submit-btn #inputs id="create" text="Create" [loading]="isLoading" [forDashboard]="true"
-                        (click)="creationType='create'">
-                    </app-form-submit-btn>
+                <app-form-submit-btn #inputs id="create" text="Create" [loading]="isLoading" [forDashboard]="true"
+                    (click)="creationType='create'">
+                </app-form-submit-btn>
 
-                    <app-form-submit-btn id="createAnother" text="Create Another" [loading]="isLoading"
-                        (click)="creationType='createAnother'" [forDashboard]="true" variant="outline">
-                    </app-form-submit-btn>
+                <app-form-submit-btn id="createAnother" text="Create Another" [loading]="isLoading"
+                    (click)="creationType='createAnother'" [forDashboard]="true" variant="outline">
+                </app-form-submit-btn>
                 }
                 @else {
-                    <app-form-submit-btn #inputs id="update" text="Update" [loading]="isLoading" [forDashboard]="true">
-                    </app-form-submit-btn>
+                <app-form-submit-btn #inputs id="update" text="Update" [loading]="isLoading" [forDashboard]="true">
+                </app-form-submit-btn>
                 }
 
             </div>
@@ -168,9 +167,8 @@
     <ng-container *ngTemplateOutlet="form"></ng-container>
     }
     @else {
-    <div> Loading... </div>
-    <div class="flex items-center justify-center h-screen">
-        <div class="size-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+    <div class="p-6">
+        <app-spinner />
     </div>
     }
 </ng-container>

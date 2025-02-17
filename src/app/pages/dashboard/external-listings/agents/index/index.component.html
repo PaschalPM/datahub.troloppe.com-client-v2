@@ -1,1 +1,21 @@
-<p>index works!</p>
+<div class="my-4 flex justify-between items-center">
+    <text-button withIcon="list" [isFlexed]="true" (clickEvent)="goToViewListings()" text="View Listings">
+    </text-button>
+</div>
+
+<ag-grid-angular 
+    class="!bg-transparent h-[calc(100vh-100px)]"
+    [columnDefs]="colDefs"
+    [rowData]="rowData"
+    [animateRows]="true"
+    [class.ag-theme-quartz]="tableThemeColor === 'light'"
+    [class.ag-theme-quartz-dark]="tableThemeColor === 'dark'"
+    [defaultColDef]="defaultColDef"
+    [loading]="loading"
+    (rowClicked)="onRowClicked($event)"
+    rowClass="cursor-pointer"
+> </ag-grid-angular>
+
+<div class="text-sm mt-2 font-semibold">
+    Total Records: {{ totalRecords }}
+</div>

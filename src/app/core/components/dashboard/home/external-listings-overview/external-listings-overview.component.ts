@@ -4,16 +4,20 @@ import { ExternalListingsService } from '@core/services/dashboard/external-listi
 import { SpinnerComponent } from "../../../../../shared/components/spinner/spinner.component";
 import { ChartComponent } from "../chart/chart.component";
 import { ChartContainerComponent } from "../chart-container/chart-container.component";
+import { TextButtonComponent } from "../../text-btn/text-btn.component";
+import { RouterService } from '@core/services/router.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'dashboard-external-listings-overview',
   standalone: true,
-  imports: [OverviewComponent, SpinnerComponent, ChartComponent, ChartContainerComponent],
+  imports: [OverviewComponent, SpinnerComponent, ChartComponent, ChartContainerComponent, TextButtonComponent],
   templateUrl: './external-listings-overview.component.html',
   styleUrl: './external-listings-overview.component.scss'
 })
 export class ExternalListingsOverviewComponent {
   sectorsChart!: Array<NameAndValueType>;
+  locationsChart!: Array<NameAndValueType>;
   agentPerformanceChart!: Array<NameAndValueType>
   isLoadingVisualSet = true;
   isLoadingAgentPerformance = true
@@ -44,7 +48,10 @@ export class ExternalListingsOverviewComponent {
     },
   ];
 
-  constructor(private readonly externalListingsService: ExternalListingsService) {
+  constructor(
+    private readonly externalListingsService: ExternalListingsService,
+    private readonly router: RouterService
+  ) {
 
   }
 
@@ -67,17 +74,27 @@ export class ExternalListingsOverviewComponent {
   }
 
   getVisualOverviewData() {
+    const sectors$ = this.externalListingsService.apiGetOverviewVisualSet('sectors')
+    const top10Locations$ = this.externalListingsService.apiGetOverviewVisualSet('top-10-locations')
+    forkJoin([sectors$, top10Locations$]).subscribe((v) => {
+      this.sectorsChart = v[0]
+      this.locationsChart = v[1]
+      this.isLoadingVisualSet = false
+    })
     this.externalListingsService.apiGetOverviewVisualSet().subscribe((v) => {
       this.sectorsChart = v
       this.isLoadingVisualSet = false
     })
   }
 
-  getAgentPerformanceData(){
+  getAgentPerformanceData() {
     this.externalListingsService.apiGetOverviewAgentPerformance().subscribe((v) => {
-      console.log(v)
       this.agentPerformanceChart = v
       this.isLoadingAgentPerformance = false
     })
+  }
+
+  goToNewListing() {
+    this.router.navigateByUrl('/dashboard/external-listings/new')
   }
 }

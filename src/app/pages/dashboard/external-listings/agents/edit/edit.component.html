@@ -1,0 +1,23 @@
+<app-back-btn />
+
+@if(!isLoading){
+
+<div class="w-full p-2 md:p-4 lg:w-3/4 mx-auto">
+    <form class="rounded-lg bg-base-300 p-4 md:p-8 text-sm shadow-md backdrop-blur-md my-6" [formGroup]="agentFormGroup"
+        (ngSubmit)="handleSubmit()">
+
+        @for(key of formGroupKeys; track key ){
+        <app-input-field [formGroup]="agentFormGroup" [label]="getLabel(key)" [name]="key"></app-input-field>
+        }
+        <div class="flex mt-4 gap-2">
+            <app-form-submit-btn text="Update" [loading]="isLoading" [forDashboard]="true">
+            </app-form-submit-btn>
+        </div>
+    </form>
+</div>
+}
+@else {
+<div class="p-6">
+    <app-spinner />
+</div>
+}

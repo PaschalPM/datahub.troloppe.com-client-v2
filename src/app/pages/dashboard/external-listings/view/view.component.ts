@@ -6,11 +6,12 @@ import { RouterService } from '@core/services/router.service';
 import { LoaderService } from '@shared/services/loader.service';
 import { Subject, takeUntil } from 'rxjs';
 import { BackBtnComponent } from "../../../../shared/components/back-btn/back-btn.component";
+import { SpinnerComponent } from "../../../../shared/components/spinner/spinner.component";
 
 @Component({
   selector: 'app-view',
   standalone: true,
-  imports: [TextButtonComponent, BackBtnComponent],
+  imports: [TextButtonComponent, BackBtnComponent, SpinnerComponent],
   templateUrl: './view.component.html',
   styleUrl: './view.component.scss'
 })
@@ -54,15 +55,15 @@ export class ViewComponent implements OnDestroy {
 
   // Exclude updated_by_id key
   get externalListingDataKeys() {
-    return this.externalListingData && Object.keys(this.externalListingData).filter((v) => v !== 'updated_by_id')
+    return this.externalListingData && Object.keys(this.externalListingData).filter((v) => !(v == 'updated_by_id' || v == 'id'))
   }
 
-  routeToEditExternalListing() {
+  goToEditExternalListing() {
     const id = this.externalListingData.id
-    this.router.navigateByUrl(`/dashboard/external-listings/edit/${id}`)
+    this.router.navigateByUrl(`/dashboard/external-listings/${id}/edit`)
   }
 
-  deleteExternalListing(){
+  deleteExternalListing() {
     const id = this.externalListingData.id
     this.externalListingsService.deleteExternalListing(id)
   }

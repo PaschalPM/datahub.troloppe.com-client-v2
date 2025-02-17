@@ -4,9 +4,10 @@ import { Router } from '@angular/router';
 import { TextButtonComponent } from '@core/components/dashboard/text-btn/text-btn.component';
 import { ExternalListingsService } from '@core/services/dashboard/external-listings.service';
 import { RouterService } from '@core/services/router.service';
-import { ClientStorageService } from '@shared/services/client-storage.service';
+import { AuthService } from '@shared/services/auth.service';
 import { ColorSchemeService } from '@shared/services/color-scheme.service';
 import { PermissionService } from '@shared/services/permission.service';
+import { User } from '@shared/services/types';
 import { AgGridAngular } from 'ag-grid-angular';
 import { ColDef, GridOptions } from 'ag-grid-community';
 import { Observable, Subject, Subscription, takeUntil, tap } from 'rxjs';
@@ -155,22 +156,36 @@ export class IndexComponent implements OnDestroy {
   pageSize = 250
   initialRowCount = 0
   datasource: any;
-  totalRecords = 0
+  totalRecords = '...'
   destroy$ = new Subject<void>()
-
-  private actualColorSchemeSubscription!: Subscription;
+  currentUser!: User
 
   constructor(
     private els: ExternalListingsService,
     private router: RouterService,
     public colorScheme: ColorSchemeService,
-    private permission: PermissionService,
+    public permission: PermissionService,
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
-    this.els.apiGetPaginatedListings({ limit: 1 }).pipe(takeUntil(this.destroy$))
+
+
+    this.authService.onCurrentUser().pipe(takeUntil(this.destroy$)).subscribe((v) => {
+      this.currentUser = v!
+    })
+
+    const paginatedListingParams: PaginatedListingsParams = {
+      limit: 1
+    }
+
+    if (!this.permission.isAdmin){
+      paginatedListingParams.updatedById = this.currentUser.id
+    }
+
+    this.els.apiGetPaginatedListings(paginatedListingParams).pipe(takeUntil(this.destroy$))
       .subscribe(v => {
-        this.totalRecords = v.totalPages
+        this.totalRecords = v.totalPages.toString()
       })
 
     this.datasource = {
@@ -191,10 +206,14 @@ export class IndexComponent implements OnDestroy {
           const sortBy = `${colId}:${sort}`
           paginatedListingParams.sortBy = sortBy
         }
+
+        if (!this.permission.isAdmin) {
+          paginatedListingParams.updatedById = this.currentUser.id
+        }
+
         this.els.apiGetPaginatedListings(paginatedListingParams).pipe(takeUntil(this.destroy$))
           .subscribe({
             next: (value) => {
-
               params.successCallback(value.data, value.totalRecords);
             },
             error() {
@@ -204,7 +223,7 @@ export class IndexComponent implements OnDestroy {
       }
     }
 
-    this.actualColorSchemeSubscription = this.colorScheme
+    this.colorScheme
       .getActualColorScheme()
       .pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
@@ -216,14 +235,13 @@ export class IndexComponent implements OnDestroy {
     this.router.navigateByUrl('/dashboard/external-listings/new');
   }
 
-  goToViewAgents()
-  {
+  goToViewAgents() {
     this.router.navigateByUrl('/dashboard/external-listings/agents');
   }
 
   onRowClicked(ev: any) {
     const data = ev.data
-    this.router.navigateByUrl(`/dashboard/external-listings/${data.id}`,  data)
+    this.router.navigateByUrl(`/dashboard/external-listings/${data.id}`, data)
   }
 
   ngOnDestroy(): void {

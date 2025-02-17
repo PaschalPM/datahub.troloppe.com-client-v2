@@ -1,10 +1,14 @@
 <app-back-btn />
+@if(externalListingData){
+
 <div class="max-w-4xl mx-auto shadow-lg rounded-lg p-6">
     <div class="flex items-center border-b pb-4 justify-between">
-        <h2 class="text-2xl font-bold">Property Details</h2>
+        <h2 class="text-xl font-bold">Property Details</h2>
         <div class="flex  flex-row items-end">
-            <text-button withIcon="edit" [isFlexed]="true" text="Edit" (clickEvent)="routeToEditExternalListing()"></text-button>
-            <text-button withIcon="delete" [isFlexed]="true" state="error" text="Delete" (clickEvent)="deleteExternalListing()"></text-button>
+            <text-button withIcon="edit" [isFlexed]="true" text="Edit"
+                (clickEvent)="goToEditExternalListing()"></text-button>
+            <text-button withIcon="delete" [isFlexed]="true" state="error" text="Delete"
+                (clickEvent)="deleteExternalListing()"></text-button>
         </div>
     </div>
     <div class="grid grid-cols-2 gap-4 mt-4">
@@ -12,4 +16,12 @@
         <div><span class="font-semibold">{{key === 'id'? 'ID' : key}}:</span> {{ externalListingData[key] }}</div>
         }
     </div>
+
 </div>
+
+}
+@else {
+<div class="p-6">
+    <app-spinner />
+</div>
+}
