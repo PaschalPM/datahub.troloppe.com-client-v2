@@ -89,6 +89,7 @@ export class ExternalListingFormComponent {
     if (resource) {
       const options = this.optionsRecord[resource.name]
       this.optionsRecord[resource.name] = options ? [resource.data, ...options] : [resource.data]
+      
     }
     else {
       Object.entries(initialDataMap).forEach(([key, fetchData]) => {

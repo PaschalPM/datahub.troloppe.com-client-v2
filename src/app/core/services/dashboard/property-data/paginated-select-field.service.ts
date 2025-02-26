@@ -76,8 +76,8 @@ export class PaginatedSelectFieldService {
               return item;
             });
           }),
-          takeUntil(this.destroy$) // Ensure cleanup
         )
+        .pipe(takeUntil(this.destroy$))
         .subscribe({
           next: (value: any) => {
             // Handle paginated data

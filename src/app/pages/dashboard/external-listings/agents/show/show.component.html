@@ -7,9 +7,11 @@
     <div class="flex items-center border-b pb-4 justify-between">
 
         <h2 class="text-xl font-bold">Agent's Details</h2>
+        @if(permissionService.isAdmin){
         <div class="flex  flex-row items-end">
             <text-button withIcon="edit" [isFlexed]="true" text="Edit" (clickEvent)="goToEditAgent()"></text-button>
         </div>
+        }
     </div>
     <div class="grid grid-cols-2 gap-4 mt-4">
         @for(key of listingAgentKeys; track key){
@@ -22,7 +24,7 @@
         }
     </div>
 </div>
-
+@if(permissionService.isAdmin) {
 <div class="max-w-4xl mx-auto shadow-lg rounded-lg p-6 mt-4">
     <div class="flex items-center border-b pb-4 justify-between">
         <h2 class="text-xl font-bold">Agent's Listings</h2>
@@ -41,7 +43,7 @@
         </div>
     </div>
 </div>
-
+}
 }
 @else {
 <div class="p-6">

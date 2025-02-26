@@ -38,9 +38,12 @@ export class SelectDropdownService {
   }
 
   onAddBtnClick(cb: (formGroup: FormGroup, formControlName: string) => void) {
-    this.addBtnClick.asObservable().pipe(takeUntil(this.destroy$)).subscribe(({ formGroup, formControlName }) => {
-      cb(formGroup, formControlName)
-    })
+    this.addBtnClick
+      .asObservable()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(({ formGroup, formControlName }) => {
+        cb(formGroup, formControlName)
+      })
   }
 
   ngOnDestroy(): void {

@@ -11,6 +11,7 @@ import { AgGridAngular } from 'ag-grid-angular';
 import { ColDef, RowClickedEvent } from 'ag-grid-community';
 import { ColorSchemeService } from '@shared/services/color-scheme.service';
 import { SpinnerComponent } from "../../../../../shared/components/spinner/spinner.component";
+import { PermissionService } from '@shared/services/permission.service';
 
 @Component({
   selector: 'app-show',
@@ -68,7 +69,8 @@ export class ShowComponent implements OnDestroy {
     private readonly loaderService: LoaderService,
     private readonly listingAgentService: ListingsAgentsService,
     private readonly utils: UtilsService,
-    private readonly colorScheme: ColorSchemeService
+    private readonly colorScheme: ColorSchemeService,
+    public readonly permissionService: PermissionService
   ) {
 
   }
