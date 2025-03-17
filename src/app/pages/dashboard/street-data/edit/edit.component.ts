@@ -141,7 +141,6 @@ export class EditComponent extends StreetDataDetails {
 
   onEditStreetData() {
     // this.formSubmit.onFormSubmission()
-    console.log(this.streetDataFormGroup)
     if (this.streetDataFormGroup.valid) {
       this.modalService.open(
         ConfirmModalComponent,

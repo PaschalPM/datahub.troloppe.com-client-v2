@@ -45,25 +45,25 @@ export class StreetDataOverviewComponent {
   overviewItems: OverviewWidgetItem[] = [
     {
       id: 1,
-      totalSum: 0,
+      totalSum: '...',
       overviewTitle: 'Total Street Data Collected',
       myMatIcon: 'streetview',
     },
     {
       id: 2,
-      totalSum: 0,
+      totalSum: '...',
       overviewTitle: 'Total Verified Street Data',
       myMatIcon: 'streetview',
     },
     {
       id: 3,
-      totalSum: 0,
+      totalSum: '...',
       overviewTitle: 'My Street Data Collected',
       myMatIcon: 'streetview',
     },
     {
       id: 4,
-      totalSum: 0,
+      totalSum: '...',
       overviewTitle: 'My Verified Street Data',
       myMatIcon: 'streetview',
     },
@@ -87,10 +87,10 @@ export class StreetDataOverviewComponent {
   getWidgetOverviewData() {
     this.streetDataOverviewService.getWidgetSet().subscribe((value) => {
       if (value) {
-        this.overviewItems[0].totalSum = value.total_street_data;
-        this.overviewItems[1].totalSum = value.total_verified_street_data;
-        this.overviewItems[2].totalSum = value.user_street_data;
-        this.overviewItems[3].totalSum = value.user_verified_street_data;
+        this.overviewItems[0].totalSum = value.total_street_data.toString();
+        this.overviewItems[1].totalSum = value.total_verified_street_data.toString();
+        this.overviewItems[2].totalSum = value.user_street_data.toString();
+        this.overviewItems[3].totalSum = value.user_verified_street_data.toString();
       }
     });
   }

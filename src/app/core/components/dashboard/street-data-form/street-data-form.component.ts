@@ -21,6 +21,7 @@ import { SelectDropdownComponent } from '@shared/components/select-dropdown/sele
 import { FormFieldDataService } from '@core/services/dashboard/form-field-data.service';
 import { constructionStatusOptions } from 'app/fixtures/street-data';
 import { ActiveLocationService } from '@core/services/dashboard/active-location.service';
+import { FormDataService } from '@core/services/dashboard/property-data/form-data.service';
 
 @Component({
   selector: 'street-data-form',
@@ -72,8 +73,8 @@ export class StreetDataFormComponent {
   constructor(
     public utils: UtilsService,
     private streetDataFormFieldService: FormFieldDataService,
-    private activeLocationService: ActiveLocationService
-  ) {}
+    private activeLocationService: ActiveLocationService,
+  ) { }
 
   ngOnInit(): void {
     this.selectedSectorId = +this.streetDataFormGroup.get('sector_id')?.value;
@@ -82,8 +83,8 @@ export class StreetDataFormComponent {
     this.getFormFieldDataAndSetsOptionsValueFromAPI();
     this.handleSomeSectorSelections();
   }
-  onSectorChange(sectorId: number) {
-    this.selectedSectorId = sectorId;
+  onSectorChange(sector: IdAndNameType) {
+    this.selectedSectorId = sector.id;
     this.subSectorPending = true;
     this.streetDataFormGroup.patchValue({
       sector: this.selectedSectorId,
@@ -95,23 +96,23 @@ export class StreetDataFormComponent {
     this.streetDataFormGroup.get('sector_id')?.setValue(this.selectedSectorId);
     this.streetDataFormGroup.get('sub_sector')?.setValue(null);
     this.streetDataFormGroup.get('construction_status')?.setValue(null);
-    this.handleSomeSectorSelections();
+    this.handleSomeSectorSelections(sector.id);
   }
 
-  onSubSectorChange(subSectorId: number) {
-    this.streetDataFormGroup.get('sub_sector')?.setValue(subSectorId);
-    this.streetDataFormGroup.get('sub_sector_id')?.setValue(subSectorId);
+  onSubSectorChange(subSector: IdAndNameType) {
+    this.streetDataFormGroup.get('sub_sector')?.setValue(subSector.id);
+    this.streetDataFormGroup.get('sub_sector_id')?.setValue(subSector.id);
   }
 
-  onSectionChange(sectionId: number) {
-    this.streetDataFormGroup.controls['section_id']?.setValue(sectionId);
-    this.streetDataFormGroup.controls['section']?.setValue(sectionId);
+  onSectionChange(section: IdAndNameType) {
+    this.streetDataFormGroup.controls['section_id']?.setValue(section.id);
+    this.streetDataFormGroup.controls['section']?.setValue(section.id);
   }
 
-  private handleSomeSectorSelections() {
+  private handleSomeSectorSelections(sectorId: Nullable<number> = null) {
     // When Others option is selected
-    if (this.selectedSectorId > 0) {
-      this.setSubSectorOptions(this.selectedSectorId);
+    if (this.selectedSectorId > 0 || sectorId) {
+      this.setSubSectorOptions(this.selectedSectorId ?? sectorId);
     } else {
       this.addNewSectorField();
     }
@@ -168,7 +169,6 @@ export class StreetDataFormComponent {
           // Set selected sector ID
           const selectedSectorId =
             this.streetDataFormGroup.get('sector_id')?.value;
-
           this.setSubSectorOptions(selectedSectorId);
         }
       });
@@ -196,11 +196,11 @@ export class StreetDataFormComponent {
   }
 
   private setSectorOptions() {
-    const sectionOptions = this.formFieldData.sectors.map((sector) => ({
+    const sectorOptions = this.formFieldData.sectors.map((sector) => ({
       ...sector,
       name: sector.name,
     }));
-    this.sectorOptions = [...sectionOptions, { id: 0, name: 'Others' }];
+    this.sectorOptions = [...sectorOptions, { id: 0, name: 'Others' }];
   }
 
   /**
@@ -212,14 +212,13 @@ export class StreetDataFormComponent {
     if (newSectorControl) {
       this.streetDataFormGroup.removeControl('new_sector');
     }
+
     if (this.formFieldData) {
       const selectedSector = this.formFieldData.sectors.find(
         (sector) => sector.id === +sectorId
       );
-
       if (selectedSector && selectedSector.id > 0) {
         this.subSectorOptions = selectedSector.sub_sectors;
-
         if (this.subSectorOptions && this.subSectorOptions.length > 0) {
           this.subSectorLabel = selectedSector.name + ' Sub Sector';
           if (this.type !== 'view') {

@@ -183,9 +183,9 @@ export class IndexComponent implements OnDestroy {
       paginatedListingParams.updatedById = this.currentUser.id
     }
 
-    this.els.apiGetPaginatedListings(paginatedListingParams).pipe(takeUntil(this.destroy$))
+    this.els.getPaginatedExternalListings(paginatedListingParams).pipe(takeUntil(this.destroy$))
       .subscribe(v => {
-        this.totalRecords = v.totalPages.toString()
+        this.totalRecords = v!.totalPages.toString()
       })
 
     this.datasource = {
@@ -211,10 +211,10 @@ export class IndexComponent implements OnDestroy {
           paginatedListingParams.updatedById = this.currentUser.id
         }
 
-        this.els.apiGetPaginatedListings(paginatedListingParams).pipe(takeUntil(this.destroy$))
+        this.els.getPaginatedExternalListings(paginatedListingParams).pipe(takeUntil(this.destroy$))
           .subscribe({
             next: (value) => {
-              params.successCallback(value.data, value.totalRecords);
+              params.successCallback(value!.data, value!.totalRecords);
             },
             error() {
               params.failCallback();

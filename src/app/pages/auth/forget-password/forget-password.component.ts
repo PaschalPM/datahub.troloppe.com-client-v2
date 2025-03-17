@@ -13,6 +13,7 @@ import { AlertService } from '@shared/services/alert.service';
 import { AuthService } from '@shared/services/auth.service';
 import { CacheService } from '@shared/services/cache.service';
 import { FormSubmissionService } from '@shared/services/form-submission.service';
+import { ClientStorageService } from '@shared/services/client-storage.service';
 
 @Component({
   selector: 'app-forget-password',
@@ -40,7 +41,8 @@ export class ForgetPasswordComponent {
     private fb: FormBuilder,
     private formSubmit: FormSubmissionService,
     private authService: AuthService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private css: ClientStorageService
   ) {
     this.forgotPasswordFormGroup = this.fb.group({
       email: [
@@ -56,6 +58,7 @@ export class ForgetPasswordComponent {
     if (this.forgotPasswordFormGroup.valid) {
       const emailControl = this.forgotPasswordFormGroup.get('email')
       this.cache.remove('emailForReset');
+
       this.loading = true;
       this.authService
         .forgotPassword(this.forgotPasswordFormGroup.value)

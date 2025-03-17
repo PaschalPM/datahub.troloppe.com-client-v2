@@ -24,25 +24,25 @@ export class ExternalListingsOverviewComponent {
   overviewItems: OverviewWidgetItem[] = [
     {
       id: 1,
-      totalSum: 0,
+      totalSum: '...',
       overviewTitle: 'Total External Listings Collected',
       myMatIcon: 'streetview',
     },
     {
       id: 2,
-      totalSum: 0,
+      totalSum: '...',
       overviewTitle: 'Total States Covered',
       myMatIcon: 'streetview',
     },
     {
       id: 3,
-      totalSum: 0,
+      totalSum: '...',
       overviewTitle: 'Total Sectors Covered',
       myMatIcon: 'streetview',
     },
     {
       id: 4,
-      totalSum: 0,
+      totalSum: '...',
       overviewTitle: 'Total Listing Agents',
       myMatIcon: 'streetview',
     },
@@ -63,12 +63,14 @@ export class ExternalListingsOverviewComponent {
 
   getWidgetSetData() {
 
-    this.externalListingsService.apiGetOverviewWidgetSet().subscribe({
+    this.externalListingsService.getOverviewWidgetSet().subscribe({
       next: (v) => {
-        this.overviewItems[0].totalSum = v.total_external_listings
-        this.overviewItems[1].totalSum = v.total_states_covered
-        this.overviewItems[2].totalSum = v.total_sectors_covered
-        this.overviewItems[3].totalSum = v.total_listing_agents
+        if (v){
+          this.overviewItems[0].totalSum = v.total_external_listings.toString()
+          this.overviewItems[1].totalSum = v.total_states_covered.toString()
+          this.overviewItems[2].totalSum = v.total_sectors_covered.toString()
+          this.overviewItems[3].totalSum = v.total_listing_agents.toString()
+        }
       }
     })
   }

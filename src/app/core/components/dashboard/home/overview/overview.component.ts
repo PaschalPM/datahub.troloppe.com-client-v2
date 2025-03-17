@@ -27,7 +27,7 @@ import { MyMatIconComponent } from '@shared/components/my-mat-icon/my-mat-icon.c
   `,
 })
 export class OverviewComponent {
-  @Input({ required: true }) totalSum = 0;
+  @Input({ required: true }) totalSum = '...';
   @Input({ required: true }) overviewTitle = '';
   @Input({ required: true }) myMatIcon = '';
 }

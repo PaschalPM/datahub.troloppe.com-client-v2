@@ -5,7 +5,7 @@ import { apiUrlFactory } from '@configs/global';
 import { CacheService } from '@shared/services/cache.service';
 import { FormSubmissionService } from '@shared/services/form-submission.service';
 import { LoaderService } from '@shared/services/loader.service';
-import { Observable, of, Subject, takeUntil, tap } from 'rxjs';
+import { BehaviorSubject, Observable, of, Subject, takeUntil, tap } from 'rxjs';
 import { ModalService } from './modal.service';
 import { ConfirmModalComponent } from '@core/components/dashboard/modals/confirm-modal/confirm-modal.component';
 import { AuthService } from '@shared/services/auth.service';
@@ -27,6 +27,9 @@ export class ExternalListingsService implements OnDestroy {
 
   private formGroup!: FormGroup;
   private destroy$ = new Subject<void>()
+
+  private widgetSet$ = new BehaviorSubject<Nullable<OverviewWidgetType>>(null);
+  private paginatedExternalListings$ = new BehaviorSubject<Nullable<ExternalListingsPaginatedResponseApiType>>(null);
 
   constructor(
     private readonly httpClient: HttpClient,
@@ -105,40 +108,14 @@ export class ExternalListingsService implements OnDestroy {
     return this.formGroup
   }
 
-  apiGetPaginatedListings(
-    params: Nullable<PaginatedListingsParams> = null,
-    invalidateCache = false
-  ) {
-    // Destructure and set default values for pagination parameters.
-    const { limit = 250, currentPage = 1, updatedById = null, agFilterModel, sortBy } = params || {};
-    // Constructs the API URL with query parameters for pagination and filtering.
-    let url = apiUrlFactory(
-      '/external-listings/listings',
-      {
-        limit: limit.toString(),
-        page: currentPage.toString(),
-        updated_by_id: updatedById?.toString(),
-        ag_filter_model: JSON.stringify(agFilterModel),
-        sort_by: sortBy
-      }
-    );
-
-    if (!invalidateCache) {
-      // Attempts to retrieve cached data for the given URL if revalidation is not requested.
-      const cachedData = this.cacheService.get<ExternalListingsPaginatedResponseApiType>(url);
-
-      // If cached data exists, return the cached data as an observable.
-      if (cachedData) {
-        return of(cachedData)
-      }
-    }
-
-    return this.httpClient.get<ExternalListingsPaginatedResponseApiType>(url).pipe(
+  getData<T>(url: string) {
+    return this.httpClient.get<T>(url).pipe(
       tap((value) => {
         this.cacheService.set(url, value)
       })
     );
   }
+
 
   apiStoreExternalListing(data: any) {
     let url = apiUrlFactory('/external-listings/listings');
@@ -160,19 +137,56 @@ export class ExternalListingsService implements OnDestroy {
     return this.httpClient.delete<{ success: boolean, message: string }>(url)
   }
 
-  apiGetOverviewWidgetSet() {
-    let url = apiUrlFactory(`/external-listings/overview/widget-set`);
-    return this.httpClient.get<OverviewWidgetType>(url)
+  public getPaginatedExternalListings(params: Nullable<PaginatedListingsParams> = null
+  ) {
+    this.apiGetPaginatedListings(params).pipe(tap((v) => {
+      this.paginatedExternalListings$.next(v)
+    }), takeUntil(this.destroy$)).subscribe()
+    return this.paginatedExternalListings$.asObservable()
   }
 
-  apiGetOverviewVisualSet(type = 'sectors') {
+  public getOverviewWidgetSet() {
+    this.apiGetOverviewWidgetSet().pipe(tap((value) => {
+      this.widgetSet$.next(value)
+    }), takeUntil(this.destroy$)).subscribe()
+    return this.widgetSet$.asObservable()
+  }
+
+
+
+  private apiGetPaginatedListings(
+    params: Nullable<PaginatedListingsParams> = null,
+
+  ) {
+    // Destructure and set default values for pagination parameters.
+    const { limit = 250, currentPage = 1, updatedById = null, agFilterModel, sortBy } = params || {};
+    // Constructs the API URL with query parameters for pagination and filtering.
+    let url = apiUrlFactory(
+      '/external-listings/listings',
+      {
+        limit: limit.toString(),
+        page: currentPage.toString(),
+        updated_by_id: updatedById?.toString(),
+        ag_filter_model: JSON.stringify(agFilterModel),
+        sort_by: sortBy
+      }
+    );
+    return this.httpClient.get<ExternalListingsPaginatedResponseApiType>(url);
+  }
+
+  private apiGetOverviewWidgetSet() {
+    let url = apiUrlFactory(`/external-listings/overview/widget-set`);
+    return this.getData<OverviewWidgetType>(url)
+  }
+
+  apiGetOverviewVisualSet(type = 'sectors',) {
     let url = apiUrlFactory(`/external-listings/overview/visual-set`, { type });
-    return this.httpClient.get<NameAndValueType[]>(url)
+    return this.getData<NameAndValueType[]>(url)
   }
 
   apiGetOverviewAgentPerformance() {
     let url = apiUrlFactory(`/external-listings/overview/agent-performance`);
-    return this.httpClient.get<NameAndValueType[]>(url)
+    return this.getData<NameAndValueType[]>(url)
   }
 
 

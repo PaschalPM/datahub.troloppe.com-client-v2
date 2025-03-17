@@ -4,11 +4,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { apiUrlFactory } from '@configs/global';
 import { ConfirmModalComponent } from '@core/components/dashboard/modals/confirm-modal/confirm-modal.component';
 import { FormSubmissionService } from '@shared/services/form-submission.service';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { Observable, of, Subject, takeUntil, tap } from 'rxjs';
 import { ModalService } from './modal.service';
 import { LoaderService } from '@shared/services/loader.service';
 import { AlertService } from '@shared/services/alert.service';
 import { Router } from '@angular/router';
+import { CacheService } from '@shared/services/cache.service';
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +27,8 @@ export class ListingsAgentsService {
     private modalService: ModalService,
     private loaderService: LoaderService,
     private alertService: AlertService,
-    private router: Router
+    private router: Router,
+    private cacheService: CacheService
   ) {
     this.formGroup = this.fb.group({
       id: ['', Validators.required],
@@ -46,9 +48,23 @@ export class ListingsAgentsService {
     return this.formGroup
   }
 
-  apiGetAllListingAgents() {
+  apiGetAllListingAgents(invalidateCache = false) {
     const url = apiUrlFactory('/external-listings/agents')
-    return this.httpClient.get<{ success: boolean, message: string, data: any }>(url)
+    if (!invalidateCache) {
+      // Attempts to retrieve cached data for the given URL if revalidation is not requested.
+      const cachedData = this.cacheService.get<{ success: boolean, message: string, data: any }>(url);
+
+      // If cached data exists, return the cached data as an observable.
+      if (cachedData) {
+        return of(cachedData)
+      }
+    }
+
+    return this.httpClient.get<{ success: boolean, message: string, data: any }>(url).pipe(
+      tap((value) => {
+        this.cacheService.set(url, value)
+      })
+    );
   }
 
   apiGetListingAgentById(id: number, onlyListings = false) {
@@ -58,10 +74,8 @@ export class ListingsAgentsService {
 
   apiUpdateListingAgentById(id: number, data: any) {
     const url = apiUrlFactory(`/external-listings/agents/${id}`)
-    console.log(data)
     return this.httpClient.put<{ success: boolean, message: string, data: any }>(url, data)
   }
-
 
   updateAgent(id: number) {
     this.formSubmissionService.onFormSubmission(this.formGroup);
@@ -95,6 +109,7 @@ export class ListingsAgentsService {
                   this.alertService.error('Error', `An error occured while updating this listing agent`)
                 },
                 complete: () => {
+                  this.cacheService.clear()
                   setTimeout(this.loaderService.stop.bind(this.loaderService), 3000)
                 }
               }

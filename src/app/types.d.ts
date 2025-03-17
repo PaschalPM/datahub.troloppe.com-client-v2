@@ -38,7 +38,7 @@ type EmailVerificationAndLoginStageType = 'VERIFY_EMAIL' | 'LOGIN_STAGE';
 
 type OverviewWidgetItem = {
   id: number;
-  totalSum: number;
+  totalSum: string;
   overviewTitle: string;
   myMatIcon: string;
 };
