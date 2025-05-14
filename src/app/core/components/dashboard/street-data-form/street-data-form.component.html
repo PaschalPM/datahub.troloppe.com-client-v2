@@ -85,6 +85,7 @@
     } @else {
     <app-select-dropdown
       #selectDropdownRefs
+      [showAddBtn]="false"
       clx="my-3"
       label="Sector"
       name="sector"
@@ -158,6 +159,7 @@
 
     <app-select-dropdown
       #selectDropdownRefs
+      [showAddBtn]="false"
       label="Section"
       name="section"
       [formGroup]="streetDataFormGroup"
@@ -214,6 +216,7 @@
 
     <app-select-dropdown
       #selectDropdownRefs
+      [showAddBtn]="false"
       label="Construction Status"
       name="construction_status"
       [formGroup]="streetDataFormGroup"

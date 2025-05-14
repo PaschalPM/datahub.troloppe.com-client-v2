@@ -82,8 +82,8 @@ export class StreetDataFormComponent {
     this.getFormFieldDataAndSetsOptionsValueFromAPI();
     this.handleSomeSectorSelections();
   }
-  onSectorChange(sectorId: number) {
-    this.selectedSectorId = sectorId;
+  onSectorChange(sector: IdAndNameType) {
+    this.selectedSectorId = sector.id;
     this.subSectorPending = true;
     this.streetDataFormGroup.patchValue({
       sector: this.selectedSectorId,
@@ -98,14 +98,14 @@ export class StreetDataFormComponent {
     this.handleSomeSectorSelections();
   }
 
-  onSubSectorChange(subSectorId: number) {
-    this.streetDataFormGroup.get('sub_sector')?.setValue(subSectorId);
-    this.streetDataFormGroup.get('sub_sector_id')?.setValue(subSectorId);
+  onSubSectorChange(subSector: IdAndNameType) {
+    this.streetDataFormGroup.get('sub_sector')?.setValue(subSector.id);
+    this.streetDataFormGroup.get('sub_sector_id')?.setValue(subSector.id);
   }
 
-  onSectionChange(sectionId: number) {
-    this.streetDataFormGroup.controls['section_id']?.setValue(sectionId);
-    this.streetDataFormGroup.controls['section']?.setValue(sectionId);
+  onSectionChange(section: IdAndNameType) {
+    this.streetDataFormGroup.controls['section_id']?.setValue(section.id);
+    this.streetDataFormGroup.controls['section']?.setValue(section.id);
   }
 
   private handleSomeSectorSelections() {

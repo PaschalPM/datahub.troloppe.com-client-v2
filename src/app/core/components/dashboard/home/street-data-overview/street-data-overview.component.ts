@@ -12,7 +12,7 @@ import { OverviewService } from '@core/services/dashboard/overview.service';
 import { UtilsService } from '@shared/services/utils.service';
 import { SpinnerComponent } from "@shared/components/spinner/spinner.component";
 import { MyMatIconComponent } from "@shared/components/my-mat-icon/my-mat-icon.component";
-import { CreateAndDownloadStreetDataBtnsComponent } from "../../../dashbaord/create-and-download-street-data-btns/create-and-download-street-data-btns.component";
+import { CreateAndDownloadStreetDataBtnsComponent } from '../../create-and-download-street-data-btns.component';
 
 @Component({
   selector: 'dashboard-street-data-overview',

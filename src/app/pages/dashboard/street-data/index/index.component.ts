@@ -13,7 +13,7 @@ import { ActionsComponent } from '@shared/components/ag-grid/street-data/actions
 import { ImagePreviewComponent } from '@shared/components/ag-grid/street-data/image-preview/image-preview.component';
 import { AsyncPipe } from '@angular/common';
 import { StreetDataService } from '@core/services/dashboard/street-data.service';
-import { CreateAndDownloadStreetDataBtnsComponent } from '@core/components/dashbaord/create-and-download-street-data-btns/create-and-download-street-data-btns.component';
+import { CreateAndDownloadStreetDataBtnsComponent } from '@core/components/dashboard/create-and-download-street-data-btns.component';
 import { LoaderService } from '@shared/services/loader.service';
 
 @Component({
@@ -23,7 +23,7 @@ import { LoaderService } from '@shared/services/loader.service';
     ActiveLocationIndicatorComponent,
     AgGridAngular,
     AsyncPipe,
-
+    CreateAndDownloadStreetDataBtnsComponent
   ],
   templateUrl: './index.component.html',
   animations: [routeFadeInOut],
@@ -104,7 +104,9 @@ export class IndexComponent {
     this.rowData = this.sd.getStreetData().pipe(
       tap((value) => {
         if (value) {
-          this.isLoading = false;
+          Promise.resolve().then(() =>{
+            this.isLoading = false;
+          })
         }
       })
     );
