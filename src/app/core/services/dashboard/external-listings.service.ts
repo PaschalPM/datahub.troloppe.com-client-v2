@@ -47,7 +47,7 @@ export class ExternalListingsService implements OnDestroy {
       section: ['', [Validators.required]],
       lga: ['', [Validators.required]],
       lcda: ['', [Validators.required]],
-      streetName: ['', [Validators.required]],
+      streetName: [''],
       streetNumber: [''],
       development: [''],
       sector: ['', [Validators.required]],
