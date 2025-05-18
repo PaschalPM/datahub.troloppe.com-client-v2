@@ -41,6 +41,9 @@ export class ResourceCreationFormModalService implements OnDestroy {
     lga: (data) => this.indexPropertyDataService.createResource('lga', data),
     lcda: (data) => this.indexPropertyDataService.createResource('lcda', data),
     subSector: (data) => this.indexPropertyDataService.createResource('subSector', data),
+    developer: (data) => this.indexPropertyDataService.createResource('developer', data), 
+    listingAgent: (data) => this.indexPropertyDataService.createResource('listingAgent', data),
+    listingSource: (data) => this.indexPropertyDataService.createResource('listingSource', data),
   };
 
   constructor(
