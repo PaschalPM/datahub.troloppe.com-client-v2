@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, OnDestroy } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { TextButtonComponent } from '@core/components/dashboard/text-btn/text-btn.component';
 import { ExternalListingsService } from '@core/services/dashboard/external-listings.service';
@@ -30,10 +30,9 @@ export class IndexComponent implements OnDestroy {
     {
       headerName: 'S/N', width: 75, filter: false, field: 'id',
       cellRenderer(params: any) {
-        if (!params.value) {
-          return 'Loading...'
+        if (params.value) {
+          return params.node.rowIndex + 1
         }
-        return params.node.rowIndex + 1
       }
     },
     {
@@ -153,23 +152,25 @@ export class IndexComponent implements OnDestroy {
   };
   tableThemeColor: 'dark' | 'light' = 'light';
   isLoading = true;
-  pageSize = 250
+  pageSize = 500
   initialRowCount = 0
   datasource: any;
   totalRecords = '...'
   destroy$ = new Subject<void>()
   currentUser!: User
 
+  dataCache: Map<string, {data:any, totalRecords: number}> = new Map()
+
   constructor(
     private els: ExternalListingsService,
     private router: RouterService,
     public colorScheme: ColorSchemeService,
     public permission: PermissionService,
-    private authService: AuthService
+    private authService: AuthService,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
-
 
     this.authService.onCurrentUser().pipe(takeUntil(this.destroy$)).subscribe((v) => {
       this.currentUser = v!
@@ -179,7 +180,7 @@ export class IndexComponent implements OnDestroy {
       limit: 1
     }
 
-    if (!this.permission.isAdmin){
+    if (!this.permission.isAdmin) {
       paginatedListingParams.updatedById = this.currentUser.id
     }
 
@@ -190,7 +191,8 @@ export class IndexComponent implements OnDestroy {
 
     this.datasource = {
       getRows: (params: any) => {
-
+        this.isLoading = true
+        this.cdr.detectChanges()
         const startRow = params.startRow;
         const currentPage = (Math.floor(startRow / this.pageSize) + 1); // Ensure page calculation works for both up and down scrolls
         const paginatedListingParams: PaginatedListingsParams = {
@@ -211,15 +213,32 @@ export class IndexComponent implements OnDestroy {
           paginatedListingParams.updatedById = this.currentUser.id
         }
 
-        this.els.apiGetPaginatedListings(paginatedListingParams).pipe(takeUntil(this.destroy$))
+
+        const cachedData = this.getCachedData(paginatedListingParams)
+        console.log(cachedData)
+        if (cachedData) {
+          params.successCallback(cachedData.data, cachedData.totalRecords);
+          this.isLoading = false
+          this.cdr.detectChanges()
+        }
+
+        else {
+
+          this.els.apiGetPaginatedListings(paginatedListingParams).pipe(takeUntil(this.destroy$))
           .subscribe({
             next: (value) => {
               params.successCallback(value.data, value.totalRecords);
+              this.cacheData(paginatedListingParams, value.data, value.totalRecords)
+              this.isLoading = false;
+              this.cdr.detectChanges()
             },
-            error() {
+            error:() =>  {
               params.failCallback();
+              this.isLoading = false;
+              this.cdr.detectChanges()
             }
           })
+        }
       }
     }
 
@@ -242,6 +261,14 @@ export class IndexComponent implements OnDestroy {
   onRowClicked(ev: any) {
     const data = ev.data
     this.router.navigateByUrl(`/dashboard/external-listings/${data.id}`, data)
+  }
+
+  cacheData(paginatedListingParams: PaginatedListingsParams, data:any, totalRecords:number) {
+    this.dataCache.set(JSON.stringify(paginatedListingParams), {data, totalRecords})
+  }
+
+  getCachedData(paginatedListingParams: PaginatedListingsParams){
+    return this.dataCache.get(JSON.stringify(paginatedListingParams))
   }
 
   ngOnDestroy(): void {
