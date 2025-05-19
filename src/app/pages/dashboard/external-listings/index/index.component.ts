@@ -1,6 +1,4 @@
-import { AsyncPipe } from '@angular/common';
 import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
 import { TextButtonComponent } from '@core/components/dashboard/text-btn/text-btn.component';
 import { ExternalListingsService } from '@core/services/dashboard/external-listings.service';
 import { RouterService } from '@core/services/router.service';
@@ -10,12 +8,13 @@ import { PermissionService } from '@shared/services/permission.service';
 import { User } from '@shared/services/types';
 import { AgGridAngular } from 'ag-grid-angular';
 import { ColDef, GridOptions } from 'ag-grid-community';
-import { Observable, Subject, Subscription, takeUntil, tap } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
+import { CreateAndDownloadExternalListingsBtnsComponent } from "../../../../core/components/dashboard/create-and-download-external-listings-btns.component";
 
 @Component({
   selector: 'external-listing-index',
   standalone: true,
-  imports: [TextButtonComponent, AgGridAngular],
+  imports: [TextButtonComponent, AgGridAngular, CreateAndDownloadExternalListingsBtnsComponent],
   templateUrl: './index.component.html',
   styleUrl: './index.component.scss'
 })
@@ -248,10 +247,6 @@ export class IndexComponent implements OnDestroy {
       .subscribe((value) => {
         this.tableThemeColor = value;
       });
-  }
-
-  goToNewListingView() {
-    this.router.navigateByUrl('/dashboard/external-listings/new');
   }
 
   goToViewAgents() {

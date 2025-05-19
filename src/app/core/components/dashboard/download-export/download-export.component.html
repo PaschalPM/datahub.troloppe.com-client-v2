@@ -1,0 +1,74 @@
+<div class="tooltip" [attr.data-tip]="title">
+    <button
+      *ngIf="isPermitted"
+      class="btn btn-ghost btn-sm"
+      (click)="openDownloadOptions()"
+    >
+      <my-mat-icon>download</my-mat-icon>
+    </button>
+  </div>
+<!-- Download Options Modal -->
+<div
+  *ngIf="showDownloadOptions"
+  class="fixed inset-0 flex items-center justify-center z-[9999]"
+  [ngClass]="{
+    'bg-black bg-opacity-50': !(isDarkMode$ | async),
+    'bg-gray-900 bg-opacity-70': isDarkMode$ | async
+  }"
+>
+  <div
+    class="p-6 rounded shadow-lg w-96"
+    [ngClass]="{
+      'bg-white text-black': !(isDarkMode$ | async),
+      'bg-gray-800 text-white': isDarkMode$ | async
+    }"
+  >
+    <h2 class="text-xl font-bold mb-4">{{title}}</h2>
+
+    <div class="flex flex-col gap-2">
+      <button
+        class="btn btn-primary bg-[#CC924E] text-white hover:bg-[#B67F42] border-none"
+        (click)="downloadWithoutDates()"
+      >
+        Download All Data
+        @if(isDownloadingWithoutDates){
+          <app-spinner/>
+        }
+      </button>
+
+      <div class="mt-4">
+        <label class="block mb-1">Start Date</label>
+        <input
+          type="date"
+          [(ngModel)]="startDate"
+          class="input input-bordered w-full"
+        />
+
+        <label class="block mt-3 mb-1">End Date</label>
+        <input
+          type="date"
+          [(ngModel)]="endDate"
+          class="input input-bordered w-full"
+        />
+
+        <button
+          class="btn btn-success bg-[#CC924E] text-white hover:bg-[#B67F42] border-none mt-4 w-full"
+          (click)="downloadWithDates()"
+          [disabled]="!startDate || !endDate"
+        >
+          Download Data With Dates
+          @if(isDownloadingWithDates){
+            <app-spinner/>
+          }
+        </button>
+      </div>
+    </div>
+
+    <button
+      class="btn btn-ghost mt-4 w-full"
+      (click)="closeDownloadOptions()"
+    >
+      Cancel
+    </button>
+  </div>
+</div>

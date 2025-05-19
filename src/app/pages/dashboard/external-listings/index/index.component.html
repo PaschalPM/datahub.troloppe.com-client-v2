@@ -1,8 +1,7 @@
 <div class="my-4 flex justify-between items-center">
     <text-button withIcon="group" [isFlexed]="true" (clickEvent)="goToViewAgents()" text="View Agents">
     </text-button>
-    <text-button withIcon="add" [isFlexed]="true" (clickEvent)="goToNewListingView()" text="New Listing">
-    </text-button>
+    <app-create-and-download-external-listings-btns/>
 </div>
 
 <ag-grid-angular class="!bg-transparent h-[calc(100vh-100px)]" rowClass="cursor-pointer" rowModelType="infinite"
