@@ -6,4 +6,4 @@
 <ag-grid-angular [loading]="isLoading" [rowData]="rowData | async" class="!bg-transparent h-[calc(100vh-220px)]"
     [class.ag-theme-quartz-dark]="tableThemeColor === 'dark'" [class.ag-theme-quartz]="tableThemeColor === 'light'"
     [columnDefs]="colDefs" [defaultColDef]="defaultColDefs" [animateRows]="true" (cellClicked)="onCellClick($event)"
-    rowClass="cursor-pointer" ></ag-grid-angular>
+    rowClass="cursor-pointer" [gridOptions]="gridOptions"></ag-grid-angular>

@@ -22,7 +22,9 @@ export class IndexComponent implements OnDestroy {
   gridOptions: GridOptions = {
     suppressFieldDotNotation: true, // Treats dot as part of the field name
     rowBuffer: 5,
-    getRowId: params => `${params.data.id}`
+    getRowId: params => `${params.data.id}`,
+    overlayNoRowsTemplate: `<span class="ag-overlay-loading-center">No External listing Available</span>`,
+
   };
   rowData!: Observable<any | null>;
   colDefs: ColDef<any>[] = [
@@ -159,6 +161,11 @@ export class IndexComponent implements OnDestroy {
   currentUser!: User
 
   dataCache: Map<string, {data:any, totalRecords: number}> = new Map()
+  gridApi!: any;
+
+  onGridReady(params: any) {
+    this.gridApi = params.api;
+  }
 
   constructor(
     private els: ExternalListingsService,
@@ -212,11 +219,10 @@ export class IndexComponent implements OnDestroy {
           paginatedListingParams.updatedById = this.currentUser.id
         }
 
-
         const cachedData = this.getCachedData(paginatedListingParams)
-        console.log(cachedData)
         if (cachedData) {
           params.successCallback(cachedData.data, cachedData.totalRecords);
+         
           this.isLoading = false
           this.cdr.detectChanges()
         }
@@ -227,6 +233,12 @@ export class IndexComponent implements OnDestroy {
           .subscribe({
             next: (value) => {
               params.successCallback(value.data, value.totalRecords);
+              if (value.data.length === 0) {
+                Promise.resolve().then(() => {
+                  this.gridApi.showNoRowsOverlay();
+                })
+              }
+            
               this.cacheData(paginatedListingParams, value.data, value.totalRecords)
               this.isLoading = false;
               this.cdr.detectChanges()

@@ -7,7 +7,7 @@ import { UtilsService } from '@shared/services/utils.service';
 import { PermissionService } from '@shared/services/permission.service';
 import { ColorSchemeService } from '@shared/services/color-scheme.service';
 import { AgGridAngular } from 'ag-grid-angular';
-import { ColDef, CellClickedEvent } from 'ag-grid-community';
+import { ColDef, CellClickedEvent, GridOptions } from 'ag-grid-community';
 import { Observable, Subscription, tap } from 'rxjs';
 import { ActionsComponent } from '@shared/components/ag-grid/street-data/actions/actions.component';
 import { ImagePreviewComponent } from '@shared/components/ag-grid/street-data/image-preview/image-preview.component';
@@ -33,6 +33,9 @@ import { LoaderService } from '@shared/services/loader.service';
   },
 })
 export class IndexComponent {
+  gridOptions: GridOptions = {
+    overlayNoRowsTemplate: `<span class="ag-overlay-loading-center">No Street Data Available</span>`,
+  };
   rowData!: Observable<StreetDataColType[] | null>;
   colDefs: ColDef<StreetDataColType>[] = [
     { headerName: 'S/N', width: 75, valueGetter: 'node.rowIndex + 1' },
@@ -97,7 +100,6 @@ export class IndexComponent {
     private utils: UtilsService,
     private permission: PermissionService,
     public colorScheme: ColorSchemeService,
-    private loaderService: LoaderService
   ) { }
 
   ngOnInit() {

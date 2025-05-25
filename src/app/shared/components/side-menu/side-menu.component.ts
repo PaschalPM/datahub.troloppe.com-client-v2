@@ -4,7 +4,6 @@ import { sideMenuTrigger } from '@shared/animations';
 import { MenuService } from '@shared/services/menu.service';
 import { UtilsService } from '@shared/services/utils.service';
 import { BrandLogoComponent } from '../brand-logo/brand-logo.component';
-import { MyMatIconComponent } from '../my-mat-icon/my-mat-icon.component';
 import { ColorSchemeSideMenuComponent } from '../color-scheme-side-menu/color-scheme-side-menu.component';
 import { GithubIconComponent } from '../svgs/github-icon.component';
 
@@ -14,7 +13,6 @@ import { GithubIconComponent } from '../svgs/github-icon.component';
   imports: [
     CommonModule,
     BrandLogoComponent,
-    MyMatIconComponent,
     ColorSchemeSideMenuComponent,
     GithubIconComponent,
 ],

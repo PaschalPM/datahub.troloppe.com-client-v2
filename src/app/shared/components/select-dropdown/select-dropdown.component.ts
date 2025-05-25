@@ -22,6 +22,7 @@ import { FormSubmissionService } from '@shared/services/form-submission.service'
 import { InputFieldErrorSectionComponent } from '../input-field-error-section/input-field-error-section.component';
 import { MyMatIconComponent } from "../my-mat-icon/my-mat-icon.component";
 import { SelectDropdownService } from '@shared/services/select-dropdown.service';
+import { PermissionService } from '@shared/services/permission.service';
 
 
 @Component({
@@ -77,7 +78,9 @@ export class SelectDropdownComponent {
   constructor(
     public utils: UtilsService,
     public sds: SelectDropdownService,
-    private formSubmit: FormSubmissionService
+    private formSubmit: FormSubmissionService,
+    public readonly permissionService: PermissionService,
+
   ) { }
 
   ngOnInit(): void {

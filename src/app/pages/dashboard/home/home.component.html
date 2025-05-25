@@ -1,5 +1,6 @@
 <h2 class="mb-4 text-lg font-semibold">Overview</h2>
-<pane-navigator-panel [activePane]="activePane" (activePaneChange)="setActivePane($event)" [tabs]="tabs" type="pill" class="mb-4"></pane-navigator-panel>
+<pane-navigator-panel [activePane]="activePane" (activePaneChange)="setActivePane($event)" [tabs]="tabs" type="pill"
+    class="mb-4"></pane-navigator-panel>
 
 <dashboard-home-auth-notice />
 
@@ -8,9 +9,12 @@
     <dashboard-street-data-overview />
 </div>
 }
+
+@if (!permissionService.isAdhocStaff) {
+
 @if (activePane === 'external-listings'){
 <div [@visibleTrigger]="activePane === 'external-listings' && 'visible'">
-    <dashboard-external-listings-overview/>
+    <dashboard-external-listings-overview />
 </div>
 }
 
@@ -18,4 +22,5 @@
 <div [@visibleTrigger]="activePane === 'investment-data' && 'visible'" class="p-4 text-2xl">
     Coming Soon!!!
 </div>
+}
 }

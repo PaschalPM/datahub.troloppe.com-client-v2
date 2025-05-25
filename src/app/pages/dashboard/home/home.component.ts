@@ -5,6 +5,7 @@ import { PaneNavigatorPanelComponent } from '@core/components/dashboard/pane-nav
 import { routeFadeInOut, visibleTrigger } from '@shared/animations';
 import { ExternalListingsOverviewComponent } from "../../../core/components/dashboard/home/external-listings-overview/external-listings-overview.component";
 import { ActivatedRoute, Router } from '@angular/router';
+import { PermissionService } from '@shared/services/permission.service';
 
 @Component({
   selector: 'dashboard-home',
@@ -29,18 +30,18 @@ export class HomeComponent {
       pane: 'street-data',
       tabLabel: `Street Data`,
     },
-    {
-      pane: 'external-listings',
-      tabLabel: `External Listings`,
-    },
-    {
-      pane: 'investment-data',
-      tabLabel: `Investment Data`,
-    },
   ];
 
-  constructor(private readonly router: Router, private readonly activatedRoute: ActivatedRoute) {
-
+  tabsForCoreStaff = [{
+    pane: 'external-listings',
+    tabLabel: `External Listings`,
+  },
+  {
+    pane: 'investment-data',
+    tabLabel: `Investment Data`,
+  }
+  ]
+  constructor(private readonly router: Router, private readonly activatedRoute: ActivatedRoute, public readonly permissionService: PermissionService) {
   }
 
   ngOnInit(): void {
@@ -55,10 +56,14 @@ export class HomeComponent {
     else {
       this.activePane = 'street-data'
     }
-  }
 
-  setActivePane(event: any) {
-    this.router.navigateByUrl(`/dashboard?overview=${event}`)
-    this.activePane = event
+    if (!this.permissionService.isAdhocStaff) {
+      this.tabs = this.tabs.concat(this.tabsForCoreStaff)
   }
+}
+
+setActivePane(event: any) {
+  this.router.navigateByUrl(`/dashboard?overview=${event}`)
+  this.activePane = event
+}
 }

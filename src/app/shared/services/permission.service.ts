@@ -21,6 +21,14 @@ export class PermissionService {
     return this.isPermitted(UserRoles.ResearchStaff);
   }
 
+  get isUpline(){
+    return this.isPermitted([UserRoles.Admin, UserRoles.ResearchManager]);
+  }
+
+  get isAdhocStaff() {
+    return !(this.currentUser?.email.trim() || '').endsWith('@troloppe.com');
+  }
+
   constructor(private authService: AuthService) {
     this.authService.onCurrentUser().subscribe((currentUser) => {
       this.currentUser = currentUser;

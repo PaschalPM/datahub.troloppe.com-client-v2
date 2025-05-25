@@ -13,6 +13,7 @@ import { NotificationsService } from '@core/services/dashboard/notifications.ser
 import { MediaQueryService } from '@shared/services/media-query.service';
 import { LARGE_SCREEN_SIZE } from '@shared/services/constants/media-query';
 import { AsyncPipe } from '@angular/common';
+import { PermissionService } from '@shared/services/permission.service';
 
 @Component({
   selector: 'app-dashboard-layout',
@@ -36,8 +37,8 @@ export class DashboardLayoutComponent {
   LARGE_SCREEN_SIZE = LARGE_SCREEN_SIZE
 
   // Route List Component has withHomeRoute set to false
-  primaryRouteList: RouteType[] = dashboardRouteLists.primary;
-  secondaryRouteList: RouteType[] = dashboardRouteLists.secondary;
+  primaryRouteList!: RouteType[] ;
+  secondaryRouteList!: RouteType[];
 
   @HostListener('window:focus', ['$event'])
   onWindowFocus() {
@@ -56,7 +57,9 @@ export class DashboardLayoutComponent {
     private menuService: MenuService,
     private ns: NotificationsService,
     public mediaQuery: MediaQueryService,
+    private permissionService: PermissionService
   ) { }
+
 
   ngOnInit(): void {
     this.setDashboardTitle();
@@ -67,6 +70,10 @@ export class DashboardLayoutComponent {
         this.isMenuOpen = value;
       });
 
+    const getDashboardRouteLists = dashboardRouteLists(this.permissionService.isAdhocStaff);
+    this.primaryRouteList = getDashboardRouteLists.primary
+    this.secondaryRouteList = getDashboardRouteLists.secondary
+
     this.unreadCountSubscription = this.ns.unreadCount$.subscribe((value) => {
       if (value > 0) {
         this.secondaryRouteList[0].title = `Notifications (${value})`;
@@ -76,6 +83,7 @@ export class DashboardLayoutComponent {
     });
 
     this.getNotificationsSubscription = this.ns.getNotifications().subscribe();
+
   }
 
   private setDashboardTitle() {

@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnDestroy, Output, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { TextButtonComponent } from '@core/components/dashboard/text-btn/text-btn.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ColorSchemeService } from '@shared/services/color-scheme.service';
 import { UtilsService } from '@shared/services/utils.service';
@@ -10,14 +9,14 @@ import { InputFieldErrorSectionComponent } from '../input-field-error-section/in
 import { FormSubmissionService } from '@shared/services/form-submission.service';
 import { MyMatIconComponent } from "../my-mat-icon/my-mat-icon.component";
 import { SelectDropdownService } from '@shared/services/select-dropdown.service';
+import { PermissionService } from '@shared/services/permission.service';
 
 @Component({
   selector: 'app-searchable-select-dropdown',
   standalone: true,
-  imports: [ReactiveFormsModule, NgSelectModule, CommonModule, TextButtonComponent, InputFieldErrorSectionComponent, MyMatIconComponent],
+  imports: [ReactiveFormsModule, NgSelectModule, CommonModule, InputFieldErrorSectionComponent, MyMatIconComponent],
   templateUrl: './searchable-select-dropdown.component.html',
   styleUrl: './searchable-select-dropdown.component.scss',
-  encapsulation: ViewEncapsulation.None
 })
 export class SearchableSelectDropdownComponent implements OnDestroy {
   @Input({ required: true }) label!: string;
@@ -47,6 +46,7 @@ export class SearchableSelectDropdownComponent implements OnDestroy {
   constructor(
     private readonly colorScheme: ColorSchemeService,
     private readonly formSubmit: FormSubmissionService,
+    public readonly permissionService: PermissionService,
     public readonly utils: UtilsService,
     public readonly selectDropdownService: SelectDropdownService
   ) {

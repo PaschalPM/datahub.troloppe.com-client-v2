@@ -14,6 +14,7 @@ import { AsyncPipe, NgIf, TitleCasePipe } from '@angular/common';
 import { dashboardRouteLists } from '@shared/services/constants/route-lists';
 import { ProfileDropdownComponent } from '../profile-dropdown/profile-dropdown.component';
 import { RouterModule } from '@angular/router';
+import { PermissionService } from '@shared/services/permission.service';
 
 @Component({
   selector: 'dashboard-navbar',
@@ -39,8 +40,8 @@ export class NavbarComponent {
   currentUser$!: Observable<User | null>;
 
   // Route List Component has withHomeRoute set to false
-  primaryRouteList: RouteType[] = dashboardRouteLists.primary;
-  secondaryRouteList: RouteType[] = dashboardRouteLists.secondary;
+  primaryRouteList!: RouteType[] ;
+  secondaryRouteList!: RouteType[];
 
   private unreadCountSubscription!: Subscription;
 
@@ -48,8 +49,17 @@ export class NavbarComponent {
     private menuService: MenuService,
     public utils: UtilsService,
     public ns: NotificationsService,
-    public authService: AuthService
+    public authService: AuthService,
+    private permissionService: PermissionService
   ) {
+    
+  }
+
+  ngOnInit(): void {
+    const getDashboardRouteLists = dashboardRouteLists(this.permissionService.isAdhocStaff);
+    this.primaryRouteList = getDashboardRouteLists.primary
+    this.secondaryRouteList = getDashboardRouteLists.secondary
+
     this.currentUser$ = this.authService.onCurrentUser();
     this.unreadCountSubscription = this.ns.unreadCount$.subscribe((value) => {
       if (value > 0) {

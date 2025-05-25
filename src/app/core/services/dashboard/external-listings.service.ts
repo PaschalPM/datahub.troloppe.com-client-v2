@@ -201,7 +201,12 @@ export class ExternalListingsService implements OnDestroy {
             );
           },
           error: (error) => {
-            this.alertService.error('Error', error.message);
+            if (error.status === 403) {
+              this.alertService.error('Error', 'You do not have permission to delete this external listing.');
+            }
+            else {
+              this.alertService.error('Error', error.message);
+            }
             this.loaderService.stop();
           },
         });
