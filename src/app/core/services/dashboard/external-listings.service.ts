@@ -285,14 +285,22 @@ export class ExternalListingsService implements OnDestroy {
                     newRecord
                   );
                 }
+                this.loaderService.stop()
               },
               error: (err) => {
                 console.error(err)
-                this.alertService.error('Error', `An error occured while ${action === 'create' ? 'creating a new' : 'updating this'} external listing`)
+                if (err.status === 403) {
+                  this.alertService.error('Error', 'You do not have permission to perform this action.');
+                }
+                else {
+                  this.alertService.error('Error', `An error occured while ${action === 'create' ? 'creating a new' : 'updating this'} external listing`)
+                }
+             
+                  this.loaderService.stop()
+              
               },
 
               complete: () => {
-                setTimeout(this.loaderService.stop.bind(this.loaderService), 3000)
               }
             }
           )
