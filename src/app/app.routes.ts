@@ -26,6 +26,7 @@ import { NewComponent as ListingAgentsNewComponent } from '@pages/dashboard/exte
 import { ShowComponent as ListingAgentShowComponent } from '@pages/dashboard/external-listings/agents/show/show.component';
 import { EditComponent as ListingAgentsEditComponent } from '@pages/dashboard/external-listings/agents/edit/edit.component';
 import { editAgentsGuard } from '@core/guards/edit-agents.guard';
+import { adhocStaffGuard } from '@core/guards/adhoc-staff.guard';
 
 export const routes: Routes = [
   {
@@ -112,44 +113,52 @@ export const routes: Routes = [
         component: StreetDataEditComponent,
         title: 'Edit Street Data',
       },
-      // External Listings Routes
+
       {
         path: 'external-listings',
-        component: ExternalListingsIndexComponent,
-        title: 'External Listings',
-      },
-      {
-        path: 'external-listings/new',
-        component: ExternalListingsNewComponent,
-        title: 'Create External Listing',
-      },
-      // LISTING AGENTS -- START
-      {
-        path: 'external-listings/agents',
-        component: ListingAgentsIndexComponent,
-        title: 'Listing Agents',
-      },
-      {
-        canActivate: [editAgentsGuard],
-        path: 'external-listings/agents/:id/edit',
-        component: ListingAgentsEditComponent,
-        title: 'Edit Listing Agent',
-      },
-      {
-        path: 'external-listings/agents/:id',
-        component: ListingAgentShowComponent,
-        title: 'Listing Agent',
-      },
-      // LISTING AGENTS -- END
-      {
-        path: 'external-listings/:id',
-        component: ExternalListingsViewComponent,
-        title: 'External Listing',
-      },
-      {
-        path: 'external-listings/:id/edit',
-        component: ExternalListingEditComponent,
-        title: 'Edit External Listing',
+        canActivateChild: [adhocStaffGuard],
+        children: [
+          // External Listings Routes
+          {
+            path: '',
+            component: ExternalListingsIndexComponent,
+            title: 'External Listings',
+          },
+          {
+            path: 'new',
+            component: ExternalListingsNewComponent,
+            title: 'Create External Listing',
+          },
+          // LISTING AGENTS -- START
+          {
+            path: 'agents',
+            component: ListingAgentsIndexComponent,
+            title: 'Listing Agents',
+          },
+          {
+            canActivate: [editAgentsGuard],
+            path: 'agents/:id/edit',
+            component: ListingAgentsEditComponent,
+            title: 'Edit Listing Agent',
+          },
+          {
+            path: 'agents/:id',
+            component: ListingAgentShowComponent,
+            title: 'Listing Agent',
+          },
+          // LISTING AGENTS -- END
+          {
+            path: ':id',
+            component: ExternalListingsViewComponent,
+            title: 'External Listing',
+          },
+          {
+            path: ':id/edit',
+            component: ExternalListingEditComponent,
+            title: 'Edit External Listing',
+          },
+
+        ]
       },
 
       // Notification Route
