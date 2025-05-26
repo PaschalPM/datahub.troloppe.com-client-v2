@@ -7,7 +7,7 @@ import { StreetDataDetails } from '@core/classes/street-data-details';
 import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
 import { routeFadeInOut, visibleTrigger } from '@shared/animations';
 import { StreetDataFormComponent } from '@core/components/dashboard/street-data-form/street-data-form.component';
-import { LoaderService } from '@shared/services/loader.service';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-view-street-data',
@@ -16,7 +16,7 @@ import { LoaderService } from '@shared/services/loader.service';
     TextButtonComponent,
     NotFoundComponent,
     BackBtnComponent,
-    StreetDataFormComponent
+    StreetDataFormComponent, NgIf
   ],
   templateUrl: './view.component.html',
   animations: [visibleTrigger, routeFadeInOut],

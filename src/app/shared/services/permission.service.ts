@@ -29,6 +29,10 @@ export class PermissionService {
     return !(this.currentUser?.email.trim() || '').endsWith('@troloppe.com');
   }
 
+  belongsToCurrentUser(resourceUpdatedById: number): boolean {
+    return this.isUpline || this.currentUser?.id === resourceUpdatedById;
+  }
+
   constructor(private authService: AuthService) {
     this.authService.onCurrentUser().subscribe((currentUser) => {
       this.currentUser = currentUser;

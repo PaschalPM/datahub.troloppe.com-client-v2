@@ -4,7 +4,7 @@
 <div class="max-w-4xl mx-auto shadow-lg rounded-lg p-6">
     <div class="flex items-center border-b pb-4 justify-between">
         <h2 class="text-xl font-bold">Property Details</h2>
-        <div class="flex  flex-row items-end">
+        <div class="flex  flex-row items-end" *ngIf="permissionService.belongsToCurrentUser(externalListingData?.updated_by_id)">
             <text-button withIcon="edit" [isFlexed]="true" text="Edit"
                 (clickEvent)="goToEditExternalListing()"></text-button>
             <text-button withIcon="delete" [isFlexed]="true" state="error" text="Delete"

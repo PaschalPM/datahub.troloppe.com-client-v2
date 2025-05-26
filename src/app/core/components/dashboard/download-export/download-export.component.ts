@@ -20,6 +20,7 @@ export class DownloadExportComponent {
   @Input() downloadLink!: string;
   @Input() fileName!: string;
   @Input() title!: string;
+  
   isPermitted = false;
   private streetDataExportSubscription!: Subscription;
 
@@ -49,10 +50,7 @@ export class DownloadExportComponent {
   }
 
   private setPermission() {
-    this.isPermitted = this.permissionService.isPermitted([
-      UserRoles.Admin,
-      UserRoles.ResearchManager,
-    ]);
+    this.isPermitted = !this.permissionService.isAdhocStaff;
   }
 
   openDownloadOptions() {

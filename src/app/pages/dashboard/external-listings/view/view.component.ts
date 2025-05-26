@@ -7,11 +7,13 @@ import { LoaderService } from '@shared/services/loader.service';
 import { Subject, takeUntil } from 'rxjs';
 import { BackBtnComponent } from "../../../../shared/components/back-btn/back-btn.component";
 import { SpinnerComponent } from "../../../../shared/components/spinner/spinner.component";
+import { PermissionService } from '@shared/services/permission.service';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-view',
   standalone: true,
-  imports: [TextButtonComponent, BackBtnComponent, SpinnerComponent],
+  imports: [TextButtonComponent, BackBtnComponent, SpinnerComponent, NgIf],
   templateUrl: './view.component.html',
   styleUrl: './view.component.scss'
 })
@@ -23,7 +25,8 @@ export class ViewComponent implements OnDestroy {
     private readonly route: ActivatedRoute,
     private readonly router: RouterService,
     private readonly externalListingsService: ExternalListingsService,
-    private readonly loaderService: LoaderService
+    private readonly loaderService: LoaderService,
+    public readonly permissionService: PermissionService
   ) {
 
   }

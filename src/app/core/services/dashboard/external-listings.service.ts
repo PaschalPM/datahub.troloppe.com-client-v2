@@ -202,7 +202,7 @@ export class ExternalListingsService implements OnDestroy {
           },
           error: (error) => {
             if (error.status === 403) {
-              this.alertService.error('Error', 'You do not have permission to delete this external listing.');
+              this.alertService.error('Error', error.error.message || 'You do not have permission to delete this external listing.');
             }
             else {
               this.alertService.error('Error', error.message);
@@ -290,7 +290,7 @@ export class ExternalListingsService implements OnDestroy {
               error: (err) => {
                 console.error(err)
                 if (err.status === 403) {
-                  this.alertService.error('Error', 'You do not have permission to perform this action.');
+                  this.alertService.error('Error', err.error.message);
                 }
                 else {
                   this.alertService.error('Error', `An error occured while ${action === 'create' ? 'creating a new' : 'updating this'} external listing`)

@@ -8,7 +8,7 @@
             {{ label }}
           </span>
           <button type="button" [class.invisible]="!showAddBtn || !items" class=" brightness-50 hover:brightness-100 active:scale-95">
-            <my-mat-icon class="font-black" (click)="sds.emitAddBtnClick(formGroup, name)" *ngIf="permissionService.isUpline">add</my-mat-icon>
+            <my-mat-icon class="font-black" (click)="sds.emitAddBtnClick(formGroup, name)" *ngIf="!permissionService.isAdhocStaff">add</my-mat-icon>
           </button>
         </span>
         <span class="font-bold text-secondary" *ngIf="isRequired">*</span>

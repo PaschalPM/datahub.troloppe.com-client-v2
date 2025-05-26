@@ -2,7 +2,7 @@
 <div [@visibleTrigger]="dataIsLoaded && 'visible'">
   <div class="my-4 flex justify-between items-center">
     <app-back-btn />
-    <text-button
+    <text-button *ngIf="permissionService.belongsToCurrentUser(streetData!.creator_id)"
       withIcon="edit"
       [isFlexed]="true"
       (clickEvent)="routeToEditStreetView()"

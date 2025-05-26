@@ -22,7 +22,7 @@ export class StreetDataDetails {
   public utils = inject(UtilsService);
   protected streetDataService = inject(StreetDataService);
   protected loader = inject(LoaderService);
-  private permissionService = inject(PermissionService);
+  public permissionService = inject(PermissionService);
   private activatedRoute = inject(ActivatedRoute);
 
   dataLoadedEvent = new EventEmitter();

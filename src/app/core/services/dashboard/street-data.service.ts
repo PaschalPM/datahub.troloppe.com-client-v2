@@ -152,7 +152,7 @@ export class StreetDataService {
           .get<StreetDataColType[]>(apiUrlFactory('/street-data'))
           .pipe(
             map((streetDataList) =>
-              this.permission.isResearchStaff
+              this.permission.isAdhocStaff
                 ? streetDataList.filter(
                     (streetData) =>
                       streetData.creator.toLowerCase() ===

@@ -36,6 +36,7 @@ type StreetData = {
   image_path: string; // *
   geolocation: string;
   creator: string;
+  creator_id: number;
   created_at: string;
   updated_at: string;
 };
