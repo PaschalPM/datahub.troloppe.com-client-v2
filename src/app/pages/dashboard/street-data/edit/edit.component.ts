@@ -1,4 +1,4 @@
-import { Location } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { TextButtonComponent } from '@core/components/dashboard/text-btn/text-btn.component';
@@ -10,8 +10,8 @@ import { constructionStatusOptions } from 'app/fixtures/street-data';
 import { AlertService } from '@shared/services/alert.service';
 import { BackBtnComponent } from '@shared/components/back-btn/back-btn.component';
 import { visibleTrigger } from '@shared/animations';
-import { FormSubmissionService } from '@shared/services/form-submission.service';
 import { StreetDataFormComponent } from '@core/components/dashboard/street-data-form/street-data-form.component';
+import { PermissionService } from '@shared/services/permission.service';
 
 @Component({
   selector: 'app-edit-street-data',
@@ -20,7 +20,8 @@ import { StreetDataFormComponent } from '@core/components/dashboard/street-data-
     TextButtonComponent,
     NotFoundComponent,
     BackBtnComponent,
-    StreetDataFormComponent
+    StreetDataFormComponent,
+    CommonModule
   ],
   templateUrl: './edit.component.html',
   animations: [visibleTrigger]
@@ -84,7 +85,8 @@ export class EditComponent extends StreetDataDetails {
     private fb: FormBuilder,
     private alert: AlertService,
     private location: Location,
-    private formSubmit: FormSubmissionService
+    public permission: PermissionService
+
   ) {
     super();
     this.streetDataFormGroup = this.fb.group(

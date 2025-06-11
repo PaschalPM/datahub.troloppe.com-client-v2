@@ -41,7 +41,7 @@ export class IndexComponent {
     { headerName: 'S/N', width: 75, valueGetter: 'node.rowIndex + 1' },
     {
       headerName: 'Actions',
-      cellRenderer: ActionsComponent,
+      cellRenderer:  ActionsComponent,
       cellRendererParams: { onClick: this.onEditClick.bind(this) },
       width: 150,
     },
@@ -80,7 +80,7 @@ export class IndexComponent {
     {
       field: 'creator',
       width: 150,
-      hide: !(this.permission.isAdmin || this.permission.isResearchManager),
+      hide: this.permission.isAdhocStaff,
     },
   ];
   defaultColDefs: ColDef<StreetDataColType> = {

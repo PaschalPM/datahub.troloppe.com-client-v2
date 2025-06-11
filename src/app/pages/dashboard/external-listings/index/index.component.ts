@@ -136,7 +136,7 @@ export class IndexComponent implements OnDestroy {
     },
     {
       field: "Updated By",
-      hide: !(this.permission.isAdmin || this.permission.isResearchManager),
+      hide: this.permission.isAdhocStaff,
     },
   ];
   defaultColDefs: ColDef<any> = {
