@@ -18,7 +18,13 @@ import { EditComponent as StreetDataEditComponent } from '@pages/dashboard/stree
 import { NewComponent as StreetDataNewComponent } from '@pages/dashboard/street-data/new/new.component';
 import { newStreetDataFormGuard } from '@core/guards/new-street-data-form.guard';
 import { IndexComponent as ExternalListingsIndexComponent } from '@pages/dashboard/external-listings/index/index.component';
+import { IndexComponent as InvsetmentDataIndexComponent } from '@pages/dashboard/investment-data/index/index.component';
+import { NewComponent as InvestmentDataFormComponent } from '@pages/dashboard/investment-data/new/new.component';
+import { ViewComponent as InvestmentDataViewComponent } from '@pages/dashboard/investment-data/view/view.component';
+import { EditComponent as InvestmentDataEditComponent } from '@pages/dashboard/investment-data/edit/edit.component';
 import { NewComponent as ExternalListingsNewComponent } from '@pages/dashboard/external-listings/new/new.component';
+
+
 import { ViewComponent as ExternalListingsViewComponent } from '@pages/dashboard/external-listings/view/view.component';
 import { EditComponent as ExternalListingEditComponent } from '@pages/dashboard/external-listings/edit/edit.component';
 import { IndexComponent as ListingAgentsIndexComponent } from '@pages/dashboard/external-listings/agents/index/index.component';
@@ -157,8 +163,34 @@ export const routes: Routes = [
             component: ExternalListingEditComponent,
             title: 'Edit External Listing',
           },
-
         ]
+      },
+
+      // Investment Data Routes - Updated
+      {
+        path: 'investment-data',
+        redirectTo: 'investment-data/residential',
+        pathMatch: 'full'
+      },
+      {
+        path: 'investment-data/:sector',
+        component: InvsetmentDataIndexComponent,
+        title: 'Investment Data',
+      },
+      {
+        path: 'investment-data/:sector/new',
+        component: InvestmentDataFormComponent,
+        title: 'Create Investment Data',
+      },
+      {
+        path: 'investment-data/:sector/:id',
+        component: InvestmentDataViewComponent,
+        title: 'Create Investment Data',
+      },
+      {
+        path: 'investment-data/:sector/:id/edit',
+        component: InvestmentDataEditComponent,
+        title: 'Create Investment Data',
       },
 
       // Notification Route

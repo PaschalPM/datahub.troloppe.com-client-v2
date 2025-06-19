@@ -1,0 +1,44 @@
+<app-back-btn />
+
+@if(investmentData) {
+<div class="max-w-4xl mx-auto shadow-lg rounded-lg p-6">
+  <div class="flex items-center border-b pb-4 justify-between">
+    <h2 class="text-xl font-bold">{{ getSectorDisplayName() }} Investment Details</h2>
+    <div class="flex flex-row items-end">
+      <text-button
+        withIcon="edit"
+        [isFlexed]="true"
+        text="Edit"
+        (clickEvent)="goToEditInvestmentData()">
+      </text-button>
+      <text-button
+        withIcon="delete"
+        [isFlexed]="true"
+        state="error"
+        text="Delete"
+        (clickEvent)="deleteInvestmentData()">
+      </text-button>
+    </div>
+  </div>
+
+  
+  <div class="grid grid-cols-2 gap-4 mt-4">
+    @for(key of investmentDataKeys; track key) {
+    <div>
+      <span class="font-semibold">{{ formatKey(key) }}:</span>
+      {{ investmentData[key] || 'N/A' }}
+    </div>
+    }
+  </div>
+
+  <div class="mt-4 text-left">
+  <span class="font-semibold">Updated By:</span>
+  {{ investmentData['Updated By'] }}
+</div>
+</div>
+}
+@else {
+<div class="p-6 flex justify-center">
+  <app-spinner />
+</div>
+}

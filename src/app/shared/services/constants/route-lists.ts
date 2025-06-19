@@ -13,6 +13,13 @@ export const dashboardRouteLists = (forAdhocStaff = false) => {
     })
   }
 
+  if (!forAdhocStaff) {
+    primary.push({
+      title: 'Investment Data',
+      routerLink: '/dashboard/investment-data',
+    })
+  }
+
   return {
     primary,
     secondary: [

@@ -4,6 +4,7 @@ import { AuthNoticeComponent } from '@core/components/dashboard/home/auth-notice
 import { PaneNavigatorPanelComponent } from '@core/components/dashboard/pane-navigator-panel/pane-navigator-panel.component';
 import { routeFadeInOut, visibleTrigger } from '@shared/animations';
 import { ExternalListingsOverviewComponent } from "../../../core/components/dashboard/home/external-listings-overview/external-listings-overview.component";
+import { InvestmentDataOverviewComponent } from "../../../core/components/dashboard/home/investment-data-overview/investment-data-overview.component";
 import { ActivatedRoute, Router } from '@angular/router';
 import { PermissionService } from '@shared/services/permission.service';
 
@@ -14,7 +15,8 @@ import { PermissionService } from '@shared/services/permission.service';
     AuthNoticeComponent,
     PaneNavigatorPanelComponent,
     StreetDataOverviewComponent,
-    ExternalListingsOverviewComponent
+    ExternalListingsOverviewComponent,
+    InvestmentDataOverviewComponent
   ],
   templateUrl: './home.component.html',
   animations: [visibleTrigger, routeFadeInOut],

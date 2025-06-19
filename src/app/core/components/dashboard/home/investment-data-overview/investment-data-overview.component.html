@@ -1,0 +1,40 @@
+<div class="my-4 flex justify-end items-center">
+  <text-button withIcon="add" [isFlexed]="true" (clickEvent)="goToNewInvestment()" text="New Investment"></text-button>
+</div>
+
+<div class="mb-6 p-4 bg-base-200 rounded-lg shadow-sm">
+  <div class="flex items-center gap-4">
+    <label for="sector-select" class="text-sm font-medium">Investment Sector:</label>
+    <select id="sector-select" [(ngModel)]="selectedSector" (ngModelChange)="onInvestmentSectorChange($event)"
+      class="px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-800 dark:border-gray-600 dark:text-white min-w-[150px]">
+      <option *ngFor="let sector of investmentSectors" [value]="sector.key">
+        {{ sector.label }}
+      </option>
+    </select>
+
+    <span class="text-sm text-base-content/70">
+      Current: {{ currentSectorData?.label || 'Unknown' }} Investment
+    </span>
+  </div>
+</div>
+
+<div class="my-4 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+  @for (item of overviewItems; track item.id) {
+    <dashboard-widget-overview
+      [totalSum]="item.totalSum"
+      [overviewTitle]="item.overviewTitle"
+      [myMatIcon]="item.myMatIcon">
+    </dashboard-widget-overview>
+  }
+</div>
+
+<dashboard-chart-container class="hidden lg:flex flex-wrap justify-evenly min-h-60" href="/dashboard/investments" linkTitle="View All Investments">
+  @if(isLoading) {
+    <app-spinner></app-spinner>
+    <app-spinner></app-spinner>
+  }
+  @else {
+    <dashboard-chart type="pie" [results]="sectorSummary" title="Building Type Distribution"></dashboard-chart>
+    <dashboard-chart type="pie" [results]="locationSummary" title="Region Distribution"></dashboard-chart>
+  }
+</dashboard-chart-container>

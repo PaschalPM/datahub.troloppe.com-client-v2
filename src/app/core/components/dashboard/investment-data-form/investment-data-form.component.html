@@ -1,0 +1,255 @@
+<app-back-btn />
+<ng-template #form>
+  <div class="w-full p-2 md:p-4 lg:w-3/4 mx-auto">
+    <!-- Sector Selector -->
+    <div class="mb-6 p-4 bg-base-200 rounded-lg shadow-sm">
+
+
+      <div class="flex items-center gap-4">
+
+        <label for="sector-select" class="text-sm font-medium">Investment Sector:</label>
+        <select id="sector-select" [(ngModel)]="selectedSector" (ngModelChange)="onInvestmentSectorChange($event)"
+          class="px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-800 dark:border-gray-600 dark:text-white min-w-[150px]">
+          <option *ngFor="let sector of investmentSectors" [value]="sector.key">
+            {{ sector.label }}
+          </option>
+        </select>
+
+        <span class="text-sm text-base-content/70">
+          Current: {{ currentSectorData?.label || 'Unknown' }} Investment
+        </span>
+      </div>
+    </div>
+
+    <form class="rounded-lg bg-base-300 p-4 md:p-8 text-sm shadow-md backdrop-blur-md my-6"
+      [formGroup]="investmentDataFormGroup" (ngSubmit)="handleSubmit()">
+
+      <div class="md:flex gap-2 justify-between">
+
+        <!-- State Select Field -->
+        <app-select-dropdown clx="my-3" label="State" name="state" [items]="optionsRecord['state']"
+          [formGroup]="investmentDataFormGroup" bindLabel="name" bindValue="id" [disableControlBasedOnData]="true"
+          (valueChange)="onStateChange($event)">
+        </app-select-dropdown>
+
+        <!-- Region Select Field -->
+        <app-select-dropdown clx="my-3" label="Region" name="region" [items]="optionsRecord['region']"
+          [formGroup]="investmentDataFormGroup" bindLabel="name" bindValue="id" [disableControlBasedOnData]="true"
+          (valueChange)="onRegionChange($event)" [pending]="isFetchingRecord['region']">
+        </app-select-dropdown>
+      </div>
+
+      <div class="md:flex gap-2 justify-between">
+
+        <!-- Location Select Field -->
+        <app-select-dropdown clx="my-3" label="Location" name="location" [items]="optionsRecord['location']"
+          [formGroup]="investmentDataFormGroup" bindLabel="name" bindValue="id" [disableControlBasedOnData]="true"
+          (valueChange)="onLocationChange($event)" [pending]="isFetchingRecord['location']">
+        </app-select-dropdown>
+
+        <!-- Section Select Field -->
+        <app-select-dropdown clx="my-3" label="Section" name="section" [items]="optionsRecord['section']"
+          [formGroup]="investmentDataFormGroup" bindLabel="name" bindValue="id" [disableControlBasedOnData]="true"
+          (valueChange)="onSectionChange($event)" [pending]="isFetchingRecord['sections']">
+        </app-select-dropdown>
+      </div>
+
+      <div class="md:flex gap-2 justify-between">
+        <!-- LGA Select Field -->
+        <app-select-dropdown clx="my-3" label="L G A" name="lga" [items]="optionsRecord['lga']"
+          [formGroup]="investmentDataFormGroup" bindLabel="name" bindValue="id" [disableControlBasedOnData]="true"
+          (valueChange)="onLgaChange($event)" [pending]="isFetchingRecord['lga']">
+        </app-select-dropdown>
+
+        <!-- LCDA Select Field -->
+        <app-select-dropdown clx="my-3" label="L C D A" name="lcda" [items]="optionsRecord['lcda']"
+          [formGroup]="investmentDataFormGroup" bindLabel="name" bindValue="id" [disableControlBasedOnData]="true"
+          [pending]="isFetchingRecord['lcda']">
+        </app-select-dropdown>
+      </div>
+
+      <!-- Sector (Street) -->
+      <app-select-dropdown clx="my-3" label="Sector" name="sector" [items]="optionsRecord['sector']"
+        [formGroup]="investmentDataFormGroup" bindLabel="name" bindValue="id" [disableControlBasedOnData]="true"
+        (valueChange)="onSectorChange($event)" [showAddBtn]="false">
+      </app-select-dropdown>
+
+      <!-- Street Name Input Field -->
+      <app-input-field [formGroup]="investmentDataFormGroup" label="Street Name" name="streetName"></app-input-field>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+
+        <!-- Building Type -->
+        <app-input-field *ngIf="shouldShowField('Building Type')" [formGroup]="investmentDataFormGroup"
+          label="Building Type" name="buildingType">
+        </app-input-field>
+
+        <!-- Number of Units -->
+        <app-input-field *ngIf="shouldShowField('No of Units')" [formGroup]="investmentDataFormGroup"
+          label="Number of Units" name="noOfUnits" type="number">
+        </app-input-field>
+
+        <!-- Number of Beds -->
+        <app-input-field *ngIf="shouldShowField('No of Beds')" [formGroup]="investmentDataFormGroup"
+          label="Number of Beds" name="noOfBeds" type="number">
+        </app-input-field>
+
+        <!-- Status -->
+        <app-input-field *ngIf="shouldShowField('Status')" [formGroup]="investmentDataFormGroup" label="Status"
+          name="status">
+        </app-input-field>
+
+        <!-- Completion Year -->
+        <app-input-field *ngIf="shouldShowField('Completion Year')" [formGroup]="investmentDataFormGroup"
+          label="Completion Year" name="completionYear" type="number">
+        </app-input-field>
+
+        <!-- Period -->
+        <app-input-field *ngIf="shouldShowField('Period')" [formGroup]="investmentDataFormGroup" label="Period"
+          name="period">
+        </app-input-field>
+
+        <!-- Rental Price -->
+        <app-input-field *ngIf="shouldShowField('Rental Price')" [formGroup]="investmentDataFormGroup"
+          label="Rental Price" name="rentalPrice" type="number">
+        </app-input-field>
+
+        <!-- Sale Price -->
+        <app-input-field *ngIf="shouldShowField('Sale Price')" [formGroup]="investmentDataFormGroup" label="Sale Price"
+          name="salePrice" type="number">
+        </app-input-field>
+
+        <!-- Developer -->
+        <app-input-field *ngIf="shouldShowField('Developer')" [formGroup]="investmentDataFormGroup" label="Developer"
+          name="developer">
+        </app-input-field>
+
+        <!-- Contractor -->
+        <app-input-field *ngIf="shouldShowField('Contractor')" [formGroup]="investmentDataFormGroup" label="Contractor"
+          name="contractor">
+        </app-input-field>
+
+        <!-- Facilities Manager -->
+        <app-input-field *ngIf="shouldShowField('Facilities Manager')" [formGroup]="investmentDataFormGroup"
+          label="Facilities Manager" name="facilitiesManager">
+        </app-input-field>
+
+        <!-- Annual Service Charge -->
+        <app-input-field *ngIf="shouldShowField('Annual Service Charge')" [formGroup]="investmentDataFormGroup"
+          label="Annual Service Charge" name="annualServiceCharge" type="number">
+        </app-input-field>
+
+        <!-- Contact Name -->
+        <app-input-field *ngIf="shouldShowField('Contact Name')" [formGroup]="investmentDataFormGroup"
+          label="Contact Name" name="contactName">
+        </app-input-field>
+
+        <!-- Contact Number -->
+        <app-input-field *ngIf="shouldShowField('Contact Number')" [formGroup]="investmentDataFormGroup"
+          label="Contact Number" name="contactNumber">
+        </app-input-field>
+
+        <!-- Amenities -->
+        <app-input-field *ngIf="shouldShowField('Amenities')" [formGroup]="investmentDataFormGroup" label="Amenities"
+          name="amenities">
+        </app-input-field>
+
+        <!-- Land Area -->
+        <app-input-field *ngIf="shouldShowField('Land Area')" [formGroup]="investmentDataFormGroup" label="Land Area"
+          name="landArea">
+        </app-input-field>
+
+        <!-- Classification -->
+        <app-input-field *ngIf="shouldShowField('Classification')" [formGroup]="investmentDataFormGroup"
+          label="Classification" name="classification">
+        </app-input-field>
+
+        <!-- Operator -->
+        <app-input-field *ngIf="shouldShowField('Operator')" [formGroup]="investmentDataFormGroup" label="Operator"
+          name="operator">
+        </app-input-field>
+
+        <!-- NLFA -->
+        <app-input-field *ngIf="shouldShowField('NLFA')" [formGroup]="investmentDataFormGroup"
+          label="NLFA (Net Lettable Floor Area)" name="nlfa">
+        </app-input-field>
+
+        <!-- Number of Floors -->
+        <app-input-field *ngIf="shouldShowField('No of Floors')" [formGroup]="investmentDataFormGroup"
+          label="Number of Floors" name="noOfFloors" type="number">
+        </app-input-field>
+
+        <!-- Number of Keys (Hotel) -->
+        <app-input-field *ngIf="shouldShowField('Number of Keys')" [formGroup]="investmentDataFormGroup"
+          label="Number of Keys" name="numberOfKeys" type="number">
+        </app-input-field>
+
+        <!-- Daily Rate -->
+        <app-input-field *ngIf="shouldShowField('Daily Rate')" [formGroup]="investmentDataFormGroup" label="Daily Rate"
+          name="dailyRate" type="number">
+        </app-input-field>
+
+        <!-- Room Type -->
+        <app-input-field *ngIf="shouldShowField('Room Type')" [formGroup]="investmentDataFormGroup" label="Room Type"
+          name="roomType">
+        </app-input-field>
+
+        <!-- Number of Bay (Industrial) -->
+        <app-input-field *ngIf="shouldShowField('No of Bay')" [formGroup]="investmentDataFormGroup"
+          label="Number of Bay" name="noOfBay" type="number">
+        </app-input-field>
+
+
+
+        <!-- Number of Plots -->
+        <app-input-field *ngIf="shouldShowField('No of Plots')" [formGroup]="investmentDataFormGroup"
+          label="Number of Plots" name="noOfPlots" type="number">
+        </app-input-field>
+
+        <!-- Number of Streets -->
+        <app-input-field *ngIf="shouldShowField('No of Streets')" [formGroup]="investmentDataFormGroup"
+          label="Number of Streets" name="noOfStreets" type="number">
+        </app-input-field>
+
+        <!-- Number of Seats (Events) -->
+        <app-input-field *ngIf="shouldShowField('No of Seats')" [formGroup]="investmentDataFormGroup"
+          label="Number of Seats" name="noOfSeats" type="number">
+        </app-input-field>
+
+        <!-- Daily Rates (Events) -->
+        <app-input-field *ngIf="shouldShowField('Daily Rates')" [formGroup]="investmentDataFormGroup"
+          label="Daily Rates" name="dailyRates" type="number">
+        </app-input-field>
+      </div>
+
+      <div class="flex mt-4 gap-2">
+        @if(action === 'create'){
+        <app-form-submit-btn #inputs id="create" text="Create" [loading]="isLoading" [forDashboard]="true"
+          (click)="creationType='create'">
+        </app-form-submit-btn>
+
+        <app-form-submit-btn id="createAnother" text="Create Another" [loading]="isLoading"
+          (click)="creationType='createAnother'" [forDashboard]="true" variant="outline">
+        </app-form-submit-btn>
+        }
+        @else {
+        <app-form-submit-btn #inputs id="update" text="Update" [loading]="isLoading" [forDashboard]="true">
+        </app-form-submit-btn>
+        }
+
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+<ng-container *ngIf="action==='edit'; else form">
+  @if(data){
+  <ng-container *ngTemplateOutlet="form"></ng-container>
+  }
+  @else {
+  <div class="p-6">
+    <app-spinner />
+  </div>
+  }
+</ng-container>
