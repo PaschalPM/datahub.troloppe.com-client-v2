@@ -160,11 +160,12 @@ export class IndexComponent implements OnDestroy {
   destroy$ = new Subject<void>()
   currentUser!: User
 
-  dataCache: Map<string, {data:any, totalRecords: number}> = new Map()
+  dataCache: Map<string, { data: any, totalRecords: number }> = new Map()
   gridApi!: any;
 
   onGridReady(params: any) {
     this.gridApi = params.api;
+    this.gridApi.setFilterModel(this.getFilterModelFromLocalStorage() || {});
   }
 
   constructor(
@@ -207,6 +208,7 @@ export class IndexComponent implements OnDestroy {
         }
         if (Object.keys(params.filterModel).length > 0) {
           paginatedListingParams.agFilterModel = params.filterModel
+          this.setFilterModelToLocalStorage(params.filterModel);
         }
         if (params.sortModel.length > 0) {
           const sort = params.sortModel[0].sort
@@ -222,7 +224,7 @@ export class IndexComponent implements OnDestroy {
         const cachedData = this.getCachedData(paginatedListingParams)
         if (cachedData) {
           params.successCallback(cachedData.data, cachedData.totalRecords);
-         
+
           this.isLoading = false
           this.cdr.detectChanges()
         }
@@ -230,25 +232,25 @@ export class IndexComponent implements OnDestroy {
         else {
 
           this.els.apiGetPaginatedListings(paginatedListingParams).pipe(takeUntil(this.destroy$))
-          .subscribe({
-            next: (value) => {
-              params.successCallback(value.data, value.totalRecords);
-              if (value.data.length === 0) {
-                Promise.resolve().then(() => {
-                  this.gridApi.showNoRowsOverlay();
-                })
+            .subscribe({
+              next: (value) => {
+                params.successCallback(value.data, value.totalRecords);
+                if (value.data.length === 0) {
+                  Promise.resolve().then(() => {
+                    this.gridApi.showNoRowsOverlay();
+                  })
+                }
+
+                this.cacheData(paginatedListingParams, value.data, value.totalRecords)
+                this.isLoading = false;
+                this.cdr.detectChanges()
+              },
+              error: () => {
+                params.failCallback();
+                this.isLoading = false;
+                this.cdr.detectChanges()
               }
-            
-              this.cacheData(paginatedListingParams, value.data, value.totalRecords)
-              this.isLoading = false;
-              this.cdr.detectChanges()
-            },
-            error:() =>  {
-              params.failCallback();
-              this.isLoading = false;
-              this.cdr.detectChanges()
-            }
-          })
+            })
         }
       }
     }
@@ -270,17 +272,26 @@ export class IndexComponent implements OnDestroy {
     this.router.navigateByUrl(`/dashboard/external-listings/${data.id}`, data)
   }
 
-  cacheData(paginatedListingParams: PaginatedListingsParams, data:any, totalRecords:number) {
-    this.dataCache.set(JSON.stringify(paginatedListingParams), {data, totalRecords})
+  cacheData(paginatedListingParams: PaginatedListingsParams, data: any, totalRecords: number) {
+    this.dataCache.set(JSON.stringify(paginatedListingParams), { data, totalRecords })
   }
 
-  getCachedData(paginatedListingParams: PaginatedListingsParams){
+  getCachedData(paginatedListingParams: PaginatedListingsParams) {
     return this.dataCache.get(JSON.stringify(paginatedListingParams))
   }
 
   ngOnDestroy(): void {
     this.destroy$.next()
     this.destroy$.complete()
+  }
+
+  private getFilterModelFromLocalStorage(): any {
+    const filterModel = sessionStorage.getItem('externalListingsFilterModel');
+    return filterModel ? JSON.parse(filterModel) : null;
+  }
+
+  private setFilterModelToLocalStorage(filterModel: any) {
+    sessionStorage.setItem('externalListingsFilterModel', JSON.stringify(filterModel));
   }
 
 }

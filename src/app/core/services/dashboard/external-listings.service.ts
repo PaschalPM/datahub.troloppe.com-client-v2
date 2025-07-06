@@ -162,7 +162,7 @@ export class ExternalListingsService implements OnDestroy {
 
   apiGetOverviewWidgetSet() {
     let url = apiUrlFactory(`/external-listings/overview/widget-set`);
-    return this.httpClient.get<OverviewWidgetType>(url)
+    return this.httpClient.get<{data:OverviewWidgetType}>(url)
   }
 
   apiGetOverviewVisualSet(type = 'sectors') {

@@ -65,10 +65,10 @@ export class ExternalListingsOverviewComponent {
 
     this.externalListingsService.apiGetOverviewWidgetSet().subscribe({
       next: (v) => {
-        this.overviewItems[0].totalSum = v.total_external_listings
-        this.overviewItems[1].totalSum = v.total_states_covered
-        this.overviewItems[2].totalSum = v.total_sectors_covered
-        this.overviewItems[3].totalSum = v.total_listing_agents
+        this.overviewItems[0].totalSum = v.data.total_external_listings
+        this.overviewItems[1].totalSum = v.data.total_states_covered
+        this.overviewItems[2].totalSum = v.data.total_sectors_covered
+        this.overviewItems[3].totalSum = v.data.total_listing_agents
       }
     })
   }
