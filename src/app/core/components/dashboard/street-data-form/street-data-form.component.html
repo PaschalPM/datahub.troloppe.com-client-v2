@@ -1,27 +1,19 @@
 <div class="w-full p-2 md:p-4 lg:w-3/4 mx-auto -mt-5">
-  <form
-    [formGroup]="streetDataFormGroup"
-    (ngSubmit)="handleSubmit($event)"
-    class="rounded-lg bg-base-300 p-4 md:p-8 text-sm shadow-md backdrop-blur-md my-6"
-  >
+  <form [formGroup]="streetDataFormGroup" (ngSubmit)="handleSubmit($event)"
+    class="rounded-lg bg-base-300 p-4 md:p-8 text-sm shadow-md backdrop-blur-md my-6">
     <div class="flex justify-between items-center relative">
       <!---: Image URL -->
-      <app-image-uploader
-        #imageUploaderRef
-        label="Photo Preview"
+      <app-image-uploader #imageUploaderRef label="Photo Preview"
         [name]="type.includes('create') ? 'image' : 'image_path'"
-        [mode]="type.includes('create') ? 'view-edit' : 'view-only'"
-        [formGroup]="streetDataFormGroup"
-      >
+        [mode]="(type === 'edit' || type.includes('create')) ? 'view-edit' : 'view-only'"
+        [formGroup]="streetDataFormGroup">
       </app-image-uploader>
 
-      <div
-        [class]="
+      <div [class]="
           utils.cn(
             'text-right md:text-left text-sm md:text-base flex flex-col justify-evenly items-end md:items-start absolute right-0 top-0 bottom-0 w-2/3 md:w-1/3'
           )
-        "
-      >
+        ">
         <div>
           @if(isPermitted && !type.includes('create')){
           <!---: Creator  -->
@@ -33,14 +25,8 @@
         </div>
         @if(type === 'view' || (isPermitted && type === 'edit')){
         <div class="font-medium">
-          <app-input-field
-            #inputFields
-            clx="my-2"
-            label="Is Verified?"
-            name="is_verified"
-            type="checkbox"
-            [formGroup]="streetDataFormGroup"
-          ></app-input-field>
+          <app-input-field #inputFields clx="my-2" label="Is Verified?" name="is_verified" type="checkbox"
+            [formGroup]="streetDataFormGroup"></app-input-field>
         </div>
         }
       </div>
@@ -48,127 +34,56 @@
 
     @if(type === "view" || (isPermitted && type !== 'new-create')){
     <!---: Property Unique Code -->
-    <app-input-field
-      #inputFieldRefs
-      [withCounter]="true"
-      clx="my-2"
-      label="Property Unique Code"
-      name="unique_code"
-      [formGroup]="streetDataFormGroup"
-      [dataList]="uniqueCodeDataList"
-    >
+    <app-input-field #inputFieldRefs [withCounter]="true" clx="my-2" label="Property Unique Code" name="unique_code"
+      [formGroup]="streetDataFormGroup" [dataList]="uniqueCodeDataList">
     </app-input-field>
     }
 
     <!---: Street Address -->
-    <app-input-field
-      #inputFieldRefs
-      [withCounter]="true"
-      clx="my-2"
-      label="Street Address"
-      name="street_address"
-      [formGroup]="streetDataFormGroup"
-    >
+    <app-input-field #inputFieldRefs [withCounter]="true" clx="my-2" label="Street Address" name="street_address"
+      [formGroup]="streetDataFormGroup">
     </app-input-field>
 
     <!---: Sector  -->
     @if(type === 'view') {
 
-    <app-input-field
-      #inputFieldRefs
-      clx="my-2"
-      label="Sector"
-      name="sector"
-      [formGroup]="streetDataFormGroup"
-    >
+    <app-input-field #inputFieldRefs clx="my-2" label="Sector" name="sector" [formGroup]="streetDataFormGroup">
     </app-input-field>
     } @else {
-    <app-select-dropdown
-      #selectDropdownRefs
-      [showAddBtn]="false"
-      clx="my-3"
-      label="Sector"
-      name="sector"
-      [items]="sectorOptions"
-      [formGroup]="streetDataFormGroup"
-      bindLabel="name"
-      bindValue="id"
-      (valueChange)="onSectorChange($event)"
-    >
+    <app-select-dropdown #selectDropdownRefs [showAddBtn]="false" clx="my-3" label="Sector" name="sector"
+      [items]="sectorOptions" [formGroup]="streetDataFormGroup" bindLabel="name" bindValue="id"
+      (valueChange)="onSectorChange($event)">
     </app-select-dropdown>
     }
 
     <!---:Sub Sector  -->
     @if(type === 'view' && streetDataFormGroup.get('sub_sector')?.value) {
-    <app-input-field
-      #inputFieldRefs
-      clx="my-2"
-      label="Sub Sector"
-      name="sub_sector"
-      [formGroup]="streetDataFormGroup"
-    >
+    <app-input-field #inputFieldRefs clx="my-2" label="Sub Sector" name="sub_sector" [formGroup]="streetDataFormGroup">
     </app-input-field>
     } @else { @if(selectedSectorId > 0 && subSectorOptions && subSectorOptions.length > 0){
 
-    <app-select-dropdown
-      #selectDropdownRefs
-      clx="my-3"
-      [label]="subSectorLabel"
-      name="sub_sector"
-      [items]="subSectorOptions"
-      [formGroup]="streetDataFormGroup"
-      bindLabel="name"
-      bindValue="id"
-      [pending]="subSectorPending"
-      (valueChange)="onSubSectorChange($event)"
-    >
+    <app-select-dropdown #selectDropdownRefs clx="my-3" [label]="subSectorLabel" name="sub_sector"
+      [items]="subSectorOptions" [formGroup]="streetDataFormGroup" bindLabel="name" bindValue="id"
+      [pending]="subSectorPending" (valueChange)="onSubSectorChange($event)">
     </app-select-dropdown>
     } @else if (selectedSectorId == 0){
-    <app-input-field
-      #inputFieldRefs
-      [withCounter]="true"
-      clx="my-2"
-      label="New Sector"
-      placeholder="Input New Sector"
-      name="new_sector"
-      [formGroup]="streetDataFormGroup"
-    >
+    <app-input-field #inputFieldRefs [withCounter]="true" clx="my-2" label="New Sector" placeholder="Input New Sector"
+      name="new_sector" [formGroup]="streetDataFormGroup">
     </app-input-field>
     } }
     <!---: Location  -->
-    <app-input-field
-      #inputFieldRefs
-      clx="my-2"
-      label="Location"
-      name="location"
-      [formGroup]="streetDataFormGroup"
-    >
+    <app-input-field #inputFieldRefs clx="my-2" label="Location" name="location" [formGroup]="streetDataFormGroup">
     </app-input-field>
 
     <!---: Section  -->
     @if(type === 'view') {
-    <app-input-field
-      #inputFieldRefs
-      clx="my-2"
-      label="Section"
-      name="section"
-      [formGroup]="streetDataFormGroup"
-    >
+    <app-input-field #inputFieldRefs clx="my-2" label="Section" name="section" [formGroup]="streetDataFormGroup">
     </app-input-field>
     } @else {
 
-    <app-select-dropdown
-      #selectDropdownRefs
-      [showAddBtn]="false"
-      label="Section"
-      name="section"
-      [formGroup]="streetDataFormGroup"
-      bindLabel="name"
-      bindValue="id"
-      notFoundText="Set a location first"
-      [items]="sectionOptions"
-      (valueChange)="onSectionChange($event)"
-    >
+    <app-select-dropdown #selectDropdownRefs [showAddBtn]="false" label="Section" name="section"
+      [formGroup]="streetDataFormGroup" bindLabel="name" bindValue="id" notFoundText="Set a location first"
+      [items]="sectionOptions" (valueChange)="onSectionChange($event)">
     </app-select-dropdown>
     }
 
@@ -177,175 +92,92 @@
     @if (selectedSectorId == 1 || (type === "view" &&
     streetDataFormGroup.get('sector')?.value === "Residential")) {
 
-    <app-input-field
-      #inputFieldRefs
-      clx="my-2"
-      label="Number of Units"
-      name="number_of_units"
-      [formGroup]="streetDataFormGroup"
-      type="number"
-    >
+    <app-input-field #inputFieldRefs clx="my-2" label="Number of Units" name="number_of_units"
+      [formGroup]="streetDataFormGroup" type="number">
     </app-input-field>
-    } @else if(selectedSectorId < 1 || selectedSectorId > 1 || (type === "view"
-    && streetDataFormGroup.get('sector')?.value !== "Residential")) {
-    <app-input-field
-      #inputFieldRefs
-      clx="my-2"
-      label="Size (sqm)"
-      name="size"
-      [formGroup]="streetDataFormGroup"
-      type="number"
-    >
-    </app-input-field>
-    }
+    } @else if(selectedSectorId < 1 || selectedSectorId> 1 || (type === "view"
+      && streetDataFormGroup.get('sector')?.value !== "Residential")) {
+      <app-input-field #inputFieldRefs clx="my-2" label="Size (sqm)" name="size" [formGroup]="streetDataFormGroup"
+        type="number">
+      </app-input-field>
+      }
 
-    <!---: Construction Status -->
-    <!-- Hidden if selected sector is Land -->
-    @if(selectedSectorId != 4) { @if(type === 'view') { @if
-    (streetDataFormGroup.get('sector')?.value !== "Land") {
+      <!---: Construction Status -->
+      <!-- Hidden if selected sector is Land -->
+      @if(selectedSectorId != 4) { @if(type === 'view') { @if
+      (streetDataFormGroup.get('sector')?.value !== "Land") {
 
-    <app-input-field
-      #inputFieldRefs
-      clx="my-2"
-      label="Construction Status"
-      name="construction_status"
-      [formGroup]="streetDataFormGroup"
-    >
-    </app-input-field>
-    } } @else {
+      <app-input-field #inputFieldRefs clx="my-2" label="Construction Status" name="construction_status"
+        [formGroup]="streetDataFormGroup">
+      </app-input-field>
+      } } @else {
 
-    <app-select-dropdown
-      #selectDropdownRefs
-      [showAddBtn]="false"
-      label="Construction Status"
-      name="construction_status"
-      [formGroup]="streetDataFormGroup"
-      bindLabel="label"
-      bindValue="value"
-      [items]="constructionStatusOptions"
-      clx="my-4"
-    >
-    </app-select-dropdown>
-    } }
+      <app-select-dropdown #selectDropdownRefs [showAddBtn]="false" label="Construction Status"
+        name="construction_status" [formGroup]="streetDataFormGroup" bindLabel="label" bindValue="value"
+        [items]="constructionStatusOptions" clx="my-4">
+      </app-select-dropdown>
+      } }
 
-    <!---: Description -->
-    <app-input-field
-      #inputFieldRefs
-      [withCounter]="true"
-      clx="my-2"
-      label="Description"
-      name="description"
-      [formGroup]="streetDataFormGroup"
-      type="textarea"
-      [maxLength]="1000"
-    ></app-input-field>
+      <!---: Description -->
+      <app-input-field #inputFieldRefs [withCounter]="true" clx="my-2" label="Description" name="description"
+        [formGroup]="streetDataFormGroup" type="textarea" [maxLength]="1000"></app-input-field>
 
-    <!---: Development Name -->
-    <app-input-field
-      #inputFieldRefs
-      [withCounter]="true"
-      clx="my-2"
-      label="Development Name"
-      name="development_name"
-      [formGroup]="streetDataFormGroup"
-    >
-    </app-input-field>
+      <!---: Development Name -->
+      <app-input-field #inputFieldRefs [withCounter]="true" clx="my-2" label="Development Name" name="development_name"
+        [formGroup]="streetDataFormGroup">
+      </app-input-field>
 
-    <!---: Contact Name -->
-    <app-input-field
-      #inputFieldRefs
-      [withCounter]="true"
-      clx="my-2"
-      label="Contact Name"
-      name="contact_name"
-      [formGroup]="streetDataFormGroup"
-    >
-    </app-input-field>
+      <!---: Contact Name -->
+      <app-input-field #inputFieldRefs [withCounter]="true" clx="my-2" label="Contact Name" name="contact_name"
+        [formGroup]="streetDataFormGroup">
+      </app-input-field>
 
-    <!---: Contact Numbers -->
-    <app-input-field
-      #inputFieldRefs
-      [withCounter]="true"
-      clx="my-2"
-      type="number-list"
-      label="Contact Number(s)"
-      name="contact_numbers"
-      [formGroup]="streetDataFormGroup"
-    >
-    </app-input-field>
+      <!---: Contact Numbers -->
+      <app-input-field #inputFieldRefs [withCounter]="true" clx="my-2" type="number-list" label="Contact Number(s)"
+        name="contact_numbers" [formGroup]="streetDataFormGroup">
+      </app-input-field>
 
-    <!---: Contact Email -->
-    <app-input-field
-      #inputFieldRefs
-      [withCounter]="true"
-      clx="my-2"
-      label="Contact Email"
-      name="contact_email"
-      type="email"
-      [formGroup]="streetDataFormGroup"
-    >
-    </app-input-field>
+      <!---: Contact Email -->
+      <app-input-field #inputFieldRefs [withCounter]="true" clx="my-2" label="Contact Email" name="contact_email"
+        type="email" [formGroup]="streetDataFormGroup">
+      </app-input-field>
 
-    <!---: Google URL & Submit Button -->
-    <div
-      [class]="
+      <!---: Google URL & Submit Button -->
+      <div [class]="
         utils.cn('flex justify-between w-full items-baseline', {
           'justify-end': type === 'view'
         })
-      "
-    >
-      @if(isPermitted && !type.includes('create')){
-      <!---: Google URL -->
-      <div
-        [class]="
+      ">
+        @if(isPermitted && !type.includes('create')){
+        <!---: Google URL -->
+        <div [class]="
           utils.cn('flex justify-end text-sm my-2 mt-4', {
             'mt-0': type === 'view'
           })
-        "
-      >
-        <a
-          *ngIf="geolocation"
-          [attr.href]="geolocation"
-          class="underline !text-sm md:text-base text-secondary"
-        >
-          Google Map URL
-        </a>
-        <span *ngIf="!geolocation" class="inline-flex items-center text-error">
-          <my-mat-icon>warning</my-mat-icon> Geolocation not available
-        </span>
-      </div>
-      } @if(type !== 'view'){ @if(type === 'edit') {
-      <!---: Submit Button -->
-      <app-form-submit-btn
-        #inputs
-        text="Save"
-        [loading]="isImageLoading"
-        [forDashboard]="true"
-      >
-      </app-form-submit-btn>
-      } @else if (type.includes('create')) {
-      <div class="flex gap-2">
-        <app-form-submit-btn
-          #inputs
-          id="create"
-          text="Create"
-          [loading]="isImageLoading"
-          [forDashboard]="true"
-        >
+        ">
+          <a *ngIf="geolocation" [attr.href]="geolocation" class="underline !text-sm md:text-base text-secondary">
+            Google Map URL
+          </a>
+          <span *ngIf="!geolocation" class="inline-flex items-center text-error">
+            <my-mat-icon>warning</my-mat-icon> Geolocation not available
+          </span>
+        </div>
+        } @if(type !== 'view'){ @if(type === 'edit') {
+        <!---: Submit Button -->
+        <app-form-submit-btn #inputs text="Save" [loading]="isImageLoading" [forDashboard]="true">
         </app-form-submit-btn>
-        @if(type === 'new-create'){
+        } @else if (type.includes('create')) {
+        <div class="flex gap-2">
+          <app-form-submit-btn #inputs id="create" text="Create" [loading]="isImageLoading" [forDashboard]="true">
+          </app-form-submit-btn>
+          @if(type === 'new-create'){
 
-        <app-form-submit-btn
-          id="createAnother"
-          text="Create Another"
-          [loading]="isImageLoading"
-          [forDashboard]="true"
-          variant="outline"
-        >
-        </app-form-submit-btn>
-        }
+          <app-form-submit-btn id="createAnother" text="Create Another" [loading]="isImageLoading" [forDashboard]="true"
+            variant="outline">
+          </app-form-submit-btn>
+          }
+        </div>
+        } }
       </div>
-      } }
-    </div>
   </form>
 </div>
