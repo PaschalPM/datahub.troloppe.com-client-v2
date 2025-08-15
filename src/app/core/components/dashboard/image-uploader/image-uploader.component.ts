@@ -16,6 +16,7 @@ import { ImageViewerModalService } from '@core/services/dashboard/image-viewer-m
 import { Subscription } from 'rxjs';
 import { FormSubmissionService } from '@shared/services/form-submission.service';
 
+
 @Component({
   selector: 'app-image-uploader',
   standalone: true,
@@ -52,6 +53,35 @@ import { FormSubmissionService } from '@shared/services/form-submission.service'
             (change)="handleChange($event)"
           />
         </div>
+        <!---: Image Uploader in view-only -->
+        <div
+  class="relative size-32"
+  *ngIf="!imagePath && mode === 'view-only'"
+>
+  <div
+    [class]="
+      utils.cn(
+        'h-full border border-base-100 rounded-xl flex justify-center items-center text-4xl relative',
+        errorBorder
+      )
+    "
+  >
+    +
+    <!-- Dark overlay when disabled -->
+    <div
+      class="absolute inset-0 bg-black/40 rounded-xl cursor-not-allowed"
+    ></div>
+  </div>
+  <input
+    type="file"
+    accept="image/*"
+    capture="environment"
+    class="absolute top-0 inset-0 cursor-not-allowed opacity-0"
+    [disabled]="!imagePath && mode === 'view-only'"
+    (change)="handleChange($event)"
+  />
+</div>
+
         <!-- End Image Uploader -->
 
         <!---: Image Viewer -->
@@ -213,7 +243,7 @@ export class ImageUploaderComponent {
 
   private uploadToServer(image: File) {
     const formData = new FormData();
-    formData.set(this.name, image, image.name);
+    formData.set('image', image, image.name);
     this.loadingState = true;
     this.tempImgUploader.store(formData).subscribe({
       next: (value) => {

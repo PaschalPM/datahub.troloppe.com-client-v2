@@ -62,7 +62,7 @@ export class NewStreetDataHelperComponent {
         contact_email: [null, [Validators.email]],
         construction_status: [null, [Validators.required]],
         development_name: [null],
-        image: [null, [Validators.required]],
+        image: [null],
 
         geolocation: [null],
       },
