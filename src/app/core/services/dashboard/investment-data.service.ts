@@ -13,6 +13,7 @@ import { AlertService } from '@shared/services/alert.service';
 import { RouterService } from '../router.service';
 
 export interface PaginatedInvestmentParams {
+  table?: string;
   limit?: number;
   currentPage?: number;
   sector?: string;
@@ -190,7 +191,8 @@ export class InvestmentDataService implements OnDestroy {
     invalidateCache = false
   ): Observable<InvestmentDataResponse> {
     const {
-      limit = 250,
+      table = 'residential',
+      limit = 200,
       currentPage = 1,
       sector = 'residential',
       updatedById = null,
@@ -201,6 +203,7 @@ export class InvestmentDataService implements OnDestroy {
     let url = apiUrlFactory(
       '/investment-data/listings',
       {
+        table,
         limit: limit.toString(),
         page: currentPage.toString(),
         sector: sector,

@@ -84,7 +84,7 @@ export class IndexComponent implements OnInit, OnDestroy {
     private investmentDataService: InvestmentDataService,
     private router: RouterService,
     private route: ActivatedRoute,
-    private angularRouter: Router, 
+    private angularRouter: Router,
     private dummyDataService: DummyInvestmentDataService,
     public colorScheme: ColorSchemeService,
     public permission: PermissionService,
@@ -92,7 +92,7 @@ export class IndexComponent implements OnInit, OnDestroy {
     private cdr: ChangeDetectorRef
   ) { }
 
-  private useDummyData = true; // Set to true for testing, false for production
+  private useDummyData = false; // Set to true for testing, false for production
 
   ngOnInit() {
     // Get current user
@@ -137,32 +137,98 @@ export class IndexComponent implements OnInit, OnDestroy {
   setupColumnDefinitions() {
     // Base columns that are common to all sectors
     const baseColumns: ColDef<any>[] = [
+      { headerName: 'S/N', width: 75, valueGetter: 'node.rowIndex + 1' },
       {
-        headerName: 'S/N',
-        width: 75,
-        filter: false,
-        field: 'id',
-        cellRenderer(params: any) {
-          if (params.value) {
-            return params.node.rowIndex + 1;
-          }
-        }
+        field: 'Period',
+        sortable: false,
       },
       {
-        field: 'Date',
-        sortable: false
+        field: 'Data Rating',
       },
       {
-        field: 'State'
+        field: 'Property Code',
       },
       {
         field: 'Region',
       },
       {
-        field: 'Locality',
+        field: "Locality"
       },
       {
-        field: 'Section',
+        field: "Section",
+      },
+      {
+        field: "LGA",
+      }, {
+        field: "LCDA",
+      },
+      {
+        field: "Street"
+      },
+      {
+        field: "Street Number",
+      },
+      {
+        field: "Development"
+      },
+      {
+        field: "Sector"
+      },
+      {
+        field: "Building Type"
+      },
+      {
+        field: "Sub Type"
+      },
+      {
+        field: "Classification"
+      },
+      {
+        field: "Unit Type"
+      },
+      {
+        field: "Size"
+      },
+      {
+        field: "Construction Status"
+      },
+      {
+        field: "Year of Completion"
+      },
+      {
+        field: "Maid Quarters"
+      },
+      {
+        field: "Swimming Pool"
+      },
+      {
+        field: "Sport Center"
+      },
+      {
+        field: "Gym"
+      },
+      {
+        field: "Generator"
+      },
+      {
+        field: "Property Type",
+        headerName: "Property Type",
+        filter: false
+      },
+      {
+        field: "Status",
+        headerName: "Status",
+        filter: false
+      },
+      {
+        field: "Completion Year",
+        headerName: "Completion Year",
+        filter: false
+      },
+      {
+        field: "Period",
+        headerName: "Period",
+        filter: false
       },
       {
         field: "L.G.A",
@@ -179,6 +245,7 @@ export class IndexComponent implements OnInit, OnDestroy {
         filter: false
       },
     ];
+
 
     // Sector-specific columns
     const sectorSpecificColumns = this.getSectorSpecificColumns();
