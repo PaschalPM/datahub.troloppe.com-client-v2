@@ -31,7 +31,7 @@ import { UtilsService } from '@shared/services/utils.service';
         </p>
         <a
           *ngIf="!insideDashboardView"
-          routerLink="/"
+          routerLink="/dashboard"
           class="mt-6 inline-block px-5 py-3 bg-accent text-sm text-accent-content uppercase font-medium rounded hover:bg-accent/80"
         >
           Go back home

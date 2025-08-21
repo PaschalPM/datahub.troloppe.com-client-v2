@@ -185,7 +185,7 @@ export const routes: Routes = [
       {
         path: 'investment-data/:sector/:id',
         component: InvestmentDataViewComponent,
-        title: 'Create Investment Data',
+        title: 'Investment Data',
       },
       {
         path: 'investment-data/:sector/:id/edit',

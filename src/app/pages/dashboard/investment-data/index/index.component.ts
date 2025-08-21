@@ -1,6 +1,5 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TextButtonComponent } from '@core/components/dashboard/text-btn/text-btn.component';
 import { InvestmentDataService } from '@core/services/dashboard/investment-data.service';
 import { RouterService } from '@core/services/router.service';
 import { AuthService } from '@shared/services/auth.service';
@@ -12,7 +11,7 @@ import { ColDef, GridOptions } from 'ag-grid-community';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { CreateAndDownloadInvestmentDataBtnsComponent } from "../../../../core/components/dashboard/create-and-download-investment-data-btns.component";
+import { CreateAndDownloadInvestmentDataBtnsComponent } from "@core/components/dashboard/create-and-download-investment-data-btns.component";
 import { DummyInvestmentDataService } from '@core/services/dashboard/dummy-investment-data.service';
 
 export interface InvestmentSector {
@@ -196,21 +195,6 @@ export class IndexComponent implements OnInit, OnDestroy {
         field: "Year of Completion"
       },
       {
-        field: "Maid Quarters"
-      },
-      {
-        field: "Swimming Pool"
-      },
-      {
-        field: "Sport Center"
-      },
-      {
-        field: "Gym"
-      },
-      {
-        field: "Generator"
-      },
-      {
         field: "Property Type",
         headerName: "Property Type",
         filter: false
@@ -280,7 +264,6 @@ export class IndexComponent implements OnInit, OnDestroy {
           { field: "Annual Service Charge" },
           { field: "Contact Name" },
           { field: "Contact Number" },
-          { field: "Amenities", width: 250 }
         ];
 
       case 'land':
@@ -301,7 +284,6 @@ export class IndexComponent implements OnInit, OnDestroy {
           { field: "Status" },
           { field: "Completion Year" },
           { field: "Period" },
-          { field: "Amenities", width: 250 },
           { field: "Operator", cellClass: 'text-right' },
           { field: "Contractor" },
           { field: "Developer" },
@@ -319,7 +301,6 @@ export class IndexComponent implements OnInit, OnDestroy {
           { field: "Rental Price", cellClass: 'text-right' },
           { field: "Sale Price", cellClass: 'text-right' },
           { field: "Annual Service Charge" },
-          { field: "Amenities", width: 250 },
           { field: "Developer" },
           { field: "Contractor" },
           { field: "Facilities Manager" },
@@ -339,7 +320,6 @@ export class IndexComponent implements OnInit, OnDestroy {
           { field: "Sale Price", cellClass: 'text-right' },
           { field: "Daily Rate", cellClass: 'text-right' },
           { field: "Room Type", cellClass: 'text-right' },
-          { field: "Amenities", width: 250 },
           { field: "Operator" },
           { field: "Contractor" },
           { field: "Developer" },
@@ -361,7 +341,6 @@ export class IndexComponent implements OnInit, OnDestroy {
           { field: "No of Floors" },
           { field: "Contact Name" },
           { field: "Contact Number" },
-          { field: "Amenities", width: 250 }
         ];
 
       case 'industrial':
@@ -376,7 +355,6 @@ export class IndexComponent implements OnInit, OnDestroy {
           { field: "Rental Price", cellClass: 'text-right' },
           { field: "Sale Price", cellClass: 'text-right' },
           { field: "Annual Service Charge" },
-          { field: "Amenities", width: 250 },
           { field: "Facilities Manager" },
           { field: "Contact Name" },
           { field: "Contact Number" },
@@ -399,7 +377,6 @@ export class IndexComponent implements OnInit, OnDestroy {
           { field: "Completion Year" },
           { field: "Period" },
           { field: "Daily Rates", cellClass: 'text-right' },
-          { field: "Amenities", width: 250 },
           { field: "Developer" },
           { field: "Contractor" },
           { field: "Facilities Manager" },
@@ -656,7 +633,8 @@ export class IndexComponent implements OnInit, OnDestroy {
 
   onRowClicked(ev: any) {
     const data = ev.data;
-    this.router.navigateByUrl(`/dashboard/investment-data/${this.selectedSector}/${data.id}`, data);
+    console.log('Row clicked:', data);
+    this.router.navigateByUrl(`/dashboard/investment-data/${this.selectedSector}/${data["property ID"]}`, data);
   }
 
   cacheData(paginatedParams: PaginatedInvestmentParams, data: any, totalRecords: number) {

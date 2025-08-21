@@ -10,6 +10,7 @@ import { BackBtnComponent } from "../../../../shared/components/back-btn/back-bt
 import { SpinnerComponent } from "../../../../shared/components/spinner/spinner.component";
 import { PermissionService } from '@shared/services/permission.service';
 import { NgIf, NgFor, TitleCasePipe } from '@angular/common';
+import { InvestmentDataService } from '@core/services/dashboard/investment-data.service';
 
 @Component({
   selector: 'app-investment-view',
@@ -27,7 +28,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   constructor(
     private readonly route: ActivatedRoute,
     private readonly router: RouterService,
-    private readonly investmentDataService: DummyInvestmentDataService,
+    private readonly investmentDataService: InvestmentDataService,
     private readonly loaderService: LoaderService,
     public readonly permissionService: PermissionService
   ) {}
@@ -48,8 +49,8 @@ export class ViewComponent implements OnInit, OnDestroy {
   private fetchInvestmentData(id: number): void {
     this.loaderService.start();
     
-    // Since this is dummy data, we'll generate and find the specific item
-    this.investmentDataService.getPaginatedDummyData(this.sector, { limit: 500, currentPage: 1 })
+   
+    this.investmentDataService.apiGetInvestmentDataById(id, true, this.sector)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (response) => {
