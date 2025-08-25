@@ -54,7 +54,8 @@ export class ViewComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (response) => {
-          this.investmentData = response.data.find((item: DummyInvestmentData) => item.id === id);
+        
+          this.investmentData = response.data;
           if (!this.investmentData) {
             this.router.navigateByUrl('/not-found');
           }
