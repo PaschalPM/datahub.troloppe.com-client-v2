@@ -2,7 +2,6 @@ import {
   Component,
   Input,
   QueryList,
-  ViewChild,
   ViewChildren,
 } from '@angular/core';
 import { InputFieldComponent } from '@shared/components/input-field/input-field.component';
@@ -68,6 +67,7 @@ export class StreetDataFormComponent {
 
   fixedLocationId!: number;
   private formFieldData!: StreetDataFormFieldDataInterface;
+  private readonly STORAGE_KEY = 'streetDataForm';
 
   constructor(
     public utils: UtilsService,
@@ -76,12 +76,28 @@ export class StreetDataFormComponent {
   ) {}
 
   ngOnInit(): void {
-    this.selectedSectorId = +this.streetDataFormGroup.get('sector_id')?.value;
+    // Restore from session storage first
+    this.restoreFormFromStorage();
+
+    //  Loads sector and subsector
+    const restoredSectorId = this.streetDataFormGroup.get('sector')?.value;
+    if (restoredSectorId) {
+      this.selectedSectorId = +restoredSectorId;
+      this.setSubSectorOptions(this.selectedSectorId);
+    }
     this.setLocationField();
     this.getUniqueCodeDataList();
     this.getFormFieldDataAndSetsOptionsValueFromAPI();
     this.handleSomeSectorSelections();
+
+    // Save to storage whenever form changes
+    this.streetDataFormGroup.valueChanges.subscribe(() => {
+      console.log()
+      this.saveFormToStorage();
+    });
   }
+
+
   onSectorChange(sector: IdAndNameType) {
     this.selectedSectorId = sector.id;
     this.subSectorPending = true;
@@ -96,16 +112,19 @@ export class StreetDataFormComponent {
     this.streetDataFormGroup.get('sub_sector')?.setValue(null);
     this.streetDataFormGroup.get('construction_status')?.setValue(null);
     this.handleSomeSectorSelections();
+    this.saveFormToStorage();
   }
 
   onSubSectorChange(subSector: IdAndNameType) {
     this.streetDataFormGroup.get('sub_sector')?.setValue(subSector.id);
     this.streetDataFormGroup.get('sub_sector_id')?.setValue(subSector.id);
+    this.saveFormToStorage();
   }
 
   onSectionChange(section: IdAndNameType) {
     this.streetDataFormGroup.controls['section_id']?.setValue(section.id);
     this.streetDataFormGroup.controls['section']?.setValue(section.id);
+    this.saveFormToStorage();
   }
 
   private handleSomeSectorSelections() {
@@ -140,6 +159,7 @@ export class StreetDataFormComponent {
 
   handleSubmit(ev: SubmitEvent) {
     this.focusOnError();
+    this.saveFormToStorage();
     this.onSubmit(ev);
   }
 
@@ -167,9 +187,11 @@ export class StreetDataFormComponent {
 
           // Set selected sector ID
           const selectedSectorId =
-            this.streetDataFormGroup.get('sector_id')?.value;
-
-          this.setSubSectorOptions(selectedSectorId);
+            this.streetDataFormGroup.get('sector')?.value;
+            if (selectedSectorId) {
+              this.selectedSectorId = +selectedSectorId;
+              this.setSubSectorOptions(this.selectedSectorId);
+            }
         }
       });
   }
@@ -258,7 +280,30 @@ export class StreetDataFormComponent {
       this.activeLocationService.getActiveLocation().subscribe((location) => {
         this.streetDataFormGroup.get('location')?.setValue(location?.name);
         this.fixedLocationId = location?.id as number;
+        this.saveFormToStorage();
       });
+    }
+  }
+
+  /**
+    *  Session Storage Persistence
+    */
+  private saveFormToStorage() {
+    const val = this.streetDataFormGroup.value;
+    console.log("Saving form to storage:", val);
+    sessionStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.streetDataFormGroup.value));
+  }
+
+  private restoreFormFromStorage() {
+    const saved = sessionStorage.getItem(this.STORAGE_KEY);
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        this.streetDataFormGroup.patchValue(parsed, { emitEvent: false });
+        this.saveFormToStorage();
+      } catch (e) {
+        console.warn('Failed to restore form data from sessionStorage', e);
+      }
     }
   }
 }
