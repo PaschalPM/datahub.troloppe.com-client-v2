@@ -1,0 +1,61 @@
+name: Deploy Datahub Client V2
+
+# Trigger on pushes to main branch
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 2. Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x 
+
+      # 3. Install dependencies
+      - name: Install npm packages
+        run: npm ci
+
+      # 4. Build Angular production
+      - name: Build Angular production
+        run: npx ng build --configuration production
+
+      # 5. Copy .htaccess to dist
+      - name: Copy .htaccess
+        run: cp .htaccess dist/datahub_app_v2/browser/.htaccess
+
+      # 6. Create tarball of the browser folder
+      - name: Create tarball
+        run: tar -czf browser.tar.gz -C dist/datahub_app_v2 browser
+
+      # 7. Copy tarball to remote server
+      - name: Copy tarball to server
+        uses: appleboy/scp-action@v0.1.6
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          port: ${{ secrets.SERVER_PORT }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          source: browser.tar.gz
+          target: .
+
+      # 8. Extract tarball on remote server
+      - name: Deploy on remote server
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          port: ${{ secrets.SERVER_PORT }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            tar -xzf browser.tar.gz -C ~/datahub.troloppe.com --strip-components=1
+            rm browser.tar.gz
