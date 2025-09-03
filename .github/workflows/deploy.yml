@@ -54,6 +54,6 @@ jobs:
           port: ${{ secrets.SERVER_PORT }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
-          source: dist/datahub_app_v2/browser/.
+          source: dist/datahub_app_v2/browser
           target: ${{ secrets.SERVER_PATH }}
           strip_components: 3
