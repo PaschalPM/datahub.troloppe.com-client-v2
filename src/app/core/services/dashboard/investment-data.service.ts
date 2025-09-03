@@ -239,6 +239,11 @@ export class InvestmentDataService implements OnDestroy {
 
   apiGetInvestmentDataById(id: number, view = true, sector: string = 'residential') {
     let url = apiUrlFactory(`/investment-data/listings/${id}`, { view, sector });
+    return this.httpClient.get<{ success: boolean, message: string, data: { property: any, meta: {previous_property_id: number | null, next_property_id: number | null } }}>(url);
+  }
+
+  apiGetInvestmentDataAmenitiesById(propertyId: number) {
+    let url = apiUrlFactory(`/investment-data/listings/${propertyId}/amenities`);
     return this.httpClient.get<{ success: boolean, message: string, data: any }>(url);
   }
 

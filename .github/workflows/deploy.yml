@@ -9,6 +9,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: Production
 
     steps:
       # 1. Checkout the repository
@@ -33,29 +34,26 @@ jobs:
       - name: Copy .htaccess
         run: cp .htaccess dist/datahub_app_v2/browser/.htaccess
 
-      # 6. Create tarball of the browser folder
-      - name: Create tarball
-        run: tar -czf browser.tar.gz -C dist/datahub_app_v2 browser
-
-      # 7. Copy tarball to remote server
-      - name: Copy tarball to server
-        uses: appleboy/scp-action@v0.1.6
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          port: ${{ secrets.SERVER_PORT }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
-          source: browser.tar.gz
-          target: .
-
-      # 8. Extract tarball on remote server
-      - name: Deploy on remote server
-        uses: appleboy/ssh-action@v0.1.6
+      # 6. Copy files to remote server
+      - name: Copy files to remote server
+        uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SERVER_HOST }}
           port: ${{ secrets.SERVER_PORT }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
-            tar -xzf browser.tar.gz -C ~/datahub.troloppe.com --strip-components=1
-            rm browser.tar.gz
+            cd ${{ secrets.SERVER_PATH }}
+            rm -rf *
+      
+      # 7. Copy files to remote server
+      - name: Copy files to remote server
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          port: ${{ secrets.SERVER_PORT }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          source: dist/datahub_app_v2/browser/.
+          target: ${{ secrets.SERVER_PATH }}
+          strip_components: 3

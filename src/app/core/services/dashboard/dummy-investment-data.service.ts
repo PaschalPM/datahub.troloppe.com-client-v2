@@ -16,6 +16,11 @@ export interface DummyInvestmentData {
   [key: string]: any; 
 }
 
+export interface Amenity {
+  amenity_name: string;
+  sub_amenities: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })

@@ -1,40 +1,67 @@
-<app-back-btn />
+<div class="flex items-center justify-between">
+  <app-back-btn />
+  <app-record-navigator *ngIf="fetchedData" [previousRecordId]="previousRecordId"
+    [nextRecordId]="nextRecordId" (previousClicked)="onPrev($event)" (nextClicked)="onNext($event)" />
+</div>
 
 @if(investmentData) {
-<div class="max-w-4xl mx-auto shadow-lg rounded-lg p-6">
-  <div class="flex items-center border-b pb-4 justify-between">
-    <h2 class="text-xl font-bold">{{ getSectorDisplayName() }} Investment Details</h2>
+<div class=" mx-auto shadow-lg rounded-lg p-6">
+  <div class="flex items-center border-b border-base-content/20 pb-4 justify-between">
+    <h2 class="text-xl font-bold">{{ sectorDisplayName }} Investment Details</h2>
     <div class="flex flex-row items-end">
-      <text-button
-        withIcon="edit"
-        [isFlexed]="true"
-        text="Edit"
-        (clickEvent)="goToEditInvestmentData()">
+      <text-button withIcon="edit" [isFlexed]="true" text="Edit" (clickEvent)="goToEditInvestmentData()">
       </text-button>
-      <text-button
-        withIcon="delete"
-        [isFlexed]="true"
-        state="error"
-        text="Delete"
+      <text-button withIcon="delete" [isFlexed]="true" state="error" text="Delete"
         (clickEvent)="deleteInvestmentData()">
       </text-button>
     </div>
   </div>
 
-  
-  <div class="grid grid-cols-2 gap-4 mt-4">
-    @for(key of investmentDataKeys; track key) {
-    <div>
-      <span class="font-semibold">{{ formatKey(key) }}:</span>
-      {{ investmentData[key] || 'N/A' }}
+
+  <div class="lg:grid grid-cols-7 gap-4 py-6 space-y-4 lg:space-y-0">
+    <div class="col-span-5 space-y-4">
+      <div class=" p-4 rounded-lg bg-base-content/5">
+        <h2 class="text-xl font-semibold border-b border-base-content/20 py-2">Property Details</h2>
+        <div class="grid grid-cols-2 gap-4 mt-4">
+          @for(key of investmentDataKeys; track key) {
+          <div>
+            <span class="font-semibold">{{ formatKey(key) }}:</span>
+            {{ investmentData[key] || 'N/A' }}
+          </div>
+          }
+        </div>
+      </div>
     </div>
-    }
+    <div class="col-span-2 bg-base-content/20 p-4 rounded-lg overflow-hidden h-fit">
+      <h2 class="text-lg font-semibold border-b border-base-content/20 py-2">Available Amenities</h2>
+
+      <ul *ngIf="amenities" class="space-y-2 my-4">
+        <ng-container *ngFor="let amenity of amenities">
+          <li class="flex gap-4">
+            <span>
+              -
+            </span>
+            <span>
+              {{amenity?.amenity_name}}
+              <span class="text-sm" *ngIf="amenity.sub_amenities && amenity.sub_amenities.length > 0">
+                ({{amenity?.sub_amenities}})
+              </span>
+            </span>
+
+
+          </li>
+        </ng-container>
+        <span *ngIf="amenities.length === 0">
+          N/A
+        </span>
+      </ul>
+      <div class="flex justify-center items-center py-12" *ngIf="!amenities">
+        <app-spinner />
+      </div>
+
+    </div>
   </div>
 
-  <div class="mt-4 text-left">
-  <span class="font-semibold">Updated By:</span>
-  {{ investmentData['Updated By'] }}
-</div>
 </div>
 }
 @else {
@@ -42,3 +69,5 @@
   <app-spinner />
 </div>
 }
+
+<app-activity-loader *ngIf="loadingAmenities && loadingProperty"></app-activity-loader>
