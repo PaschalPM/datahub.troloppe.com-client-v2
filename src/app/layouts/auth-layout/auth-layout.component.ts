@@ -13,7 +13,7 @@ import { NavbarComponent } from '../../core/components/auth/navbar/navbar.compon
       <router-outlet></router-outlet>
     </app-container>
     <footer class="py-2 text-xs text-text-color lg:text-sm text-center mt-5 font-semibold text-base-content/70">
-      © 2024, Troloppe Property Services. All Rights Reserved.
+      © 2025, Troloppe Property Services. All Rights Reserved.
     </footer>
   </div>`,
 })
