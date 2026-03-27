@@ -7,7 +7,7 @@ import { UtilsService } from '@shared/services/utils.service';
 import { PermissionService } from '@shared/services/permission.service';
 import { ColorSchemeService } from '@shared/services/color-scheme.service';
 import { AgGridAngular } from 'ag-grid-angular';
-import { ColDef, CellClickedEvent, GridOptions } from 'ag-grid-community';
+import { ColDef, CellClickedEvent, GridApi, GridOptions, GridReadyEvent } from 'ag-grid-community';
 import { Observable, Subscription, tap } from 'rxjs';
 import { ActionsComponent } from '@shared/components/ag-grid/street-data/actions/actions.component';
 import { ImagePreviewComponent } from '@shared/components/ag-grid/street-data/image-preview/image-preview.component';
@@ -21,6 +21,7 @@ import { LoaderService } from '@shared/services/loader.service';
   standalone: true,
   imports: [
     ActiveLocationIndicatorComponent,
+    TextButtonComponent,
     AgGridAngular,
     AsyncPipe,
     CreateAndDownloadStreetDataBtnsComponent
@@ -92,6 +93,8 @@ export class IndexComponent {
   tableThemeColor: 'dark' | 'light' = 'light';
   isLoading = true;
   private actualColorSchemeSubscription!: Subscription;
+  private gridApi: GridApi | null = null;
+  hasActiveFilters = false;
 
 
   constructor(
@@ -117,6 +120,26 @@ export class IndexComponent {
       .subscribe((value) => {
         this.tableThemeColor = value;
       });
+  }
+
+  onGridReady(params: GridReadyEvent) {
+    this.gridApi = params.api;
+    this.updateHasActiveFilters();
+  }
+
+  clearAllFilters() {
+    // Clears ag-grid column filter models only (does not reset sort).
+    this.gridApi?.setFilterModel(null);
+    this.updateHasActiveFilters();
+  }
+
+  onFilterChanged() {
+    this.updateHasActiveFilters();
+  }
+
+  private updateHasActiveFilters() {
+    const model = this.gridApi?.getFilterModel() ?? {};
+    this.hasActiveFilters = Object.keys(model).length > 0;
   }
 
   onCellClick(event: CellClickedEvent) {

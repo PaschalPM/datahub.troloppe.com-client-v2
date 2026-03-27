@@ -1,8 +1,9 @@
-<div class="my-4 flex justify-between items-center">
+<section class="dashboard-content-panel brand-reveal">
+<div class="dashboard-section-toolbar">
   <div class="flex items-center gap-4">
     <label for="sector-select" class="text-sm font-medium">Investment Sector:</label>
     <select id="sector-select" [(ngModel)]="selectedSector" (ngModelChange)="onSectorChange($event)"
-      class="px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-800 dark:border-gray-600 dark:text-white min-w-[150px]">
+      class="dashboard-select min-w-[170px]">
       <option *ngFor="let sector of investmentSectors" [value]="sector.key">
         {{ sector.label }}
       </option>
@@ -10,6 +11,12 @@
   </div>
 
   <div class="flex items-center gap-2">
+    <text-button
+      [withIcon]="hasActiveFilters ? 'filter_alt' : 'filter_alt_off'"
+      [state]="hasActiveFilters ? undefined : 'neutral'"
+      ariaLabel="Clear filters"
+      (clickEvent)="clearAllFilters()">
+    </text-button>
     <create-and-download-investment-data-btns [sectorKey]="currentSectorData?.key || 'Residential'"
       (sectorClicked)="logSector($event)">
     </create-and-download-investment-data-btns>
@@ -21,9 +28,10 @@
   [datasource]="datasource" [infiniteInitialRowCount]="initialRowCount" [cacheBlockSize]="pageSize"
   [maxBlocksInCache]="2" [class.ag-theme-quartz]="tableThemeColor === 'light'" [columnDefs]="colDefs"
   [defaultColDef]="defaultColDefs" [animateRows]="true" [gridOptions]="gridOptions" (rowClicked)="onRowClicked($event)"
-  [loading]="isLoading" (gridReady)="onGridReady($event)">
+  [loading]="isLoading" (gridReady)="onGridReady($event)" (filterChanged)="onFilterChanged()">
 </ag-grid-angular>
 
-<div class="text-sm mt-2 font-semibold">
+<div class="dashboard-total-records">
   Total Records: {{ totalRecords }} | Sector: {{ currentSectorData?.label || 'Unknown' }}
 </div>
+</section>

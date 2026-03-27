@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@angular/core';
 import { ClientStorageService } from './client-storage.service';
 import { BehaviorSubject, map, of, Subscription, switchMap, tap } from 'rxjs';
-import { COLOR_SCHEME_STORE_KEY } from './constants/localstorage';
 import { MediaQueryService } from './media-query.service';
 import { PREFERS_COLOR_DARK_SCHEME_QUERY } from './constants/media-query';
+import { COLOR_SCHEME_STORE_KEY } from './constants/localstorage';
 import { DOCUMENT } from '@angular/common';
 
 @Injectable({
@@ -33,6 +33,7 @@ export class ColorSchemeService {
         if (value && value !== 'auto') {
           return of(value);
         }
+
         return this.mediaQuery.observe(PREFERS_COLOR_DARK_SCHEME_QUERY).pipe(
           map((value) => {
             return value ? 'dark' : 'light';

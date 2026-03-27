@@ -13,6 +13,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CreateAndDownloadInvestmentDataBtnsComponent } from "@core/components/dashboard/create-and-download-investment-data-btns.component";
 import { DummyInvestmentDataService } from '@core/services/dashboard/dummy-investment-data.service';
+import { TextButtonComponent } from '@core/components/dashboard/text-btn/text-btn.component';
 
 export interface InvestmentSector {
   key: string;
@@ -23,7 +24,13 @@ export interface InvestmentSector {
 @Component({
   selector: 'investment-data-index',
   standalone: true,
-  imports: [AgGridAngular, CommonModule, FormsModule, CreateAndDownloadInvestmentDataBtnsComponent],
+  imports: [
+    AgGridAngular,
+    CommonModule,
+    FormsModule,
+    TextButtonComponent,
+    CreateAndDownloadInvestmentDataBtnsComponent,
+  ],
   templateUrl: './index.component.html',
   styleUrl: './index.component.scss'
 })
@@ -63,7 +70,12 @@ export class IndexComponent implements OnInit, OnDestroy {
     },
     autoHeight: false,
     cellClass: '!flex !items-center',
-    cellStyle: { 'white-space': 'normal', 'word-wrap': 'break-word', 'height': 'max-content' },
+    cellStyle: {
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+    },
+    tooltipValueGetter: (params: any) => params.value ?? '',
     width: 150,
   };
 
@@ -78,6 +90,7 @@ export class IndexComponent implements OnInit, OnDestroy {
 
   dataCache: Map<string, { data: any, totalRecords: number }> = new Map();
   gridApi!: any;
+  hasActiveFilters = false;
 
   constructor(
     private investmentDataService: InvestmentDataService,
@@ -104,7 +117,6 @@ export class IndexComponent implements OnInit, OnDestroy {
       const sector = params['sector'];
       if (sector && this.investmentSectors.some(s => s.key === sector)) {
         this.selectedSector = sector;
-        console.log(sector)
       } else {
         // If no sector or invalid sector, redirect to residential
         this.angularRouter.navigate(['/dashboard/investment-data/residential'], { replaceUrl: true });
@@ -127,6 +139,28 @@ export class IndexComponent implements OnInit, OnDestroy {
 
   onGridReady(params: any) {
     this.gridApi = params.api;
+    this.updateHasActiveFilters();
+  }
+
+  clearAllFilters() {
+    if (!this.gridApi) return;
+
+    // Clears ag-grid column filter models only (does not reset sort).
+    this.gridApi.setFilterModel(null);
+    this.updateHasActiveFilters();
+
+    // Infinite row model: clear cached blocks and force a reload.
+    this.dataCache.clear();
+    this.gridApi.purgeInfiniteCache();
+  }
+
+  onFilterChanged() {
+    this.updateHasActiveFilters();
+  }
+
+  private updateHasActiveFilters() {
+    const model = this.gridApi?.getFilterModel?.() ?? {};
+    this.hasActiveFilters = Object.keys(model).length > 0;
   }
 
   logSector(sector: string) {
@@ -633,7 +667,6 @@ export class IndexComponent implements OnInit, OnDestroy {
 
   onRowClicked(ev: any) {
     const data = ev.data;
-    console.log('Row clicked:', data);
     this.router.navigateByUrl(`/dashboard/investment-data/${this.selectedSector}/${data["property ID"]}`, data);
   }
 

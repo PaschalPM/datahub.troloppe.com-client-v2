@@ -148,7 +148,12 @@ export class IndexComponent implements OnDestroy {
     },
     autoHeight: false,
     cellClass: '!flex !items-center',
-    cellStyle: { 'white-space': 'normal', 'word-wrap': 'break-word', 'height': 'max-content' },
+    cellStyle: {
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+    },
+    tooltipValueGetter: (params: any) => params.value ?? '',
     width: 150,
   };
   tableThemeColor: 'dark' | 'light' = 'light';
@@ -162,10 +167,29 @@ export class IndexComponent implements OnDestroy {
 
   dataCache: Map<string, { data: any, totalRecords: number }> = new Map()
   gridApi!: any;
+  hasActiveFilters = false;
 
   onGridReady(params: any) {
     this.gridApi = params.api;
     this.gridApi.setFilterModel(this.getFilterModelFromLocalStorage() || {});
+    this.updateHasActiveFilters();
+  }
+
+  clearAllFilters() {
+    if (!this.gridApi) return;
+
+    // Clears ag-grid column filter models only (does not reset sort).
+    this.gridApi.setFilterModel(null);
+    this.updateHasActiveFilters();
+
+    // Clear persisted filters + cached data so the infinite model reloads cleanly.
+    this.clearFilterModelFromLocalStorage();
+    this.dataCache.clear();
+    this.gridApi.purgeInfiniteCache();
+  }
+
+  onFilterChanged() {
+    this.updateHasActiveFilters();
   }
 
   constructor(
@@ -206,9 +230,16 @@ export class IndexComponent implements OnDestroy {
           limit: this.pageSize,
           currentPage,
         }
-        if (Object.keys(params.filterModel).length > 0) {
+        const hasFilters =
+          params.filterModel && Object.keys(params.filterModel).length > 0;
+
+        if (hasFilters) {
           paginatedListingParams.agFilterModel = params.filterModel
           this.setFilterModelToLocalStorage(params.filterModel);
+        } else {
+          // If filters are cleared in the UI, ensure we also clear the persisted model
+          // so it doesn't re-apply on reload.
+          this.clearFilterModelFromLocalStorage();
         }
         if (params.sortModel.length > 0) {
           const sort = params.sortModel[0].sort
@@ -292,6 +323,15 @@ export class IndexComponent implements OnDestroy {
 
   private setFilterModelToLocalStorage(filterModel: any) {
     sessionStorage.setItem('externalListingsFilterModel', JSON.stringify(filterModel));
+  }
+
+  private clearFilterModelFromLocalStorage() {
+    sessionStorage.removeItem('externalListingsFilterModel');
+  }
+
+  private updateHasActiveFilters() {
+    const model = this.gridApi?.getFilterModel?.() ?? {};
+    this.hasActiveFilters = Object.keys(model).length > 0;
   }
 
 }

@@ -1,6 +1,12 @@
 <div class="my-4 flex justify-between items-center">
     <text-button withIcon="list" [isFlexed]="true" (clickEvent)="goToViewListings()" text="View Listings">
     </text-button>
+    <text-button
+        [withIcon]="hasActiveFilters ? 'filter_alt' : 'filter_alt_off'"
+        [state]="hasActiveFilters ? undefined : 'neutral'"
+        ariaLabel="Clear filters"
+        (clickEvent)="clearAllFilters()">
+    </text-button>
 </div>
 
 <ag-grid-angular 
@@ -13,6 +19,8 @@
     [defaultColDef]="defaultColDef"
     [loading]="loading"
     (rowClicked)="onRowClicked($event)"
+    (gridReady)="onGridReady($event)"
+    (filterChanged)="onFilterChanged()"
     rowClass="cursor-pointer"
 > </ag-grid-angular>
 
