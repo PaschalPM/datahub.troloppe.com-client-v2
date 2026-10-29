@@ -1,0 +1,31 @@
+name: Production Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: "production/${{ github.workflow}}"
+  cancel-in-progress: true
+
+jobs:
+  client-deploy:
+    environment: production
+    runs-on: [self-hosted, tps-hetzner]
+    permissions:
+      contents: read
+    defaults:
+      run:
+        shell: bash
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Deploy Datahub Client 🐳
+      run: |
+        docker compose -p datahub_client -f $DOCKER_COMPOSE_FILE down
+        docker compose -p datahub_client -f $DOCKER_COMPOSE_FILE up -d --build
+        docker image prune -f
+      env:
+        DOCKER_COMPOSE_FILE: infra/deployments/docker-compose.prod.yml
