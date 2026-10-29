@@ -5,4 +5,4 @@ services:
       dockerfile: infra/DockerFile
     restart: unless-stopped
     ports:
-      - "3002:80"
+      - "127.0.0.1:3002:80"
